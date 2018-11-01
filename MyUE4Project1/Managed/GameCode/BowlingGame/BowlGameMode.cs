@@ -27,7 +27,7 @@ namespace HelloUSharp
         protected APlayerCameraManager myCameraManager = null;
         protected BowlingBall myBall = null;
 
-        private FVector dragStart, dragEnd;
+        private FVector2D dragStart, dragEnd;
         private float startTime, endTime;
         #endregion
 
@@ -74,18 +74,16 @@ namespace HelloUSharp
         #endregion
 
         [UFunction, BlueprintCallable]
-        public void OnStartDrag()
+        public void OnStartDrag(float mousePosX, float mousePosY)
         {
-            PrintString("Start Drag", FLinearColor.Red);
-            //dragStart = Input.mousePosition
+            dragStart = new FVector2D(mousePosX, mousePosY);
             startTime = World.GetGameTimeInSeconds();
         }
 
         [UFunction, BlueprintCallable]
-        public void OnStopDrag()
+        public void OnStopDrag(float mousePosX, float mousePosY)
         {
-            PrintString("End Drag", FLinearColor.Red);
-            //dragEnd = Input.mousePosition
+            dragEnd = new FVector2D(mousePosX, mousePosY);
             endTime = World.GetGameTimeInSeconds();
 
             float dragDuration = endTime - startTime;
