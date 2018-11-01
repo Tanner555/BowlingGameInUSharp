@@ -74,16 +74,16 @@ namespace HelloUSharp
         #endregion
 
         [UFunction, BlueprintCallable]
-        public void OnStartDrag(float mousePosX, float mousePosY)
+        public void OnStartDrag(FVector2D mousePos)
         {
-            dragStart = new FVector2D(mousePosX, mousePosY);
+            dragStart = mousePos;
             startTime = World.GetGameTimeInSeconds();
         }
 
         [UFunction, BlueprintCallable]
-        public void OnStopDrag(float mousePosX, float mousePosY)
+        public void OnStopDrag(FVector2D mousePos)
         {
-            dragEnd = new FVector2D(mousePosX, mousePosY);
+            dragEnd = mousePos;
             endTime = World.GetGameTimeInSeconds();
 
             float dragDuration = endTime - startTime;
@@ -91,7 +91,7 @@ namespace HelloUSharp
             //Horizontal
             float launchSpeedY = (dragEnd.X - dragStart.X) / dragDuration;
             //Forward
-            float launchSpeedX = (dragEnd.Y - dragStart.Y) / dragDuration;
+            float launchSpeedX = (dragStart.Y - dragEnd.Y) / dragDuration;
 
             FVector _launchVelocity = new FVector(launchSpeedX, launchSpeedY, 0);
             StartLaunchingTheBall(_launchVelocity);

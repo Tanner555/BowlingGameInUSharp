@@ -84,22 +84,22 @@ namespace HelloUSharp
         #endregion
 
         [UFunction, BlueprintCallable]
-        public void OnDragStart(float mousePosX, float mousePosY)
+        public void OnDragStart(FVector2D mousePos)
         {
             var _gamemode = (BowlGameMode)World.GetGameMode();
             if(_gamemode != null)
             {
-                _gamemode.OnStartDrag(mousePosX, mousePosY);
+                _gamemode.OnStartDrag(mousePos);
             }
         }
 
         [UFunction, BlueprintCallable]
-        public void OnDragStop(float mousePosX, float mousePosY)
+        public void OnDragStop(FVector2D mousePos)
         {
             var _gamemode = (BowlGameMode)World.GetGameMode();
             if (_gamemode != null)
             {
-                _gamemode.OnStopDrag(mousePosX, mousePosY);
+                _gamemode.OnStopDrag(mousePos);
             }
         }
 
