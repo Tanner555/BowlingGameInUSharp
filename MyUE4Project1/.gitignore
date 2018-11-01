@@ -44,6 +44,11 @@
 *.VC.db
 *.VC.opendb
 
+# Don't Include C# Prop Files
+*.props
+*.usharpGenerated
+*.targets
+
 # Precompiled Assets
 SourceArt/**/*.png
 SourceArt/**/*.tga
@@ -75,3 +80,14 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Don't Need To Include Starter Content
+Content/StarterContent/*
+
+# Don't Include C# Binaries
+Managed/Binaries/*
+Managed/GameCode/obj/*
+
+# Other Files To Not Include
+Managed/Readme.md
+GenerateProjectFiles.bat
