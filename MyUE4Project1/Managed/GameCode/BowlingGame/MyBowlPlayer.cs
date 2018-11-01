@@ -21,12 +21,15 @@ namespace HelloUSharp
         //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         [UPropertyIngore]
         protected float PawnStartXPoint { get; set; }
-        [UPropertyIngore]
-        protected float CameraFollowXOffset { get; set; }
-
-        private BowlingBall myBall = null;
-
-        bool bShouldFollowBall = false; 
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public float BallFollowOffset { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public float BallFollowLimitDistance { get; set; }
+        [UProperty, BlueprintReadOnly, Category("Bowling")]
+        public float DefaultBallFollowOffset { get; set; }
+        //[UPropertyIngore]
+        public BowlingBall myBall = null;
+        protected bool bShouldFollowBall = false;
 
         [UFunction, BlueprintCallable]
         public string GetMyMessage()
@@ -36,37 +39,50 @@ namespace HelloUSharp
 
         protected override void ReceiveBeginPlay_Implementation()
         {
-            //FHitResult _hit;
-            //base.ReceiveBeginPlay_Implementation();
-            //PrintString("Hello From " + GetName(), FLinearColor.Red);
-            //SetActorLocation(GetActorLocation() + 
-            //    new FVector(2000, 0, 0),
-            //    false, out _hit, false);
             PawnStartXPoint = GetActorLocation().X;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
         {
-            //base.ReceiveTick_Implementation(DeltaSeconds);
+
             if (bShouldFollowBall && myBall != null)
             {
-                FHitResult _hit;
                 var _myPos = GetActorLocation();
+
+                if (_myPos.X >= BallFollowLimitDistance)
+                {
+                    bShouldFollowBall = false;
+                    return;
+                }
+                
+                FHitResult _hit;
                 var _ballPos = myBall.GetActorLocation();
-                //SetActorLocation(
-                //    _myPos +
-                //    new FVector(_ballPos.X, _myPos.Y, _myPos.Z),
-                //    false, out _hit, false
-                //);
+                var _xTravelPos = _ballPos.X + DefaultBallFollowOffset;
+                //PrintString("Ball Pos: " + _ballPos, FLinearColor.Green, printToLog:true);
+                SetActorLocation(
+                    new FVector(_xTravelPos, _myPos.Y, _myPos.Z),
+                    true, out _hit, false
+                );
+                
             }
+        }
+
+        [UFunction, BlueprintCallable]
+        public FVector GetMyBallPosition()
+        {
+            if(myBall != null)
+            {
+                return myBall.GetActorLocation();
+            }
+            return new FVector(0, 0, 0);
         }
 
         public void StartFollowingBall(BowlingBall _ball)
         {
             myBall = _ball;
-            if(myBall != null)
+            DefaultBallFollowOffset = GetActorLocation().X - myBall.GetActorLocation().X;
+            if (myBall != null)
             {
-                CameraFollowXOffset = myBall.GetActorLocation().X - PawnStartXPoint;
                 bShouldFollowBall = true;
             }
             else
