@@ -1,0 +1,10 @@
+-- TSubClassOf
+TSubClassOf Class Is Always Null, If you try to set a uproperty, it's still null.
+Using This Won't Work: if (BowlingBallSubClassReference != null)
+but this will: if (BowlingBallSubClassReference.Value != null)
+
+-- InputBinding
+Cannot Bind Input From C#. Can use wrapper ufunctions and bind from blueprints.
+
+-- Blueprint Impementable Events
+Blueprint Impementable Events Don't Currently Get Called When Used in c#. 
