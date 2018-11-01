@@ -22,8 +22,6 @@ namespace HelloUSharp
         [UPropertyIngore]
         protected float PawnStartXPoint { get; set; }
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
-        public float BallFollowOffset { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public float BallFollowLimitDistance { get; set; }
         [UProperty, BlueprintReadOnly, Category("Bowling")]
         public float DefaultBallFollowOffset { get; set; }

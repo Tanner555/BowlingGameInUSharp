@@ -25,22 +25,21 @@ namespace HelloUSharp
 
         #region MyUProperties
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
-        public float DefaultMoveSpeed { get; set; }
+        public FVector LaunchVelocity { get; set; }
 
-        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Bowling")]
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
         public UStaticMeshComponent MyMeshComponent { get; set; }
 
-        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Bowling")]
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
         public UAudioComponent MyAudioSourceComponent { get; set; }
 
-        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Bowling")]
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
         public USoundBase BallRollingSound { get; set; }
         #endregion
 
         public override void Initialize(FObjectInitializer initializer)
         {
             //base.Initialize();
-            DefaultMoveSpeed = 6f;
         }
 
         protected override void ReceiveBeginPlay_Implementation()
@@ -66,7 +65,7 @@ namespace HelloUSharp
             }
             else
             {
-                MyMeshComponent.AddImpulse(new FVector(DefaultMoveSpeed * 300, 0, 0), MyMeshComponent.GetAttachSocketName(), true);
+                MyMeshComponent.AddImpulse(LaunchVelocity, MyMeshComponent.GetAttachSocketName(), true);
                 MyAudioSourceComponent.Sound = BallRollingSound;
                 MyAudioSourceComponent.Play();
             }
