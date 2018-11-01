@@ -49,7 +49,7 @@ namespace HelloUSharp
         }
 
         [UFunction, BlueprintCallable]
-        public void LaunchBall()
+        public void LaunchBall(FVector launchVelocity)
         {
             if (MyMeshComponent == null)
             {
@@ -65,7 +65,7 @@ namespace HelloUSharp
             }
             else
             {
-                MyMeshComponent.AddImpulse(LaunchVelocity, MyMeshComponent.GetAttachSocketName(), true);
+                MyMeshComponent.AddImpulse(launchVelocity, MyMeshComponent.GetAttachSocketName(), true);
                 MyAudioSourceComponent.Sound = BallRollingSound;
                 MyAudioSourceComponent.Play();
             }

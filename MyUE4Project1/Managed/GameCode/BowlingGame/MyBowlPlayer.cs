@@ -15,26 +15,31 @@ namespace HelloUSharp
     [UClass, Blueprintable, BlueprintType]
     class MyBowlPlayer : APawn
     {
+        #region UProperties
         [UProperty, EditAnywhere, BlueprintReadWrite]
         public string MyString12345 { get; set; }
-
-        //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         [UPropertyIngore]
         protected float PawnStartXPoint { get; set; }
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public float BallFollowLimitDistance { get; set; }
         [UProperty, BlueprintReadOnly, Category("Bowling")]
         public float DefaultBallFollowOffset { get; set; }
-        //[UPropertyIngore]
+        #endregion
+
+        #region Fields
         public BowlingBall myBall = null;
         protected bool bShouldFollowBall = false;
+        #endregion
 
+        #region Testing
         [UFunction, BlueprintCallable]
         public string GetMyMessage()
         {
             return "Hello There From MyPawnClass123455";
         }
+        #endregion
 
+        #region Overrides
         protected override void ReceiveBeginPlay_Implementation()
         {
             PawnStartXPoint = GetActorLocation().X;
@@ -52,7 +57,7 @@ namespace HelloUSharp
                     bShouldFollowBall = false;
                     return;
                 }
-                
+
                 FHitResult _hit;
                 var _ballPos = myBall.GetActorLocation();
                 var _xTravelPos = _ballPos.X + DefaultBallFollowOffset;
@@ -61,18 +66,41 @@ namespace HelloUSharp
                     new FVector(_xTravelPos, _myPos.Y, _myPos.Z),
                     true, out _hit, false
                 );
-                
+
             }
         }
+        #endregion
 
+        #region Getters
         [UFunction, BlueprintCallable]
         public FVector GetMyBallPosition()
         {
-            if(myBall != null)
+            if (myBall != null)
             {
                 return myBall.GetActorLocation();
             }
             return new FVector(0, 0, 0);
+        }
+        #endregion
+
+        [UFunction, BlueprintCallable]
+        public void OnDragStart()
+        {
+            var _gamemode = (BowlGameMode)World.GetGameMode();
+            if(_gamemode != null)
+            {
+                _gamemode.OnStartDrag();
+            }
+        }
+
+        [UFunction, BlueprintCallable]
+        public void OnDragStop()
+        {
+            var _gamemode = (BowlGameMode)World.GetGameMode();
+            if (_gamemode != null)
+            {
+                _gamemode.OnStopDrag();
+            }
         }
 
         public void StartFollowingBall(BowlingBall _ball)
