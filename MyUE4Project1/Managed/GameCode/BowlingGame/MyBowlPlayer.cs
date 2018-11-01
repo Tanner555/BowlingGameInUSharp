@@ -29,6 +29,7 @@ namespace HelloUSharp
         #region Fields
         public BowlingBall myBall = null;
         protected bool bShouldFollowBall = false;
+        private FHitResult myHit;
         #endregion
 
         #region Testing
@@ -58,13 +59,12 @@ namespace HelloUSharp
                     return;
                 }
 
-                FHitResult _hit;
                 var _ballPos = myBall.GetActorLocation();
                 var _xTravelPos = _ballPos.X + DefaultBallFollowOffset;
                 //PrintString("Ball Pos: " + _ballPos, FLinearColor.Green, printToLog:true);
                 SetActorLocation(
                     new FVector(_xTravelPos, _myPos.Y, _myPos.Z),
-                    true, out _hit, false
+                    true, out myHit, false
                 );
 
             }
