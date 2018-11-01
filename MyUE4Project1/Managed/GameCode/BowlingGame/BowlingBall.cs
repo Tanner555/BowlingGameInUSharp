@@ -46,7 +46,7 @@ namespace HelloUSharp
         protected override void ReceiveBeginPlay_Implementation()
         {
             //base.ReceiveBeginPlay_Implementation();
-            LaunchBall();
+            //LaunchBall();
         }
 
         [UFunction, BlueprintCallable]

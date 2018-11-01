@@ -19,9 +19,6 @@ namespace HelloUSharp
         public int Value12345 { get; set; }
 
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
-        public FVector CameraFollowOffset { get; set; }
-
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
 
         protected APlayerCameraManager myCameraManager = null;
@@ -34,11 +31,26 @@ namespace HelloUSharp
             myCameraManager = UGameplayStatics.GetPlayerCameraManager(this, 0);
             if(myCameraManager != null)
             {
-                //PrintString("Camera Manager is " + myCameraManager.GetName(), FLinearColor.AliceBlue, printToLog:true);
+                PrintString("Camera Manager is " + myCameraManager.GetName(), FLinearColor.AliceBlue, printToLog:true);
             }
             else
             {
                 PrintString("Couldn't Find Camera Manager", FLinearColor.AliceBlue);
+            }
+        }
+
+        protected override void ReceiveTick_Implementation(float DeltaSeconds)
+        {
+            FHitResult _hit;
+            //base.ReceiveTick_Implementation(DeltaSeconds);
+            if(myCameraManager != null)
+            {
+                //myCameraManager.
+                myCameraManager.SetActorLocation(
+                    myCameraManager.GetActorLocation() + new FVector(2, 0, 0),
+                    false, out _hit, false
+                );
+
             }
         }
 
@@ -49,6 +61,18 @@ namespace HelloUSharp
             {
                 //PrintString("Setting my ball to: " + balls[0].GetName(), FLinearColor.Green);
                 myBall = balls[0];
+            }
+        }
+
+        [UFunction, BlueprintCallable]
+        public void StartLaunchingTheBall()
+        {
+            var _bowlPlayer = (MyBowlPlayer)World.GetPlayerPawn(0);
+            if (myBall != null && _bowlPlayer != null)
+            {
+                PrintString("Launching Ball", FLinearColor.AliceBlue, printToLog:true);
+                myBall.LaunchBall();
+                _bowlPlayer.StartFollowingBall(myBall);
             }
         }
 
