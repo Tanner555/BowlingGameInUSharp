@@ -83,6 +83,7 @@ DerivedDataCache/*
 
 # Don't Need To Include Starter Content
 Content/StarterContent/*
+Content/MyStarterContent/*
 
 # Don't Include C# Binaries
 Managed/Binaries/*
