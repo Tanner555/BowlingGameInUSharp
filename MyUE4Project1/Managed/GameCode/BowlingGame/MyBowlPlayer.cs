@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    class MyPawnClass12345 : APawn
+    class MyBowlPlayer : APawn
     {
         [UProperty, EditAnywhere, BlueprintReadWrite]
         public string MyString12345 { get; set; }

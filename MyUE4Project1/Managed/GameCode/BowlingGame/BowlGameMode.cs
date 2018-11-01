@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    class MyGameMode12 : AGameMode
+    class BowlGameMode : AGameMode
     {
         [UProperty, EditAnywhere, BlueprintReadWrite]
         public int Value12345 { get; set; }
