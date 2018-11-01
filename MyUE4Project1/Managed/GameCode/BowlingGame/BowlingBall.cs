@@ -29,6 +29,12 @@ namespace HelloUSharp
 
         [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Bowling")]
         public UStaticMeshComponent MyMeshComponent { get; set; }
+
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Bowling")]
+        public UAudioComponent MyAudioSourceComponent { get; set; }
+
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Bowling")]
+        public USoundBase BallRollingSound { get; set; }
         #endregion
 
         public override void Initialize(FObjectInitializer initializer)
@@ -40,13 +46,29 @@ namespace HelloUSharp
         protected override void ReceiveBeginPlay_Implementation()
         {
             //base.ReceiveBeginPlay_Implementation();
-            if(MyMeshComponent == null)
+            LaunchBall();
+        }
+
+        [UFunction, BlueprintCallable]
+        public void LaunchBall()
+        {
+            if (MyMeshComponent == null)
             {
                 PrintString("Please Assign A mesh component to the uproperty", FLinearColor.OrangeRed);
+            }
+            else if(MyAudioSourceComponent == null)
+            {
+                PrintString("Please Assign an audio component to the uproperty", FLinearColor.OrangeRed);
+            }
+            else if(BallRollingSound == null)
+            {
+                PrintString("Please Assign a sound clip to the ball rolling sound uproperty", FLinearColor.OrangeRed);
             }
             else
             {
                 MyMeshComponent.AddImpulse(new FVector(DefaultMoveSpeed * 300, 0, 0), MyMeshComponent.GetAttachSocketName(), true);
+                MyAudioSourceComponent.Sound = BallRollingSound;
+                MyAudioSourceComponent.Play();
             }
         }
 
