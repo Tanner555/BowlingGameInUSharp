@@ -35,7 +35,8 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         protected void ReceiveHitWrapper(UPrimitiveComponent MyComp, AActor Other, UPrimitiveComponent OtherComp, bool SelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, FHitResult Hit)
         {
-            if (Other != null && Other.IsA(UClass.GetClass<BowlingBall>()))
+            //TODO: Consider Using Tags Instead of Getting Component
+            if (Other != null && Other.GetComponentByClass<BowlingBallComponent>() != null)
             {
                 GetOwner().PrintString("I was hit by " + Other.GetName(), FLinearColor.Green, printToLog: true);
             }
