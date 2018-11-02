@@ -31,9 +31,6 @@ namespace HelloUSharp
 
         [UPropertyIngore]
         public FName BallTag { get { return new FName("Ball"); } }
-
-        [UPropertyIngore]
-        public static BowlGameModeComponent ThisInstance { get; protected set; }
         #endregion
 
         #region UProperties
@@ -42,6 +39,8 @@ namespace HelloUSharp
         
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
+
+        protected static BowlGameModeComponent ThisInstance = null;
         #endregion
 
         #region Fields
@@ -61,10 +60,6 @@ namespace HelloUSharp
 
         protected override void ReceiveBeginPlay_Implementation()
         {
-            //This instance doesn't get destroyed when game ends
-            //So Don't Check For An Existing Instance
-            ThisInstance = this;
-
             MyOwner.World.GetPlayerController(0).ShowMouseCursor = true;
 
             List<AActor> ballActors;
@@ -79,11 +74,17 @@ namespace HelloUSharp
         {
 
         }
+        #endregion
 
-        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        #region Getter
+        [UFunction, BlueprintCallable]
+        public static BowlGameModeComponent GetInstance(UObject worldContextObject)
         {
-            //base.ReceiveEndPlay_Implementation(EndPlayReason);
-            ThisInstance = null;
+            if(ThisInstance == null)
+            {
+                ThisInstance = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameModeComponent>();
+            }
+            return ThisInstance;
         }
         #endregion
 

@@ -17,7 +17,7 @@ namespace HelloUSharp
     {
         #region UPropertyIgnore
         [UPropertyIngore]
-        BowlGameModeComponent gamemode { get { return BowlGameModeComponent.ThisInstance; } }
+        BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         [UPropertyIngore]
         public AActor MyOwner
         {
