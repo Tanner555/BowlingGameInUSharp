@@ -17,7 +17,9 @@ namespace HelloUSharp
     {
         #region UPropertyIgnore
         [UPropertyIngore]
-        BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        [UPropertyIngore]
+        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         [UPropertyIngore]
         public AActor MyOwner
         {
@@ -54,7 +56,7 @@ namespace HelloUSharp
         {
             if (Other != null && Other.ActorHasTag(gamemode.BallTag))
             {
-                GetOwner().PrintString("I was hit by " + Other.GetName(), FLinearColor.Green, printToLog: true);
+                //GetOwner().PrintString("I was hit by " + Other.GetName(), FLinearColor.Green, printToLog: true);
             }
         }
         #endregion

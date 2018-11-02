@@ -31,6 +31,9 @@ namespace HelloUSharp
 
         [UPropertyIngore]
         public FName BallTag { get { return new FName("Ball"); } }
+
+        [UPropertyIngore]
+        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
         #endregion
 
         #region UProperties

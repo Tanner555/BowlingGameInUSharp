@@ -25,6 +25,15 @@ namespace HelloUSharp
             }
         }
         private AActor _owner = null;
+
+        [UPropertyIngore]
+        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+
+        public bool bBowlTurnIsOver { get; protected set; }
+        #endregion
+
+        #region UProperties
+
         #endregion
 
         #region Fields
@@ -49,7 +58,7 @@ namespace HelloUSharp
         #region Overrides
         protected override void ReceiveBeginPlay_Implementation()
         {
-            
+            bBowlTurnIsOver = false;
         }
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
@@ -58,14 +67,22 @@ namespace HelloUSharp
             ThisInstance = null;
         }
         #endregion
-        
+
         #region Events
+        public event GeneralEventHandler BowlNewTurnIsReady;
         public event GeneralEventHandler BowlTurnIsFinished;
         #endregion
 
         #region EventCalls
+        public void CallBowlNewTurnIsReady()
+        {
+            bBowlTurnIsOver = false;
+            if (BowlNewTurnIsReady != null) BowlNewTurnIsReady();
+        }
+
         public void CallBowlTurnIsFinished()
         {
+            bBowlTurnIsOver = true;
             if (BowlTurnIsFinished != null) BowlTurnIsFinished();
         }
         #endregion

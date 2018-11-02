@@ -34,9 +34,16 @@ namespace HelloUSharp
         {
             get { return MyOwner.GetActorLocation(); }
         }
+
+        [UPropertyIngore]
+        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        [UPropertyIngore]
+        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
+        #region Fields
         private FHitResult myHit;
+        #endregion
 
         #region MyUProperties
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
@@ -52,6 +59,7 @@ namespace HelloUSharp
         public USoundBase BallRollingSound { get; set; }
         #endregion
 
+        #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
             //base.Initialize();
@@ -61,8 +69,24 @@ namespace HelloUSharp
         {
             //base.ReceiveBeginPlay_Implementation();
             //LaunchBall();
+            gamemaster.BowlTurnIsFinished += BowlTurnIsFinished;
         }
 
+        protected override void ReceiveTick_Implementation(float DeltaSeconds)
+        {
+            //base.ReceiveTick_Implementation(DeltaSeconds);
+            //SetActorLocation(myPos + new FVector(DefaultMoveSpeed, 0, 0), false, out myHit, false);
+        }
+        #endregion
+
+        #region Handlers
+        void BowlTurnIsFinished()
+        {
+            MyOwner.PrintString("BowlTurnIsFinished", FLinearColor.Green);
+        }
+        #endregion
+
+        #region LaunchBall
         [UFunction, BlueprintCallable]
         public void LaunchBall(FVector launchVelocity)
         {
@@ -85,11 +109,6 @@ namespace HelloUSharp
                 MyAudioSourceComponent.Play();
             }
         }
-
-        protected override void ReceiveTick_Implementation(float DeltaSeconds)
-        {
-            //base.ReceiveTick_Implementation(DeltaSeconds);
-            //SetActorLocation(myPos + new FVector(DefaultMoveSpeed, 0, 0), false, out myHit, false);
-        }
+        #endregion
     }
 }

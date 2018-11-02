@@ -6,3 +6,7 @@ Blueprint Impementable Events Don't Currently Get Called When Used in c#.
 
 -- FMulticastDelegate
 Cannot Broadcast an instance of a FMulticastDelegate. There isn't any Broadcast method inside the Delegate Classes inside the Runtime Solution.
+
+-- Static Value Garbage Collection
+Static Values Do Not Become Null When the game ends. This causes issues when accessing a nullptr when the game restarts, causing the engine to crash.
+I simply set the static value to null in ReceiveEndPlay.
