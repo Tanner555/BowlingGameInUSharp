@@ -34,30 +34,12 @@ namespace HelloUSharp
         #region Overrides
         protected override void ReceiveBeginPlay_Implementation()
         {
-            //myCameraManager = UGameplayStatics.GetPlayerCameraManager(this, 0);
-            //if (myCameraManager != null)
-            //{
-            //    PrintString("Camera Manager is " + myCameraManager.GetName(), FLinearColor.AliceBlue, printToLog: true);
-            //}
-            //else
-            //{
-            //    PrintString("Couldn't Find Camera Manager", FLinearColor.AliceBlue);
-            //}
+            SetBallFromBallFindCollection(World.GetAllActorsOfClassList<BowlingBall>());
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
         {
-            //FHitResult _hit;
-            ////base.ReceiveTick_Implementation(DeltaSeconds);
-            //if (myCameraManager != null)
-            //{
-            //    //myCameraManager.
-            //    myCameraManager.SetActorLocation(
-            //        myCameraManager.GetActorLocation() + new FVector(2, 0, 0),
-            //        false, out _hit, false
-            //    );
 
-            //}
         }
         #endregion
 
@@ -72,7 +54,8 @@ namespace HelloUSharp
             }
         }
         #endregion
-
+        
+        #region DraggingAndBallLaunch
         [UFunction, BlueprintCallable]
         public void OnStartDrag(FVector2D mousePos)
         {
@@ -103,11 +86,12 @@ namespace HelloUSharp
             var _bowlPlayer = (MyBowlPlayer)World.GetPlayerPawn(0);
             if (myBall != null && _bowlPlayer != null)
             {
-                PrintString("Launching Ball", FLinearColor.AliceBlue, printToLog:true);
+                PrintString("Launching Ball", FLinearColor.AliceBlue, printToLog: true);
                 myBall.LaunchBall(launchVelocity);
                 _bowlPlayer.StartFollowingBall(myBall);
             }
         }
+        #endregion
 
         #region UnusedCode
         /// <summary>
