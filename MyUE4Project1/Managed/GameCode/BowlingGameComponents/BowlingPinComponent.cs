@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    class BowlingPin : AActor
+    class BowlingPinComponent : UActorComponent
     {
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
@@ -24,6 +24,7 @@ namespace HelloUSharp
         protected override void ReceiveBeginPlay_Implementation()
         {
             //base.ReceiveBeginPlay_Implementation();
+            //GetOwner().PrintString("Reporting For Duty", FLinearColor.Green, printToLog: true);
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -31,20 +32,15 @@ namespace HelloUSharp
             //base.ReceiveTick_Implementation(DeltaSeconds);
         }
 
-        protected override void ReceiveActorBeginOverlap_Implementation(AActor OtherActor)
-        {
-            //base.ReceiveActorBeginOverlap_Implementation(OtherActor);
-
-        }
-
         [UFunction, BlueprintCallable]
         protected void ReceiveHitWrapper(UPrimitiveComponent MyComp, AActor Other, UPrimitiveComponent OtherComp, bool SelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, FHitResult Hit)
         {
             if (Other != null && Other.IsA(UClass.GetClass<BowlingBall>()))
             {
-                PrintString("I was hit by " + Other.GetName(), FLinearColor.Green, printToLog: true);
+                GetOwner().PrintString("I was hit by " + Other.GetName(), FLinearColor.Green, printToLog: true);
             }
         }
         #endregion
+
     }
 }
