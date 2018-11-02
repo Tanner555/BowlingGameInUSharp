@@ -46,6 +46,19 @@ namespace HelloUSharp
         public delegate void GeneralEventHandler();
         #endregion
 
+        #region Overrides
+        protected override void ReceiveBeginPlay_Implementation()
+        {
+            
+        }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
+            ThisInstance = null;
+        }
+        #endregion
+        
         #region Events
         public event GeneralEventHandler BowlTurnIsFinished;
         #endregion

@@ -39,6 +39,10 @@ namespace HelloUSharp
             }
         }
         private AActor _owner = null;
+        [UPropertyIngore]
+        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        [UPropertyIngore]
+        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
         #region Fields
@@ -106,10 +110,9 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void OnDragStart(FVector2D mousePos)
         {
-            var _gamemode = MyOwner.World.GetGameMode().GetComponentByClass<BowlGameModeComponent>();
-            if (_gamemode != null)
+            if (gamemode != null)
             {
-                _gamemode.OnStartDrag(mousePos);
+                gamemode.OnStartDrag(mousePos);
             }
             
         }
@@ -117,10 +120,9 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void OnDragStop(FVector2D mousePos)
         {
-            var _gamemode = MyOwner.World.GetGameMode().GetComponentByClass<BowlGameModeComponent>();
-            if (_gamemode != null)
+            if (gamemode != null)
             {
-                _gamemode.OnStopDrag(mousePos);
+                gamemode.OnStopDrag(mousePos);
             }
         }
 

@@ -74,6 +74,12 @@ namespace HelloUSharp
         {
 
         }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
+            ThisInstance = null;
+        }
         #endregion
 
         #region Getter
