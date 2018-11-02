@@ -47,6 +47,7 @@ namespace HelloUSharp
         #region Fields
         protected APlayerCameraManager myCameraManager = null;
         protected BowlingBallComponent myBall = null;
+        protected MyBowlPlayerComponent myBowler = null;
 
         private FVector2D dragStart, dragEnd;
         private float startTime, endTime;
@@ -60,24 +61,27 @@ namespace HelloUSharp
 
         protected override void ReceiveBeginPlay_Implementation()
         {
-            if (ThisInstance == null)
-            {
-                ThisInstance = this;
-            }
-            else
-            {
-                MyOwner.PrintString("More than one instance of " + GetName() + " in scene", FLinearColor.Red);
-            }
+            //This instance doesn't get destroyed when game ends
+            //So Don't Check For An Existing Instance
+            ThisInstance = this;
 
             List<AActor> ballActors;
             MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
             SetBallFromBallFindCollection(ballActors);
+
+            myBowler = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
             //SetBallFromBallFindCollection(MyOwner.World.GetAllActorsOfClassList<BowlingBallComponent>());
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
         {
 
+        }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            //base.ReceiveEndPlay_Implementation(EndPlayReason);
+            ThisInstance = null;
         }
         #endregion
 
@@ -130,6 +134,44 @@ namespace HelloUSharp
                 MyOwner.PrintString("Launching Ball", FLinearColor.AliceBlue, printToLog: true);
                 myBall.LaunchBall(launchVelocity);
                 _bowlPlayer.StartFollowingBall(myBall);
+            }
+        }
+        #endregion
+
+        #region NudgeBall
+        [UFunction, BlueprintCallable]
+        public void NudgeBallLeft()
+        {
+            FHitResult _hit;
+            if(myBall != null)
+            {
+                myBall.MyOwner.SetActorLocation(
+                    myBall.MyOwner.GetActorLocation() +
+                    new FVector(0, -50, 0), false, out _hit, false);
+            }
+            if(myBowler != null)
+            {
+                myBowler.MyOwner.SetActorLocation(
+                    myBowler.MyOwner.GetActorLocation() +
+                    new FVector(0, -50, 0), false, out _hit, false);
+            }
+        }
+
+        [UFunction, BlueprintCallable]
+        public void NudgeBallRight()
+        {
+            FHitResult _hit;
+            if (myBall != null)
+            {
+                myBall.MyOwner.SetActorLocation(
+                    myBall.MyOwner.GetActorLocation() +
+                    new FVector(0, 50, 0), false, out _hit, false);
+            }
+            if (myBowler != null)
+            {
+                myBowler.MyOwner.SetActorLocation(
+                    myBowler.MyOwner.GetActorLocation() +
+                    new FVector(0, 50, 0), false, out _hit, false);
             }
         }
         #endregion
