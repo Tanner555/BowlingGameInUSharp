@@ -56,6 +56,12 @@ namespace HelloUSharp
         #endregion
 
         #region Overrides
+        public override void Initialize(FObjectInitializer initializer)
+        {
+            //base.Initialize(initializer);
+            BallFollowLimitDistance = 3200.0f;
+        }
+
         protected override void ReceiveBeginPlay_Implementation()
         {
             PawnStartXPoint = MyOwner.GetActorLocation().X;

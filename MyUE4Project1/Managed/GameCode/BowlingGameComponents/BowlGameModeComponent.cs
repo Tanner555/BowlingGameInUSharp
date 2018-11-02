@@ -31,6 +31,9 @@ namespace HelloUSharp
 
         [UPropertyIngore]
         public FName BallTag { get { return new FName("Ball"); } }
+
+        [UPropertyIngore]
+        public static BowlGameModeComponent ThisInstance { get; protected set; }
         #endregion
 
         #region UProperties
@@ -50,8 +53,22 @@ namespace HelloUSharp
         #endregion
 
         #region Overrides
+        public override void Initialize(FObjectInitializer initializer)
+        {
+            //base.Initialize(initializer);
+        }
+
         protected override void ReceiveBeginPlay_Implementation()
         {
+            if (ThisInstance == null)
+            {
+                ThisInstance = this;
+            }
+            else
+            {
+                MyOwner.PrintString("More than one instance of " + GetName() + " in scene", FLinearColor.Red);
+            }
+
             List<AActor> ballActors;
             MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
             SetBallFromBallFindCollection(ballActors);

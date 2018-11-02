@@ -15,6 +15,23 @@ namespace HelloUSharp
     [UClass, Blueprintable, BlueprintType]
     class BowlingPinComponent : UActorComponent
     {
+        #region UPropertyIgnore
+        [UPropertyIngore]
+        BowlGameModeComponent gamemode { get { return BowlGameModeComponent.ThisInstance; } }
+        [UPropertyIngore]
+        public AActor MyOwner
+        {
+            get
+            {
+                if (_owner == null)
+                    _owner = GetOwner();
+
+                return _owner;
+            }
+        }
+        private AActor _owner = null;
+        #endregion
+
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
@@ -35,8 +52,7 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         protected void ReceiveHitWrapper(UPrimitiveComponent MyComp, AActor Other, UPrimitiveComponent OtherComp, bool SelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, FHitResult Hit)
         {
-            //TODO: Consider Using Tags Instead of Getting Component
-            if (Other != null && Other.GetComponentByClass<BowlingBallComponent>() != null)
+            if (Other != null && Other.ActorHasTag(gamemode.BallTag))
             {
                 GetOwner().PrintString("I was hit by " + Other.GetName(), FLinearColor.Green, printToLog: true);
             }
