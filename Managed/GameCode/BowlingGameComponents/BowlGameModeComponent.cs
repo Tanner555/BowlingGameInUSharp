@@ -30,7 +30,9 @@ namespace HelloUSharp
         private AActor _owner = null;
 
         [UPropertyIngore]
-        public FName BallTag { get { return new FName("Ball"); } }
+        public FName BallTag => new FName("Ball");
+        [UPropertyIngore]
+        public FName PinTag => new FName("Pin");
 
         [UPropertyIngore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
