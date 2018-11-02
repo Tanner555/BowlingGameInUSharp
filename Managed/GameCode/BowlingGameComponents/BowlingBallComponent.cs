@@ -70,6 +70,7 @@ namespace HelloUSharp
             //base.ReceiveBeginPlay_Implementation();
             //LaunchBall();
             gamemaster.BowlTurnIsFinished += BowlTurnIsFinished;
+            gamemaster.OnBallLaunch += LaunchBall;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -77,18 +78,24 @@ namespace HelloUSharp
             //base.ReceiveTick_Implementation(DeltaSeconds);
             //SetActorLocation(myPos + new FVector(DefaultMoveSpeed, 0, 0), false, out myHit, false);
         }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            if (gamemaster != null)
+            {
+                gamemaster.BowlTurnIsFinished -= BowlTurnIsFinished;
+                gamemaster.OnBallLaunch -= LaunchBall;
+            }
+        }
         #endregion
 
         #region Handlers
         void BowlTurnIsFinished()
         {
-            MyOwner.PrintString("BowlTurnIsFinished", FLinearColor.Green);
+            MyOwner.PrintString("BowlTurnIsFinishedd", FLinearColor.Green);
         }
-        #endregion
 
-        #region LaunchBall
-        [UFunction, BlueprintCallable]
-        public void LaunchBall(FVector launchVelocity)
+        void LaunchBall(FVector launchVelocity, BowlingBallComponent bowlingBall)
         {
             if (MyMeshComponent == null)
             {

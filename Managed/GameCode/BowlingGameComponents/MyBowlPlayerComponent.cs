@@ -46,9 +46,9 @@ namespace HelloUSharp
         #endregion
 
         #region Fields
-        public BowlingBallComponent myBall = null;
         protected bool bShouldFollowBall = false;
         private FHitResult myHit;
+        private BowlingBallComponent myBall = null;
         #endregion
 
         #region Testing
@@ -69,6 +69,7 @@ namespace HelloUSharp
         protected override void ReceiveBeginPlay_Implementation()
         {
             PawnStartXPoint = MyOwner.GetActorLocation().X;
+            gamemaster.OnBallLaunch += StartFollowingBall;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -93,6 +94,14 @@ namespace HelloUSharp
 
             }
         }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            if (gamemaster != null)
+            {
+                gamemaster.OnBallLaunch -= StartFollowingBall;
+            }
+        }
         #endregion
 
         #region Getters
@@ -104,6 +113,22 @@ namespace HelloUSharp
                 return myBall.MyOwner.GetActorLocation();
             }
             return new FVector(0, 0, 0);
+        }
+        #endregion
+
+        #region Handlers
+        void StartFollowingBall(FVector launchVelocity, BowlingBallComponent bowlingBall)
+        {
+            myBall = bowlingBall;
+            if (myBall != null)
+            {
+                DefaultBallFollowOffset = MyOwner.GetActorLocation().X - myBall.MyOwner.GetActorLocation().X;
+                bShouldFollowBall = true;
+            }
+            else
+            {
+                bShouldFollowBall = false;
+            }
         }
         #endregion
 
@@ -123,20 +148,6 @@ namespace HelloUSharp
             if (gamemode != null)
             {
                 gamemode.OnStopDrag(mousePos);
-            }
-        }
-
-        public void StartFollowingBall(BowlingBallComponent _ball)
-        {
-            myBall = _ball;
-            DefaultBallFollowOffset = MyOwner.GetActorLocation().X - myBall.MyOwner.GetActorLocation().X;
-            if (myBall != null)
-            {
-                bShouldFollowBall = true;
-            }
-            else
-            {
-                bShouldFollowBall = false;
             }
         }
     }

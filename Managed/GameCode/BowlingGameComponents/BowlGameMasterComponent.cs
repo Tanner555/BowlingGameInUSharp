@@ -30,6 +30,7 @@ namespace HelloUSharp
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
 
         public bool bBowlTurnIsOver { get; protected set; }
+        public bool bCanLaunchBall { get; protected set; }
         #endregion
 
         #region UProperties
@@ -53,12 +54,14 @@ namespace HelloUSharp
 
         #region Delegates
         public delegate void GeneralEventHandler();
+        public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
         #endregion
 
         #region Overrides
         protected override void ReceiveBeginPlay_Implementation()
         {
             bBowlTurnIsOver = false;
+            bCanLaunchBall = true;
         }
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
@@ -71,12 +74,20 @@ namespace HelloUSharp
         #region Events
         public event GeneralEventHandler BowlNewTurnIsReady;
         public event GeneralEventHandler BowlTurnIsFinished;
+        public event FVectorAndBallRefHandler OnBallLaunch;
         #endregion
 
         #region EventCalls
+        public void CallOnBallLaunch(FVector launchVelocity, BowlingBallComponent bowlingBall)
+        {
+            bCanLaunchBall = false;
+            if (OnBallLaunch != null) OnBallLaunch(launchVelocity, bowlingBall);
+        }
+
         public void CallBowlNewTurnIsReady()
         {
             bBowlTurnIsOver = false;
+            bCanLaunchBall = true;
             if (BowlNewTurnIsReady != null) BowlNewTurnIsReady();
         }
 

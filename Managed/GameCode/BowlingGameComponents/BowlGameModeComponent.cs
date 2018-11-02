@@ -139,12 +139,9 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void StartLaunchingTheBall(FVector launchVelocity)
         {
-            var _bowlPlayer = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
-            if (myBall != null && _bowlPlayer != null)
+            if (myBall != null)
             {
-                MyOwner.PrintString("Launching Ball", FLinearColor.AliceBlue, printToLog: true);
-                myBall.LaunchBall(launchVelocity);
-                _bowlPlayer.StartFollowingBall(myBall);
+                gamemaster.CallOnBallLaunch(launchVelocity, myBall);
             }
         }
         #endregion
