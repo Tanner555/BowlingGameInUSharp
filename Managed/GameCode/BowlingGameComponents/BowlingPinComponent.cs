@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    class BowlingPinComponent : UActorComponent
+    public class BowlingPinComponent : UActorComponent
     {
         #region UPropertyIgnore
         [UPropertyIngore]

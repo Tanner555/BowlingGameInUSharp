@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    class BowlGameModeComponent : UActorComponent
+    public class BowlGameModeComponent : UActorComponent
     {
         #region IgnoreProperties
         [UPropertyIngore]
@@ -39,8 +39,6 @@ namespace HelloUSharp
         
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
-
-        protected static BowlGameModeComponent ThisInstance = null;
         #endregion
 
         #region Fields
@@ -50,6 +48,8 @@ namespace HelloUSharp
 
         private FVector2D dragStart, dragEnd;
         private float startTime, endTime;
+
+        protected static BowlGameModeComponent ThisInstance = null;
         #endregion
 
         #region Overrides
@@ -77,7 +77,6 @@ namespace HelloUSharp
         #endregion
 
         #region Getter
-        [UFunction, BlueprintCallable]
         public static BowlGameModeComponent GetInstance(UObject worldContextObject)
         {
             if(ThisInstance == null)

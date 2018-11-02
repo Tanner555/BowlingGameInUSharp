@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    class MyBowlPlayerComponent : UActorComponent
+    public class MyBowlPlayerComponent : UActorComponent
     {
         #region UProperties
         [UProperty, EditAnywhere, BlueprintReadWrite]
