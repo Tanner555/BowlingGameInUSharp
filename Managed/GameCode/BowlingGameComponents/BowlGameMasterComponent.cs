@@ -55,6 +55,7 @@ namespace HelloUSharp
         #region Delegates
         public delegate void GeneralEventHandler();
         public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
+        public delegate void OneFloatArgHandler(float famount);
         #endregion
 
         #region Overrides
@@ -75,6 +76,8 @@ namespace HelloUSharp
         public event GeneralEventHandler BowlNewTurnIsReady;
         public event GeneralEventHandler BowlTurnIsFinished;
         public event FVectorAndBallRefHandler OnBallLaunch;
+        public event OneFloatArgHandler OnNudgeBallLeft;
+        public event OneFloatArgHandler OnNudgeBallRight;
         #endregion
 
         #region EventCalls
@@ -95,6 +98,16 @@ namespace HelloUSharp
         {
             bBowlTurnIsOver = true;
             if (BowlTurnIsFinished != null) BowlTurnIsFinished();
+        }
+
+        public void CallOnNudgeBallLeft(float famount)
+        {
+            if (OnNudgeBallLeft != null) OnNudgeBallLeft(famount);
+        }
+
+        public void CallOnNudgeBallRight(float famount)
+        {
+            if (OnNudgeBallRight != null) OnNudgeBallRight(famount);
         }
         #endregion
 

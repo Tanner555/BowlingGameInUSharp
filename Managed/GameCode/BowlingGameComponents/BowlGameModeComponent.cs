@@ -157,37 +157,13 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void NudgeBallLeft()
         {
-            FHitResult _hit;
-            if(myBall != null)
-            {
-                myBall.MyOwner.SetActorLocation(
-                    myBall.MyOwner.GetActorLocation() +
-                    new FVector(0, -50, 0), false, out _hit, false);
-            }
-            if(myBowler != null)
-            {
-                myBowler.MyOwner.SetActorLocation(
-                    myBowler.MyOwner.GetActorLocation() +
-                    new FVector(0, -50, 0), false, out _hit, false);
-            }
+            gamemaster.CallOnNudgeBallLeft(-50);
         }
 
         [UFunction, BlueprintCallable]
         public void NudgeBallRight()
         {
-            FHitResult _hit;
-            if (myBall != null)
-            {
-                myBall.MyOwner.SetActorLocation(
-                    myBall.MyOwner.GetActorLocation() +
-                    new FVector(0, 50, 0), false, out _hit, false);
-            }
-            if (myBowler != null)
-            {
-                myBowler.MyOwner.SetActorLocation(
-                    myBowler.MyOwner.GetActorLocation() +
-                    new FVector(0, 50, 0), false, out _hit, false);
-            }
+            gamemaster.CallOnNudgeBallRight(50);
         }
         #endregion
     }

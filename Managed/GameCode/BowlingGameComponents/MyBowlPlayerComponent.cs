@@ -70,6 +70,8 @@ namespace HelloUSharp
         {
             PawnStartXPoint = MyOwner.GetActorLocation().X;
             gamemaster.OnBallLaunch += StartFollowingBall;
+            gamemaster.OnNudgeBallLeft += NudgeBallLeft;
+            gamemaster.OnNudgeBallRight += NudgeBallRight;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -100,6 +102,8 @@ namespace HelloUSharp
             if (gamemaster != null)
             {
                 gamemaster.OnBallLaunch -= StartFollowingBall;
+                gamemaster.OnNudgeBallLeft -= NudgeBallLeft;
+                gamemaster.OnNudgeBallRight -= NudgeBallRight;
             }
         }
         #endregion
@@ -129,6 +133,22 @@ namespace HelloUSharp
             {
                 bShouldFollowBall = false;
             }
+        }
+
+        void NudgeBallLeft(float famount)
+        {
+            FHitResult _hit;
+            MyOwner.SetActorLocation(
+                MyOwner.GetActorLocation() +
+                new FVector(0, famount, 0), false, out _hit, false);
+        }
+
+        void NudgeBallRight(float famount)
+        {
+            FHitResult _hit;
+            MyOwner.SetActorLocation(
+                MyOwner.GetActorLocation() +
+                new FVector(0, famount, 0), false, out _hit, false);
         }
         #endregion
 

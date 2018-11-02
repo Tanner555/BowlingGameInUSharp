@@ -71,6 +71,8 @@ namespace HelloUSharp
             //LaunchBall();
             gamemaster.BowlTurnIsFinished += BowlTurnIsFinished;
             gamemaster.OnBallLaunch += LaunchBall;
+            gamemaster.OnNudgeBallLeft += NudgeBallLeft;
+            gamemaster.OnNudgeBallRight += NudgeBallRight;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -85,6 +87,8 @@ namespace HelloUSharp
             {
                 gamemaster.BowlTurnIsFinished -= BowlTurnIsFinished;
                 gamemaster.OnBallLaunch -= LaunchBall;
+                gamemaster.OnNudgeBallLeft -= NudgeBallLeft;
+                gamemaster.OnNudgeBallRight -= NudgeBallRight;
             }
         }
         #endregion
@@ -115,6 +119,22 @@ namespace HelloUSharp
                 MyAudioSourceComponent.Sound = BallRollingSound;
                 MyAudioSourceComponent.Play();
             }
+        }
+
+        void NudgeBallLeft(float famount)
+        {
+            FHitResult _hit;
+            MyOwner.SetActorLocation(
+                MyOwner.GetActorLocation() +
+                new FVector(0, famount, 0), false, out _hit, false);
+        }
+
+        void NudgeBallRight(float famount)
+        {
+            FHitResult _hit;
+            MyOwner.SetActorLocation(
+                MyOwner.GetActorLocation() +
+                new FVector(0, famount, 0), false, out _hit, false);
         }
         #endregion
     }
