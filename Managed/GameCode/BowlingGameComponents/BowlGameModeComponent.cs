@@ -37,9 +37,9 @@ namespace HelloUSharp
         #endregion
 
         #region UProperties
-        [UProperty, EditAnywhere, BlueprintReadWrite]
-        public int Value12345 { get; set; }
-        
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public float MinimalForwardLaunchVelocity { get; set; }
+
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
         #endregion
@@ -58,7 +58,7 @@ namespace HelloUSharp
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
-            //base.Initialize(initializer);
+            MinimalForwardLaunchVelocity = 1500;
         }
 
         protected override void ReceiveBeginPlay_Implementation()
@@ -133,13 +133,20 @@ namespace HelloUSharp
             float launchSpeedX = (dragStart.Y - dragEnd.Y) / dragDuration;
 
             FVector _launchVelocity = new FVector(launchSpeedX, launchSpeedY, 0);
-            StartLaunchingTheBall(_launchVelocity);
+            if (_launchVelocity.X > MinimalForwardLaunchVelocity)
+            {
+                StartLaunchingTheBall(_launchVelocity);
+            }
+            else
+            {
+                MyOwner.PrintString("Not Enough Force To Launch!", FLinearColor.Green);
+            }
         }
 
         [UFunction, BlueprintCallable]
         public void StartLaunchingTheBall(FVector launchVelocity)
         {
-            if (myBall != null)
+            if (myBall != null && gamemaster.bCanLaunchBall)
             {
                 gamemaster.CallOnBallLaunch(launchVelocity, myBall);
             }

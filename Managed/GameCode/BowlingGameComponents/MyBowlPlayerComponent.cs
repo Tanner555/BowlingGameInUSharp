@@ -135,7 +135,7 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void OnDragStart(FVector2D mousePos)
         {
-            if (gamemode != null)
+            if (gamemode != null && gamemaster.bCanLaunchBall)
             {
                 gamemode.OnStartDrag(mousePos);
             }
@@ -145,7 +145,7 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void OnDragStop(FVector2D mousePos)
         {
-            if (gamemode != null)
+            if (gamemode != null && gamemaster.bCanLaunchBall)
             {
                 gamemode.OnStopDrag(mousePos);
             }
