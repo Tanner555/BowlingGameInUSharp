@@ -39,7 +39,7 @@ namespace HelloUSharp
         #region UProperties
         [UProperty, EditAnywhere, BlueprintReadWrite]
         public int Value12345 { get; set; }
-
+        
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
         #endregion
@@ -64,6 +64,8 @@ namespace HelloUSharp
             //This instance doesn't get destroyed when game ends
             //So Don't Check For An Existing Instance
             ThisInstance = this;
+
+            MyOwner.World.GetPlayerController(0).ShowMouseCursor = true;
 
             List<AActor> ballActors;
             MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
