@@ -17,7 +17,7 @@ namespace HelloUSharp
     {
         #region IgnoreProperties
         [UPropertyIngore]
-        protected AActor MyOwner
+        public AActor MyOwner
         {
             get
             {
@@ -28,6 +28,9 @@ namespace HelloUSharp
             }
         }
         private AActor _owner = null;
+
+        [UPropertyIngore]
+        public FName BallTag { get { return new FName("Ball"); } }
         #endregion
 
         #region UProperties
@@ -40,7 +43,7 @@ namespace HelloUSharp
 
         #region Fields
         protected APlayerCameraManager myCameraManager = null;
-        protected BowlingBall myBall = null;
+        protected BowlingBallComponent myBall = null;
 
         private FVector2D dragStart, dragEnd;
         private float startTime, endTime;
@@ -49,7 +52,10 @@ namespace HelloUSharp
         #region Overrides
         protected override void ReceiveBeginPlay_Implementation()
         {
-            SetBallFromBallFindCollection(MyOwner.World.GetAllActorsOfClassList<BowlingBall>());
+            List<AActor> ballActors;
+            MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
+            SetBallFromBallFindCollection(ballActors);
+            //SetBallFromBallFindCollection(MyOwner.World.GetAllActorsOfClassList<BowlingBallComponent>());
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -60,12 +66,15 @@ namespace HelloUSharp
 
         #region Setters
         [UFunction, BlueprintCallable]
-        public void SetBallFromBallFindCollection(List<BowlingBall> balls)
+        public void SetBallFromBallFindCollection(List<AActor> balls)
         {
             if (balls != null && balls.Count > 0 && balls[0] != null)
             {
-                //PrintString("Setting my ball to: " + balls[0].GetName(), FLinearColor.Green);
-                myBall = balls[0];
+                var _ballComp = balls[0].GetComponentByClass<BowlingBallComponent>();
+                if (_ballComp != null)
+                {
+                    myBall = _ballComp;
+                }
             }
         }
         #endregion
@@ -98,7 +107,7 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void StartLaunchingTheBall(FVector launchVelocity)
         {
-            var _bowlPlayer = (MyBowlPlayer)MyOwner.World.GetPlayerPawn(0);
+            var _bowlPlayer = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
             if (myBall != null && _bowlPlayer != null)
             {
                 MyOwner.PrintString("Launching Ball", FLinearColor.AliceBlue, printToLog: true);

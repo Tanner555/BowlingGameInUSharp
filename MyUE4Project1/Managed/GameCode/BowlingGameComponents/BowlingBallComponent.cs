@@ -17,7 +17,7 @@ namespace HelloUSharp
     {
         #region IgnoreProperties
         [UPropertyIngore]
-        protected AActor MyOwner
+        public AActor MyOwner
         {
             get
             {

@@ -28,7 +28,7 @@ namespace HelloUSharp
         [UPropertyIngore]
         protected float PawnStartXPoint { get; set; }
         [UPropertyIngore]
-        protected AActor MyOwner
+        public AActor MyOwner
         {
             get
             {
@@ -42,7 +42,7 @@ namespace HelloUSharp
         #endregion
 
         #region Fields
-        public BowlingBall myBall = null;
+        public BowlingBallComponent myBall = null;
         protected bool bShouldFollowBall = false;
         private FHitResult myHit;
         #endregion
@@ -73,7 +73,7 @@ namespace HelloUSharp
                     return;
                 }
 
-                var _ballPos = myBall.GetActorLocation();
+                var _ballPos = myBall.MyOwner.GetActorLocation();
                 var _xTravelPos = _ballPos.X + DefaultBallFollowOffset;
                 //PrintString("Ball Pos: " + _ballPos, FLinearColor.Green, printToLog:true);
                 MyOwner.SetActorLocation(
@@ -91,7 +91,7 @@ namespace HelloUSharp
         {
             if (myBall != null)
             {
-                return myBall.GetActorLocation();
+                return myBall.MyOwner.GetActorLocation();
             }
             return new FVector(0, 0, 0);
         }
@@ -100,7 +100,7 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void OnDragStart(FVector2D mousePos)
         {
-            var _gamemode = (BowlGameMode)MyOwner.World.GetGameMode();
+            var _gamemode = MyOwner.World.GetGameMode().GetComponentByClass<BowlGameModeComponent>();
             if (_gamemode != null)
             {
                 _gamemode.OnStartDrag(mousePos);
@@ -111,17 +111,17 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void OnDragStop(FVector2D mousePos)
         {
-            var _gamemode = (BowlGameMode)MyOwner.World.GetGameMode();
+            var _gamemode = MyOwner.World.GetGameMode().GetComponentByClass<BowlGameModeComponent>();
             if (_gamemode != null)
             {
                 _gamemode.OnStopDrag(mousePos);
             }
         }
 
-        public void StartFollowingBall(BowlingBall _ball)
+        public void StartFollowingBall(BowlingBallComponent _ball)
         {
             myBall = _ball;
-            DefaultBallFollowOffset = MyOwner.GetActorLocation().X - myBall.GetActorLocation().X;
+            DefaultBallFollowOffset = MyOwner.GetActorLocation().X - myBall.MyOwner.GetActorLocation().X;
             if (myBall != null)
             {
                 bShouldFollowBall = true;
