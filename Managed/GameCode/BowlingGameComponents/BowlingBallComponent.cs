@@ -70,6 +70,7 @@ namespace HelloUSharp
             //base.ReceiveBeginPlay_Implementation();
             //LaunchBall();
             gamemaster.BowlTurnIsFinished += BowlTurnIsFinished;
+            //gamemaster.BowlTurnIsFinishedTest.Bind(BowlTurnIsFinished);
             gamemaster.OnBallLaunch += LaunchBall;
             gamemaster.OnNudgeBallLeft += NudgeBallLeft;
             gamemaster.OnNudgeBallRight += NudgeBallRight;
@@ -85,7 +86,9 @@ namespace HelloUSharp
         {
             if (gamemaster != null)
             {
+                MyOwner.PrintString("Hello From End Play", FLinearColor.Green);
                 gamemaster.BowlTurnIsFinished -= BowlTurnIsFinished;
+                //gamemaster.BowlTurnIsFinishedTest.Unbind(BowlTurnIsFinished);
                 gamemaster.OnBallLaunch -= LaunchBall;
                 gamemaster.OnNudgeBallLeft -= NudgeBallLeft;
                 gamemaster.OnNudgeBallRight -= NudgeBallRight;
@@ -94,7 +97,8 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void BowlTurnIsFinished()
+        [UFunction, BlueprintCallable]
+        public void BowlTurnIsFinished()
         {
             MyOwner.PrintString("BowlTurnIsFinishedd", FLinearColor.Green);
         }

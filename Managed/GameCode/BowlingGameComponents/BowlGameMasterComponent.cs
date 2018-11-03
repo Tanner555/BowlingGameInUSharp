@@ -118,7 +118,16 @@ namespace HelloUSharp
         //}
 
         //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
-        //public GeneralDelegateHandler BowlTurnIsFinished { get; set; }
+        //public GeneralDelegateHandler BowlTurnIsFinishedTest { get; set; }
+
+        //[UFunction, BlueprintCallable]
+        //public void CallBowlTurnIsFinishedTest()
+        //{
+        //    if (BowlTurnIsFinishedTest.IsBound)
+        //    {
+        //        BowlTurnIsFinishedTest.Invoke();
+        //    }
+        //}
         #endregion
     }
 }

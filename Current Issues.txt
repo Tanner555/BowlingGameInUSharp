@@ -1,9 +1,6 @@
 -- InputBinding
 Cannot Bind Input From C#. Can use wrapper ufunctions and bind from blueprints.
 
--- Blueprint Impementable Events
-Blueprint Impementable Events Don't Currently Get Called When Used in c#. 
-
 -- FMulticastDelegate
 Cannot Broadcast an instance of a FMulticastDelegate. There isn't any Broadcast method inside the Delegate Classes inside the Runtime Solution.
 

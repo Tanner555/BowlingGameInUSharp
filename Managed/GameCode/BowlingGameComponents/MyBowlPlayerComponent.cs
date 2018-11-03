@@ -118,6 +118,18 @@ namespace HelloUSharp
             }
             return new FVector(0, 0, 0);
         }
+
+        [UFunction, BlueprintCallable]
+        public BowlGameModeComponent GetBowlGameModeComponent()
+        {
+            return gamemode;
+        }
+
+        [UFunction, BlueprintCallable]
+        public BowlGameMasterComponent GetBowlGameMasterComponent()
+        {
+            return gamemaster;
+        }
         #endregion
 
         #region Handlers
