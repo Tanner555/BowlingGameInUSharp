@@ -170,13 +170,19 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void NudgeBallLeft()
         {
-            gamemaster.CallOnNudgeBallLeft(-50);
+            if (gamemaster.bCanLaunchBall)
+            {
+                gamemaster.CallOnNudgeBallLeft(-50);
+            }
         }
 
         [UFunction, BlueprintCallable]
         public void NudgeBallRight()
         {
-            gamemaster.CallOnNudgeBallRight(50);
+            if (gamemaster.bCanLaunchBall)
+            {
+                gamemaster.CallOnNudgeBallRight(50);
+            }
         }
 
         [UFunction, BlueprintCallable]
