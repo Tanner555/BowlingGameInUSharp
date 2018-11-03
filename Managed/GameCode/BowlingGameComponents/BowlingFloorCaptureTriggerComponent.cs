@@ -47,14 +47,13 @@ namespace HelloUSharp
         {
             if (OtherActor != null)
             {
-                MyOwner.PrintString("Other Actor: " + OtherActor.GetName(), FLinearColor.Green);
                 if (OtherActor.ActorHasTag(gamemode.BallTag))
                 {
-
+                    gamemaster.CallBowlTurnIsFinished();
                 }
                 else if (OtherActor.ActorHasTag(gamemode.PinTag))
                 {
-
+                    OtherActor.DestroyActor();
                 }
             }
         }

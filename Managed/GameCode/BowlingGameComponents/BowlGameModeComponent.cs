@@ -47,6 +47,9 @@ namespace HelloUSharp
 
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public float ForwardMultipleVelocityFactor { get; set; }
         #endregion
 
         #region Fields
@@ -68,6 +71,7 @@ namespace HelloUSharp
             bCanSetInstance = true;
 
             MinimalForwardLaunchVelocity = 1500;
+            ForwardMultipleVelocityFactor = 1.5f;
         }
 
         protected override void ReceiveBeginPlay_Implementation()
@@ -141,7 +145,7 @@ namespace HelloUSharp
             //Forward
             float launchSpeedX = (dragStart.Y - dragEnd.Y) / dragDuration;
 
-            FVector _launchVelocity = new FVector(launchSpeedX, launchSpeedY, 0);
+            FVector _launchVelocity = new FVector(launchSpeedX * ForwardMultipleVelocityFactor, launchSpeedY, 0);
             if (_launchVelocity.X > MinimalForwardLaunchVelocity)
             {
                 StartLaunchingTheBall(_launchVelocity);
