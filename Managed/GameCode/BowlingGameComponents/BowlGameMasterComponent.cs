@@ -108,6 +108,8 @@ namespace HelloUSharp
         {
             bBowlTurnIsOver = true;
             if (BowlTurnIsFinished != null) BowlTurnIsFinished();
+            //TODO: Implement Pin Cleanup Functionality Before Starting New Turn
+            CallBowlNewTurnIsReady();
         }
 
         public void CallOnNudgeBallLeft(float famount)

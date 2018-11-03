@@ -55,7 +55,7 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public string GetMyMessage()
         {
-            return "Hello There From MyPawnClass123455";
+            return "Hello There From MyPawnClass1234556789";
         }
         #endregion
 

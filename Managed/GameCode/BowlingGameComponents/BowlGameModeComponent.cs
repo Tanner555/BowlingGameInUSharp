@@ -162,7 +162,7 @@ namespace HelloUSharp
         }
         #endregion
 
-        #region NudgeBall
+        #region PublicUFunctionCalls
         [UFunction, BlueprintCallable]
         public void NudgeBallLeft()
         {
@@ -173,6 +173,12 @@ namespace HelloUSharp
         public void NudgeBallRight()
         {
             gamemaster.CallOnNudgeBallRight(50);
+        }
+
+        [UFunction, BlueprintCallable]
+        public void EndBowlingTurn()
+        {
+            gamemaster.CallBowlTurnIsFinished();
         }
         #endregion
     }

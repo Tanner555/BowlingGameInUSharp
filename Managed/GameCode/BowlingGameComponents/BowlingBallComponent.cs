@@ -43,6 +43,8 @@ namespace HelloUSharp
 
         #region Fields
         private FHitResult myHit;
+        private FVector MyStartLocation;
+        private FRotator MyStartRotation;
         #endregion
 
         #region MyUProperties
@@ -70,10 +72,14 @@ namespace HelloUSharp
             //base.ReceiveBeginPlay_Implementation();
             //LaunchBall();
             gamemaster.BowlTurnIsFinished += BowlTurnIsFinished;
+            gamemaster.BowlNewTurnIsReady += NewTurnIsReady;
             //gamemaster.BowlTurnIsFinishedTest.Bind(BowlTurnIsFinished);
             gamemaster.OnBallLaunch += LaunchBall;
             gamemaster.OnNudgeBallLeft += NudgeBallLeft;
             gamemaster.OnNudgeBallRight += NudgeBallRight;
+
+            MyStartLocation = MyOwner.GetActorLocation();
+            MyStartRotation = MyOwner.GetActorRotation();
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -88,6 +94,7 @@ namespace HelloUSharp
             {
                 MyOwner.PrintString("Hello From End Play", FLinearColor.Green);
                 gamemaster.BowlTurnIsFinished -= BowlTurnIsFinished;
+                gamemaster.BowlNewTurnIsReady -= NewTurnIsReady;
                 //gamemaster.BowlTurnIsFinishedTest.Unbind(BowlTurnIsFinished);
                 gamemaster.OnBallLaunch -= LaunchBall;
                 gamemaster.OnNudgeBallLeft -= NudgeBallLeft;
@@ -97,6 +104,24 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
+        void NewTurnIsReady()
+        {
+            if (MyMeshComponent == null) return;
+
+            //MyMeshComponent.SetSimulatePhysics(false);
+
+            MyOwner.SetActorLocation(
+                MyStartLocation, false, out myHit, false
+                );
+            MyOwner.SetActorRotation(
+                MyStartRotation, false
+                );
+
+            MyMeshComponent.SetSimulatePhysics(false);
+            MyMeshComponent.SetSimulatePhysics(true);
+        }
+
+        //Only Public Because I was testing Delegate Binding
         [UFunction, BlueprintCallable]
         public void BowlTurnIsFinished()
         {
