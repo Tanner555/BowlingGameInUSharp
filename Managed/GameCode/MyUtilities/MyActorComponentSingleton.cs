@@ -9,6 +9,10 @@ using UnrealEngine.NavigationSystem;
 
 namespace HelloUSharp
 {
+    /// <summary>
+    /// Useless Right Now Due To Errors When Inheriting
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [UClassIgnore]
     public class MyActorComponentSingleton<T> : UActorComponent where T : UActorComponent
     {
