@@ -36,6 +36,9 @@ namespace HelloUSharp
 
         [UPropertyIngore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+
+        [UPropertyIngore]
+        protected static bool bCanSetInstance;
         #endregion
 
         #region UProperties
@@ -60,6 +63,10 @@ namespace HelloUSharp
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
+            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
+            ThisInstance = null;
+            bCanSetInstance = true;
+
             MinimalForwardLaunchVelocity = 1500;
         }
 
@@ -82,7 +89,7 @@ namespace HelloUSharp
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
-            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
+            bCanSetInstance = false;
             ThisInstance = null;
         }
         #endregion
@@ -90,7 +97,7 @@ namespace HelloUSharp
         #region Getter
         public static BowlGameModeComponent GetInstance(UObject worldContextObject)
         {
-            if(ThisInstance == null)
+            if(ThisInstance == null && bCanSetInstance)
             {
                 ThisInstance = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameModeComponent>();
             }

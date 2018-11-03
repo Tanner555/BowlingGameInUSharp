@@ -31,6 +31,9 @@ namespace HelloUSharp
 
         public bool bBowlTurnIsOver { get; protected set; }
         public bool bCanLaunchBall { get; protected set; }
+
+        [UPropertyIngore]
+        protected static bool bCanSetInstance;
         #endregion
 
         #region UProperties
@@ -59,6 +62,13 @@ namespace HelloUSharp
         #endregion
 
         #region Overrides
+        public override void Initialize(FObjectInitializer initializer)
+        {
+            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
+            ThisInstance = null;
+            bCanSetInstance = true;
+        }
+
         protected override void ReceiveBeginPlay_Implementation()
         {
             bBowlTurnIsOver = false;
@@ -67,7 +77,7 @@ namespace HelloUSharp
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
-            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
+            bCanSetInstance = false;
             ThisInstance = null;
         }
         #endregion
