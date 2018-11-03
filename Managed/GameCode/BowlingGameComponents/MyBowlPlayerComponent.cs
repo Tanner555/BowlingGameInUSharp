@@ -49,6 +49,8 @@ namespace HelloUSharp
         protected bool bShouldFollowBall = false;
         private FHitResult myHit;
         private BowlingBallComponent myBall = null;
+        private FVector MyStartLocation;
+        private FRotator MyStartRotation;
         #endregion
 
         #region Testing
@@ -72,6 +74,10 @@ namespace HelloUSharp
             gamemaster.OnBallLaunch += StartFollowingBall;
             gamemaster.OnNudgeBallLeft += NudgeBallLeft;
             gamemaster.OnNudgeBallRight += NudgeBallRight;
+            gamemaster.BowlNewTurnIsReady += NewTurnIsReady;
+
+            MyStartLocation = MyOwner.GetActorLocation();
+            MyStartRotation = MyOwner.GetActorRotation();
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -104,6 +110,7 @@ namespace HelloUSharp
                 gamemaster.OnBallLaunch -= StartFollowingBall;
                 gamemaster.OnNudgeBallLeft -= NudgeBallLeft;
                 gamemaster.OnNudgeBallRight -= NudgeBallRight;
+                gamemaster.BowlNewTurnIsReady -= NewTurnIsReady;
             }
         }
         #endregion
@@ -133,6 +140,16 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
+        void NewTurnIsReady()
+        {
+            MyOwner.SetActorLocation(
+                MyStartLocation, false, out myHit, false
+                );
+            MyOwner.SetActorRotation(
+                MyStartRotation, false
+                );
+        } 
+
         void StartFollowingBall(FVector launchVelocity, BowlingBallComponent bowlingBall)
         {
             myBall = bowlingBall;

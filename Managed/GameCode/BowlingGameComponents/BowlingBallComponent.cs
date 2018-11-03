@@ -108,8 +108,6 @@ namespace HelloUSharp
         {
             if (MyMeshComponent == null) return;
 
-            //MyMeshComponent.SetSimulatePhysics(false);
-
             MyOwner.SetActorLocation(
                 MyStartLocation, false, out myHit, false
                 );
