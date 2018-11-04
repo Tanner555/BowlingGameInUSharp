@@ -36,9 +36,6 @@ namespace HelloUSharp
 
         [UPropertyIngore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
-
-        [UPropertyIngore]
-        protected static bool bCanSetInstance;
         #endregion
 
         #region UProperties
@@ -60,16 +57,12 @@ namespace HelloUSharp
         private FVector2D dragStart, dragEnd;
         private float startTime, endTime;
 
-        protected static BowlGameModeComponent ThisInstance = null;
+        protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
         #endregion
 
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
-            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
-            ThisInstance = null;
-            bCanSetInstance = true;
-
             MinimalForwardLaunchVelocity = 1500;
             ForwardMultipleVelocityFactor = 1.5f;
         }
@@ -81,9 +74,7 @@ namespace HelloUSharp
             List<AActor> ballActors;
             MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
             SetBallFromBallFindCollection(ballActors);
-
             myBowler = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
-            //SetBallFromBallFindCollection(MyOwner.World.GetAllActorsOfClassList<BowlingBallComponent>());
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -93,19 +84,20 @@ namespace HelloUSharp
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
-            bCanSetInstance = false;
-            ThisInstance = null;
+            
         }
         #endregion
 
         #region Getter
         public static BowlGameModeComponent GetInstance(UObject worldContextObject)
         {
-            if(ThisInstance == null && bCanSetInstance)
+            var _instanceHelper = ThisInstance.Get(worldContextObject);
+            if (_instanceHelper == null)
             {
-                ThisInstance = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameModeComponent>();
+                _instanceHelper = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameModeComponent>();
+                ThisInstance.Set(worldContextObject, _instanceHelper);
             }
-            return ThisInstance;
+            return _instanceHelper; 
         }
         #endregion
 

@@ -31,9 +31,6 @@ namespace HelloUSharp
 
         public bool bBowlTurnIsOver { get; protected set; }
         public bool bCanLaunchBall { get; protected set; }
-
-        [UPropertyIngore]
-        protected static bool bCanSetInstance;
         #endregion
 
         #region UProperties
@@ -41,17 +38,19 @@ namespace HelloUSharp
         #endregion
 
         #region Fields
-        protected static BowlGameMasterComponent ThisInstance = null;
+        protected static WorldStaticVar<BowlGameMasterComponent> ThisInstance = new WorldStaticVar<BowlGameMasterComponent>();
         #endregion
 
         #region Getters
         public static BowlGameMasterComponent GetInstance(UObject worldContextObject)
         {
-            if (ThisInstance == null)
+            var _instanceHelper = ThisInstance.Get(worldContextObject);
+            if (_instanceHelper == null)
             {
-                ThisInstance = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameMasterComponent>();
+                _instanceHelper = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameMasterComponent>();
+                ThisInstance.Set(worldContextObject, _instanceHelper);
             }
-            return ThisInstance;
+            return _instanceHelper;
         }
         #endregion
 
@@ -64,9 +63,7 @@ namespace HelloUSharp
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
-            //Set ThisInstance To Null, Otherwise Value Doesn't Get Destroyed and Will Crash Engine.
-            ThisInstance = null;
-            bCanSetInstance = true;
+
         }
 
         protected override void ReceiveBeginPlay_Implementation()
@@ -77,8 +74,7 @@ namespace HelloUSharp
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
-            bCanSetInstance = false;
-            ThisInstance = null;
+
         }
         #endregion
 
