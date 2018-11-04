@@ -81,6 +81,7 @@ namespace HelloUSharp
 
         #region Fields
         bool bPinHasFallen = false;
+        float standingThreshold = 3f;
         #endregion
 
         #region PublicMethodCalls
@@ -88,7 +89,10 @@ namespace HelloUSharp
         public void SE_CheckForPinHasFallen()
         {
             //GetOwner().PrintString("SE_CheckForPinHasFallen", FLinearColor.Green, printToLog: true);
-
+            FVector _rotationInEuler = MyOwner.GetActorRotation().Euler();
+            float _tiltInX = FMath.Abs(_rotationInEuler.X);
+            float _tiltInY = FMath.Abs(_rotationInEuler.Y);
+            bPinHasFallen = _tiltInX < standingThreshold && _tiltInY < standingThreshold;
         }
 
         [UFunction, BlueprintCallable]

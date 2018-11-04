@@ -80,7 +80,7 @@ namespace HelloUSharp
             UGameplayStatics.GetAllActorsWithTag(MyOwner, gamemode.PinTag, out outPinActors);
             foreach (var _pin in outPinActors)
             {
-                AttachPinToManager(_pin);
+                //AttachPinToManager(_pin);
                 PinLocations.Add(_pin.GetActorLocation());
             }
         }
