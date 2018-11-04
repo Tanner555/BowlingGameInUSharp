@@ -50,7 +50,6 @@ namespace HelloUSharp
                 //var _pinManagerBP = pinManager.MyOwner;
                 //MyOwner.AttachToActor(_pinManagerBP, _pinManagerBP.GetAttachParentSocketName(),
                 //    EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld, true);
-
             }
             else
             {
@@ -80,5 +79,23 @@ namespace HelloUSharp
         }
         #endregion
 
+        #region Fields
+        bool bPinHasFallen = false;
+        #endregion
+
+        #region PublicMethodCalls
+        [UFunction, BlueprintCallable]
+        public void SE_CheckForPinHasFallen()
+        {
+            //GetOwner().PrintString("SE_CheckForPinHasFallen", FLinearColor.Green, printToLog: true);
+
+        }
+
+        [UFunction, BlueprintCallable]
+        public bool PinHasFallen()
+        {
+            return bPinHasFallen;
+        }
+        #endregion
     }
 }
