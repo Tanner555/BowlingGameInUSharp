@@ -47,7 +47,8 @@ namespace HelloUSharp
         {
             if (OtherActor != null)
             {
-                if (OtherActor.ActorHasTag(gamemode.BallTag))
+                if (OtherActor.ActorHasTag(gamemode.BallTag) &&
+                    gamemaster.bBowlTurnIsOver == false)
                 {
                     gamemaster.CallBowlTurnIsFinished();
                 }

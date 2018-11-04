@@ -92,7 +92,6 @@ namespace HelloUSharp
         {
             if (gamemaster != null)
             {
-                MyOwner.PrintString("Hello From End Play", FLinearColor.Green);
                 gamemaster.BowlTurnIsFinished -= BowlTurnIsFinished;
                 gamemaster.BowlNewTurnIsReady -= NewTurnIsReady;
                 //gamemaster.BowlTurnIsFinishedTest.Unbind(BowlTurnIsFinished);
@@ -123,7 +122,7 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void BowlTurnIsFinished()
         {
-            MyOwner.PrintString("BowlTurnIsFinishedd", FLinearColor.Green);
+            //MyOwner.PrintString("BowlTurnIsFinishedd", FLinearColor.Green);
         }
 
         void LaunchBall(FVector launchVelocity, BowlingBallComponent bowlingBall)

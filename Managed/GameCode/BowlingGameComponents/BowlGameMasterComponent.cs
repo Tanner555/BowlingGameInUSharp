@@ -60,6 +60,16 @@ namespace HelloUSharp
         public delegate void OneFloatArgHandler(float famount);
         #endregion
 
+        #region FMulticastDelegates
+        public class GeneralDelegateHandler : FMulticastDelegate<GeneralDelegateHandler.Signature>
+        {
+            public delegate void Signature();
+        }
+
+        [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
+        public GeneralDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
+        #endregion
+
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
@@ -102,10 +112,15 @@ namespace HelloUSharp
 
         public void CallBowlTurnIsFinished()
         {
+            //Only Call If Bowl Turn Isn't Finished Yet
+            if (bBowlTurnIsOver) return;
+
             bBowlTurnIsOver = true;
             if (BowlTurnIsFinished != null) BowlTurnIsFinished();
-            //TODO: Implement Pin Cleanup Functionality Before Starting New Turn
-            CallBowlNewTurnIsReady();
+            if (BowlTurnIsFinishedDelegate.IsBound)
+            {
+                BowlTurnIsFinishedDelegate.Invoke();
+            }
         }
 
         public void CallOnNudgeBallLeft(float famount)

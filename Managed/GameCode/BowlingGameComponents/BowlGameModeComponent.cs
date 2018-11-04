@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using UnrealEngine;
 using UnrealEngine.GameplayTasks;
 using UnrealEngine.SlateCore;
 using UnrealEngine.NavigationSystem;
+using System.Threading.Tasks;
 
 namespace HelloUSharp
 {
@@ -84,7 +86,7 @@ namespace HelloUSharp
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
-            
+            StopAllCoroutines();
         }
         #endregion
 
@@ -180,8 +182,46 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void EndBowlingTurn()
         {
-            gamemaster.CallBowlTurnIsFinished();
+            if (gamemaster.bBowlTurnIsOver == false)
+            {
+                gamemaster.CallBowlTurnIsFinished();
+            }
         }
+        #endregion
+
+        #region SweepingAnimationWaitCalls
+        [UFunction, BlueprintCallable]
+        public void WaitTillSweepingIsDone(float _animLength)
+        {
+            WaitTillSweepingIsDoneAsync(_animLength);
+        }
+
+        private async void WaitTillSweepingIsDoneAsync(float _animLength)
+        {
+            int _delay = (int)_animLength;
+            await Task.Delay(_delay * 1000);
+            //For Some Reason, Error Will Appear If I Call Event Here
+            //Use Another Method Call Instead
+            CallNewTurnIsReadyAfterWaiting();
+        }
+
+        void CallNewTurnIsReadyAfterWaiting()
+        {
+            gamemaster.CallBowlNewTurnIsReady();
+        }
+        #endregion
+
+        #region UnusedCode
+        //void AnotherTestMethod()
+        //{
+        //    var _c = StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength));
+        //}
+
+        //private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength)
+        //{
+        //    yield return new WaitForSeconds(_animLength);
+        //    MyOwner.PrintString("Waiting For: " + _animLength.ToString(), FLinearColor.Green);
+        //}
         #endregion
     }
 }
