@@ -21,6 +21,9 @@ namespace HelloUSharp
         [UPropertyIngore]
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         [UPropertyIngore]
+        protected PinManagerComponent pinManager => PinManagerComponent.GetInstance(MyOwner);
+
+        [UPropertyIngore]
         public AActor MyOwner
         {
             get
@@ -42,8 +45,17 @@ namespace HelloUSharp
 
         protected override void ReceiveBeginPlay_Implementation()
         {
-            //base.ReceiveBeginPlay_Implementation();
-            //GetOwner().PrintString("Reporting For Duty", FLinearColor.Green, printToLog: true);
+            if(pinManager != null)
+            {
+                //var _pinManagerBP = pinManager.MyOwner;
+                //MyOwner.AttachToActor(_pinManagerBP, _pinManagerBP.GetAttachParentSocketName(),
+                //    EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld, true);
+
+            }
+            else
+            {
+                GetOwner().PrintString("Couldn't Find Pin Manager Component", FLinearColor.Red, printToLog: true);
+            }
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -56,8 +68,15 @@ namespace HelloUSharp
         {
             if (Other != null && Other.ActorHasTag(gamemode.BallTag))
             {
-                //GetOwner().PrintString("I was hit by " + Other.GetName(), FLinearColor.Green, printToLog: true);
+                
             }
+        }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            //MyOwner.DetachFromActor(EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld);
+            //GetOwner().PrintString("Ending Play", FLinearColor.Green, printToLog: true);
+
         }
         #endregion
 

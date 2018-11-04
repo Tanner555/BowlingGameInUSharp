@@ -35,6 +35,8 @@ namespace HelloUSharp
         public FName BallTag => new FName("Ball");
         [UPropertyIngore]
         public FName PinTag => new FName("Pin");
+        [UPropertyIngore]
+        public FName PinManagerTag => new FName("PinManager");
 
         [UPropertyIngore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
