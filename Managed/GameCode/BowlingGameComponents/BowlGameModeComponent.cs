@@ -200,11 +200,14 @@ namespace HelloUSharp
 
         private async void WaitTillSweepingIsDoneAsync(float _animLength)
         {
+            //TODO: Use Coroutine Or Another Safer Alternative
+            //To Async Method When Waiting For Anim To Finish
             int _delay = (int)_animLength;
             await Task.Delay(_delay * 1000);
             //For Some Reason, Error Will Appear If I Call Event Here
             //Use Another Method Call Instead
-            CallNewTurnIsReadyAfterWaiting();
+            //And Use RunOnGameThread Method, So Function Won't Cause Game To Crash.
+            FThreading.RunOnGameThreadAsync(new FSimpleDelegate(CallNewTurnIsReadyAfterWaiting));           
         }
 
         void CallNewTurnIsReadyAfterWaiting()
