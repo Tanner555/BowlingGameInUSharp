@@ -193,6 +193,12 @@ namespace HelloUSharp
                 gamemaster.CallBowlTurnIsFinished();
             }
         }
+
+        [UFunction, BlueprintCallable]
+        public bool IsPlayerRoundCompletelyOver()
+        {
+            return false;
+        }
         #endregion
 
         #region SweepingAnimationWaitCalls

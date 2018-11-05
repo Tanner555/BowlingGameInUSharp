@@ -120,7 +120,7 @@ namespace HelloUSharp
 
         //Only Public Because I was testing Delegate Binding
         [UFunction, BlueprintCallable]
-        public void BowlTurnIsFinished()
+        public void BowlTurnIsFinished(bool _playerRoundIsOver)
         {
             //MyOwner.PrintString("BowlTurnIsFinishedd", FLinearColor.Green);
         }

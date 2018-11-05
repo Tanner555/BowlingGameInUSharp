@@ -58,6 +58,7 @@ namespace HelloUSharp
         public delegate void GeneralEventHandler();
         public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
         public delegate void OneFloatArgHandler(float famount);
+        public delegate void OneBoolArgHandler(bool _isTrue);
         #endregion
 
         #region FMulticastDelegates
@@ -66,8 +67,13 @@ namespace HelloUSharp
             public delegate void Signature();
         }
 
+        public class OneBoolArgDelegateHandler : FMulticastDelegate<OneBoolArgDelegateHandler.Signature>
+        {
+            public delegate void Signature(bool _isTrue);
+        }
+
         [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
-        public GeneralDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
+        public OneBoolArgDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
         #endregion
 
         #region Overrides
@@ -90,7 +96,7 @@ namespace HelloUSharp
 
         #region Events
         public event GeneralEventHandler BowlNewTurnIsReady;
-        public event GeneralEventHandler BowlTurnIsFinished;
+        public event OneBoolArgHandler BowlTurnIsFinished;
         public event FVectorAndBallRefHandler OnBallLaunch;
         public event OneFloatArgHandler OnNudgeBallLeft;
         public event OneFloatArgHandler OnNudgeBallRight;
@@ -116,10 +122,11 @@ namespace HelloUSharp
             if (bBowlTurnIsOver) return;
 
             bBowlTurnIsOver = true;
-            if (BowlTurnIsFinished != null) BowlTurnIsFinished();
+            bool _bPlayerRoundIsOver = gamemode.IsPlayerRoundCompletelyOver();
+            if (BowlTurnIsFinished != null) BowlTurnIsFinished(_bPlayerRoundIsOver);
             if (BowlTurnIsFinishedDelegate.IsBound)
             {
-                BowlTurnIsFinishedDelegate.Invoke();
+                BowlTurnIsFinishedDelegate.Invoke(_bPlayerRoundIsOver);
             }
         }
 
