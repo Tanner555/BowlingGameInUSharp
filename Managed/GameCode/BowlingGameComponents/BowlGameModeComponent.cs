@@ -195,19 +195,13 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void WaitTillSweepingIsDone(float _animLength)
         {
-            WaitTillSweepingIsDoneAsync(_animLength);
+            StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength));
         }
 
-        private async void WaitTillSweepingIsDoneAsync(float _animLength)
+        private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength)
         {
-            //TODO: Use Coroutine Or Another Safer Alternative
-            //To Async Method When Waiting For Anim To Finish
-            int _delay = (int)_animLength;
-            await Task.Delay(_delay * 1000);
-            //For Some Reason, Error Will Appear If I Call Event Here
-            //Use Another Method Call Instead
-            //And Use RunOnGameThread Method, So Function Won't Cause Game To Crash.
-            FThreading.RunOnGameThreadAsync(new FSimpleDelegate(CallNewTurnIsReadyAfterWaiting));           
+            yield return new WaitForSeconds(_animLength);
+            CallNewTurnIsReadyAfterWaiting();
         }
 
         void CallNewTurnIsReadyAfterWaiting()
