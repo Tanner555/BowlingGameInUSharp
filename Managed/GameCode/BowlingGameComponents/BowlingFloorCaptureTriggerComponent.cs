@@ -9,6 +9,7 @@ using UnrealEngine;
 using UnrealEngine.GameplayTasks;
 using UnrealEngine.SlateCore;
 using UnrealEngine.NavigationSystem;
+using System.Collections;
 
 namespace HelloUSharp
 {
@@ -35,10 +36,29 @@ namespace HelloUSharp
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
+        #region Fields
+        private float waitPeriod = 3.0f;
+        #endregion
+
         #region Overrides
         protected override void ReceiveBeginPlay_Implementation()
         {
-            base.ReceiveBeginPlay_Implementation();
+            gamemaster.BowlTurnIsFinished += CancelTriggerCoroutines;
+        }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            if(gamemaster != null)
+            {
+                gamemaster.BowlTurnIsFinished -= CancelTriggerCoroutines;
+            }
+        }
+        #endregion
+
+        #region Handlers
+        void CancelTriggerCoroutines(bool _roundIsOver)
+        {
+            StopAllCoroutines();
         }
         #endregion
 
@@ -50,12 +70,26 @@ namespace HelloUSharp
                 if (OtherActor.ActorHasTag(gamemode.BallTag) &&
                     gamemaster.bBowlTurnIsOver == false)
                 {
-                    gamemaster.CallBowlTurnIsFinished();
+                    StartCoroutine(this, WaitForPinsToFall());
                 }
                 else if (OtherActor.ActorHasTag(gamemode.PinTag))
                 {
                     OtherActor.DestroyActor();
                 }
+            }
+        }
+
+        IEnumerator WaitForPinsToFall()
+        {
+            yield return new WaitForSeconds(waitPeriod);
+            CallTurnIsFinishedAfterWaiting();
+        }
+
+        void CallTurnIsFinishedAfterWaiting()
+        {
+            if (gamemaster.bBowlTurnIsOver == false)
+            {
+                gamemaster.CallBowlTurnIsFinished();
             }
         }
     }
