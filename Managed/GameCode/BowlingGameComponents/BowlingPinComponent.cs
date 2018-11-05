@@ -56,14 +56,7 @@ namespace HelloUSharp
                 var _pinManagerBP = pinManager.MyOwner;
                 if(MyColliderMeshComponent != null)
                 {
-                    FHitResult _hit;
-                    FVector _oldLoc = MyOwner.GetActorLocation();
-                    FRotator _oldRot = MyOwner.GetActorRotation();
-                    
-                    MyOwner.AttachToActor(_pinManagerBP, _pinManagerBP.GetAttachParentSocketName(),
-                        EAttachmentRule.KeepRelative, EAttachmentRule.KeepRelative, EAttachmentRule.KeepWorld, true);
-                    MyOwner.SetActorLocation(_oldLoc, false, out _hit, false);
-                    MyOwner.SetActorRotation(_oldRot, false);
+                    AttachToParentWithOldPosition();
                     MyColliderMeshComponent.SetSimulatePhysics(false);
                     MyColliderMeshComponent.SetSimulatePhysics(true);
                 }
@@ -76,6 +69,9 @@ namespace HelloUSharp
             {
                 GetOwner().PrintString("Couldn't Find Pin Manager Component", FLinearColor.Red, printToLog: true);
             }
+
+            gamemaster.BowlTurnIsFinished += BowlTurnHasFinished;
+            gamemaster.BowlNewTurnIsReady += NewBowlTurnHasStarted;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -96,30 +92,68 @@ namespace HelloUSharp
         {
             //MyOwner.DetachFromActor(EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld);
             //GetOwner().PrintString("Ending Play", FLinearColor.Green, printToLog: true);
-
+            if(gamemaster != null)
+            {
+                gamemaster.BowlTurnIsFinished -= BowlTurnHasFinished;
+                gamemaster.BowlNewTurnIsReady -= NewBowlTurnHasStarted;
+            }
         }
         #endregion
 
         #region Fields
         bool bPinHasFallen = false;
-        float standingThreshold = 3f;
+        float standingThreshold = 30f;
+        #endregion
+
+        #region Handlers
+        void BowlTurnHasFinished(bool _endOfRound)
+        {
+            var _pinManager = pinManager;
+            //Only If Collider Mesh Comp Has Been Assigned AND
+            //Parent Actor is the PinManager Actor Blueprint
+            if (MyColliderMeshComponent != null &&
+                _pinManager != null &&
+                MyOwner.GetParentActor() == _pinManager.MyOwner)
+            {
+                AttachToParentWithOldPosition();
+                MyColliderMeshComponent.SetSimulatePhysics(false);
+            }
+        }
+
+        void NewBowlTurnHasStarted()
+        {
+            if (MyColliderMeshComponent != null)
+            {
+                MyColliderMeshComponent.SetSimulatePhysics(true);
+            }
+        }
         #endregion
 
         #region PublicMethodCalls
         [UFunction, BlueprintCallable]
-        public void SE_CheckForPinHasFallen()
+        public bool SE_CheckForPinHasFallen()
         {
             //GetOwner().PrintString("SE_CheckForPinHasFallen", FLinearColor.Green, printToLog: true);
             FVector _rotationInEuler = MyOwner.GetActorRotation().Euler();
             float _tiltInX = FMath.Abs(_rotationInEuler.X);
             float _tiltInY = FMath.Abs(_rotationInEuler.Y);
-            bPinHasFallen = _tiltInX < standingThreshold && _tiltInY < standingThreshold;
-        }
-
-        [UFunction, BlueprintCallable]
-        public bool PinHasFallen()
-        {
+            bPinHasFallen = _tiltInX > standingThreshold && _tiltInY > standingThreshold;
             return bPinHasFallen;
+        }
+        #endregion
+
+        #region OtherMethods
+        void AttachToParentWithOldPosition()
+        {
+            var _pinManagerBP = pinManager.MyOwner;
+            FHitResult _hit;
+            FVector _oldLoc = MyOwner.GetActorLocation();
+            FRotator _oldRot = MyOwner.GetActorRotation();
+
+            MyOwner.AttachToActor(_pinManagerBP, _pinManagerBP.GetAttachParentSocketName(),
+                EAttachmentRule.KeepRelative, EAttachmentRule.KeepRelative, EAttachmentRule.KeepWorld, true);
+            MyOwner.SetActorLocation(_oldLoc, false, out _hit, false);
+            MyOwner.SetActorRotation(_oldRot, false);
         }
         #endregion
     }
