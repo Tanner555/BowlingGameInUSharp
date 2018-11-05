@@ -37,6 +37,12 @@ namespace HelloUSharp
         private AActor _owner = null;
         #endregion
 
+        #region UProperties
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public UStaticMeshComponent MyColliderMeshComponent { get; set; }
+
+        #endregion
+
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
@@ -47,9 +53,24 @@ namespace HelloUSharp
         {
             if(pinManager != null)
             {
-                //var _pinManagerBP = pinManager.MyOwner;
-                //MyOwner.AttachToActor(_pinManagerBP, _pinManagerBP.GetAttachParentSocketName(),
-                //    EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld, true);
+                var _pinManagerBP = pinManager.MyOwner;
+                if(MyColliderMeshComponent != null)
+                {
+                    FHitResult _hit;
+                    FVector _oldLoc = MyOwner.GetActorLocation();
+                    FRotator _oldRot = MyOwner.GetActorRotation();
+                    
+                    MyOwner.AttachToActor(_pinManagerBP, _pinManagerBP.GetAttachParentSocketName(),
+                        EAttachmentRule.KeepRelative, EAttachmentRule.KeepRelative, EAttachmentRule.KeepWorld, true);
+                    MyOwner.SetActorLocation(_oldLoc, false, out _hit, false);
+                    MyOwner.SetActorRotation(_oldRot, false);
+                    MyColliderMeshComponent.SetSimulatePhysics(false);
+                    MyColliderMeshComponent.SetSimulatePhysics(true);
+                }
+                else
+                {
+                    MyOwner.PrintString("Please Attach Collider Mesh To Pin Comp UProperty", FLinearColor.Red, printToLog: true);
+                }
             }
             else
             {
