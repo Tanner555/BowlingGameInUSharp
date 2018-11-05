@@ -155,7 +155,9 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void StartLaunchingTheBall(FVector launchVelocity)
         {
-            if (myBall != null && gamemaster.bCanLaunchBall)
+            if (myBall != null && 
+                gamemaster.bCanLaunchBall && 
+                gamemaster.bBowlTurnIsOver == false)
             {
                 gamemaster.CallOnBallLaunch(launchVelocity, myBall);
             }
@@ -166,7 +168,8 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void NudgeBallLeft()
         {
-            if (gamemaster.bCanLaunchBall)
+            if (gamemaster.bCanLaunchBall &&
+                gamemaster.bBowlTurnIsOver == false)
             {
                 gamemaster.CallOnNudgeBallLeft(-50);
             }
@@ -175,7 +178,8 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void NudgeBallRight()
         {
-            if (gamemaster.bCanLaunchBall)
+            if (gamemaster.bCanLaunchBall &&
+                gamemaster.bBowlTurnIsOver == false)
             {
                 gamemaster.CallOnNudgeBallRight(50);
             }
