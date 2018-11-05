@@ -37,6 +37,8 @@ namespace HelloUSharp
         public FName PinTag => new FName("Pin");
         [UPropertyIngore]
         public FName PinManagerTag => new FName("PinManager");
+        [UPropertyIngore]
+        public FName BowlingFloorTag => new FName("BowlingFloor");
 
         [UPropertyIngore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
@@ -64,6 +66,11 @@ namespace HelloUSharp
         private FVector2D dragStart, dragEnd;
         private float startTime, endTime;
 
+        private AStaticMeshActor BowlFloorMeshActor = null;
+        private float boundsYLeftEdge;
+        private float boundsYRightEdge;
+        private float boundsYPaddingCheck = 10.0f;
+
         protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
         #endregion
 
@@ -85,6 +92,25 @@ namespace HelloUSharp
             StandingPinCount = 10;
             gamemaster.OnPinHasFallen += UpdatePinCount;
             gamemaster.BowlNewTurnIsReady += ResetPinCount;
+            List<AActor> bowlFloorActors;
+            MyOwner.World.GetAllActorsWithTag(BowlingFloorTag, out bowlFloorActors);
+            if(bowlFloorActors[0] != null)
+            {
+                var _staticActor = bowlFloorActors[0].Cast<AStaticMeshActor>();
+                if(_staticActor != null)
+                {
+                    BowlFloorMeshActor = _staticActor;
+                    FVector _origin;
+                    FVector _bounds;
+                    BowlFloorMeshActor.GetActorBounds(false, out _origin, out _bounds);
+                    boundsYLeftEdge = _origin.Y - _bounds.Y;
+                    boundsYRightEdge = _origin.Y + _bounds.Y;
+                }
+                else
+                {
+                    MyOwner.PrintString("Couldn't Find BowlFloor Blueprint Actor", FLinearColor.Red, printToLog: true);
+                }
+            }
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -194,20 +220,34 @@ namespace HelloUSharp
         [UFunction, BlueprintCallable]
         public void NudgeBallLeft()
         {
+            float _nudgeAmount = -50;
             if (gamemaster.bCanLaunchBall &&
-                gamemaster.bBowlTurnIsOver == false)
+                gamemaster.bBowlTurnIsOver == false &&
+                myBall != null)
             {
-                gamemaster.CallOnNudgeBallLeft(-50);
+                FVector _ballPos = myBall.MyOwner.GetActorLocation();
+                float _nextBallY = _ballPos.Y + _nudgeAmount;
+                if (_nextBallY > (boundsYLeftEdge + boundsYPaddingCheck))
+                {
+                    gamemaster.CallOnNudgeBallLeft(_nudgeAmount);
+                }
             }
         }
 
         [UFunction, BlueprintCallable]
         public void NudgeBallRight()
         {
+            float _nudgeAmount = 50;
             if (gamemaster.bCanLaunchBall &&
-                gamemaster.bBowlTurnIsOver == false)
+                gamemaster.bBowlTurnIsOver == false &&
+                myBall != null)
             {
-                gamemaster.CallOnNudgeBallRight(50);
+                FVector _ballPos = myBall.MyOwner.GetActorLocation();
+                float _nextBallY = _ballPos.Y + _nudgeAmount;
+                if (_nextBallY < (boundsYRightEdge - boundsYPaddingCheck))
+                {
+                    gamemaster.CallOnNudgeBallRight(_nudgeAmount);
+                }
             }
         }
 
@@ -249,7 +289,7 @@ namespace HelloUSharp
         #region UnusedCode
         //void AnotherTestMethod()
         //{
-        //    var _c = StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength));
+        //    var _coroutine = StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength));
         //}
 
         //private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength)
