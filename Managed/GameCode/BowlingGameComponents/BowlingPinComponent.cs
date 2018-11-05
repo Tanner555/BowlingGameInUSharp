@@ -102,7 +102,7 @@ namespace HelloUSharp
 
         #region Fields
         bool bPinHasFallen = false;
-        float standingThreshold = 30f;
+        float standingThreshold = 15f;
         #endregion
 
         #region Handlers
@@ -113,7 +113,7 @@ namespace HelloUSharp
             //Parent Actor is the PinManager Actor Blueprint
             if (MyColliderMeshComponent != null &&
                 _pinManager != null &&
-                MyOwner.GetParentActor() == _pinManager.MyOwner)
+                (MyOwner.GetParentActor() == _pinManager.MyOwner && bPinHasFallen == false))
             {
                 AttachToParentWithOldPosition();
                 MyColliderMeshComponent.SetSimulatePhysics(false);
