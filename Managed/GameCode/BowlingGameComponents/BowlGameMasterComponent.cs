@@ -59,6 +59,7 @@ namespace HelloUSharp
         public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
         public delegate void OneFloatArgHandler(float famount);
         public delegate void OneBoolArgHandler(bool _isTrue);
+        public delegate void OnePinArgHandler(BowlingPinComponent _pin);
         #endregion
 
         #region FMulticastDelegates
@@ -72,8 +73,15 @@ namespace HelloUSharp
             public delegate void Signature(bool _isTrue);
         }
 
+        public class OnePinArgDelegateHandler : FMulticastDelegate<OnePinArgDelegateHandler.Signature>
+        {
+            public delegate void Signature(BowlingPinComponent _pin);
+        }
+
         [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
         public OneBoolArgDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
+        //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
+        //public OnePinArgDelegateHandler OnPinHasFallenDelegate { get; set; }
         #endregion
 
         #region Overrides
@@ -95,11 +103,12 @@ namespace HelloUSharp
         #endregion
 
         #region Events
-        public event GeneralEventHandler BowlNewTurnIsReady;
+        public event OneBoolArgHandler BowlNewTurnIsReady;
         public event OneBoolArgHandler BowlTurnIsFinished;
         public event FVectorAndBallRefHandler OnBallLaunch;
         public event OneFloatArgHandler OnNudgeBallLeft;
         public event OneFloatArgHandler OnNudgeBallRight;
+        public event OnePinArgHandler OnPinHasFallen;
         #endregion
 
         #region EventCalls
@@ -113,7 +122,8 @@ namespace HelloUSharp
         {
             bBowlTurnIsOver = false;
             bCanLaunchBall = true;
-            if (BowlNewTurnIsReady != null) BowlNewTurnIsReady();
+            bool _bPlayerRoundIsOver = gamemode.IsPlayerRoundCompletelyOver();
+            if (BowlNewTurnIsReady != null) BowlNewTurnIsReady(_bPlayerRoundIsOver);
         }
 
         public void CallBowlTurnIsFinished()
@@ -138,6 +148,15 @@ namespace HelloUSharp
         public void CallOnNudgeBallRight(float famount)
         {
             if (OnNudgeBallRight != null) OnNudgeBallRight(famount);
+        }
+
+        public void CallOnPinHasFallen(BowlingPinComponent _pin)
+        {
+            if (OnPinHasFallen != null) OnPinHasFallen(_pin);
+            //if (OnPinHasFallenDelegate.IsBound)
+            //{
+            //    OnPinHasFallenDelegate.Invoke(_pin);
+            //}
         }
         #endregion
 

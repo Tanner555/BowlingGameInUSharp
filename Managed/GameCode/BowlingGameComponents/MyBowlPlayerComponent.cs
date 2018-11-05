@@ -140,7 +140,7 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void NewTurnIsReady()
+        void NewTurnIsReady(bool _roundIsOver)
         {
             MyOwner.SetActorLocation(
                 MyStartLocation, false, out myHit, false

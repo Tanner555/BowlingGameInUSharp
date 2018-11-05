@@ -96,6 +96,13 @@ namespace HelloUSharp
             {
                 gamemaster.BowlTurnIsFinished -= BowlTurnHasFinished;
                 gamemaster.BowlNewTurnIsReady -= NewBowlTurnHasStarted;
+                //Pin should have fallen
+                //Checking Just In Case
+                if(bPinHasFallen == false)
+                {
+                    bPinHasFallen = true;
+                    gamemaster.CallOnPinHasFallen(this);
+                }
             }
         }
         #endregion
@@ -120,7 +127,7 @@ namespace HelloUSharp
             }
         }
 
-        void NewBowlTurnHasStarted()
+        void NewBowlTurnHasStarted(bool _roundIsOver)
         {
             if (MyColliderMeshComponent != null)
             {
@@ -138,6 +145,10 @@ namespace HelloUSharp
             float _tiltInX = FMath.Abs(_rotationInEuler.X);
             float _tiltInY = FMath.Abs(_rotationInEuler.Y);
             bPinHasFallen = _tiltInX > standingThreshold && _tiltInY > standingThreshold;
+            if (bPinHasFallen)
+            {
+                gamemaster.CallOnPinHasFallen(this);
+            }
             return bPinHasFallen;
         }
         #endregion

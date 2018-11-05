@@ -51,6 +51,9 @@ namespace HelloUSharp
 
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public float ForwardMultipleVelocityFactor { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
+        public int StandingPinCount { get; set; }
         #endregion
 
         #region Fields
@@ -79,6 +82,9 @@ namespace HelloUSharp
             MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
             SetBallFromBallFindCollection(ballActors);
             myBowler = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
+            StandingPinCount = 10;
+            gamemaster.OnPinHasFallen += UpdatePinCount;
+            gamemaster.BowlNewTurnIsReady += ResetPinCount;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -89,6 +95,11 @@ namespace HelloUSharp
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
             StopAllCoroutines();
+            if(gamemaster != null)
+            {
+                gamemaster.OnPinHasFallen -= UpdatePinCount;
+                gamemaster.BowlNewTurnIsReady -= ResetPinCount;
+            }
         }
         #endregion
 
@@ -116,6 +127,21 @@ namespace HelloUSharp
                 {
                     myBall = _ballComp;
                 }
+            }
+        }
+        #endregion
+
+        #region Handlers
+        void UpdatePinCount(BowlingPinComponent _pin)
+        {
+            StandingPinCount--;
+        }
+
+        void ResetPinCount(bool _roundIsOver)
+        {
+            if (_roundIsOver)
+            {
+                StandingPinCount = 10;
             }
         }
         #endregion
