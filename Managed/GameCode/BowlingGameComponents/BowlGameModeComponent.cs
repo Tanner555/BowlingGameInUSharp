@@ -317,6 +317,12 @@ namespace HelloUSharp
         {
             return false;
         }
+
+        [UFunction, BlueprintCallable]
+        public int GetStandingPinCount()
+        {
+            return StandingPinCount;
+        }
         #endregion
 
         #region SweepingAnimationWaitCalls
