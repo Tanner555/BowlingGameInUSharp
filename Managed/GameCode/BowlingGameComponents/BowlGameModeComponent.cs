@@ -56,8 +56,17 @@ namespace HelloUSharp
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public float ForwardMultipleVelocityFactor { get; set; }
 
-        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
-        public int StandingPinCount { get; set; }
+        [UPropertyIngore]
+        public int StandingPinCount
+        {
+            get { return _standingPinCount; }
+            set
+            {
+                _standingPinCount = value;
+                gamemaster.CallUpdatePinCount(_standingPinCount);
+            }
+        }
+        private int _standingPinCount = 0;
 
         [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
         public ULevelSequence CleanUpSweepLevelSequence { get; set; }

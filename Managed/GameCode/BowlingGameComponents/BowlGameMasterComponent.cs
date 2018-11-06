@@ -78,8 +78,15 @@ namespace HelloUSharp
             public delegate void Signature(BowlingPinComponent _pin);
         }
 
+        public class OneIntArgDelegateHandler : FMulticastDelegate<OneIntArgDelegateHandler.Signature>
+        {
+            public delegate void Signature(int _number);
+        }
+
         [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
         public OneBoolArgDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
+        [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
+        public OneIntArgDelegateHandler UpdatePinCountDelegate { get; set; }
         //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
         //public OnePinArgDelegateHandler OnPinHasFallenDelegate { get; set; }
         #endregion
@@ -157,6 +164,14 @@ namespace HelloUSharp
             //{
             //    OnPinHasFallenDelegate.Invoke(_pin);
             //}
+        }
+
+        public void CallUpdatePinCount(int _count)
+        {
+            if (UpdatePinCountDelegate.IsBound)
+            {
+                UpdatePinCountDelegate.Invoke(_count);
+            }
         }
         #endregion
 
