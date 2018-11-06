@@ -11,6 +11,8 @@ using UnrealEngine.GameplayTasks;
 using UnrealEngine.SlateCore;
 using UnrealEngine.NavigationSystem;
 using System.Threading.Tasks;
+using UnrealEngine.LevelSequence;
+using UnrealEngine.MovieScene;
 
 namespace HelloUSharp
 {
@@ -56,6 +58,12 @@ namespace HelloUSharp
 
         [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
         public int StandingPinCount { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
+        public ULevelSequence CleanUpSweepLevelSequence { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
+        public ULevelSequence ClearSweepLevelSequence { get; set; }
         #endregion
 
         #region Fields
@@ -92,6 +100,8 @@ namespace HelloUSharp
             StandingPinCount = 10;
             gamemaster.OnPinHasFallen += UpdatePinCount;
             gamemaster.BowlNewTurnIsReady += ResetPinCount;
+            gamemaster.BowlTurnIsFinished += OnTurnIsFinished;
+
             List<AActor> bowlFloorActors;
             MyOwner.World.GetAllActorsWithTag(BowlingFloorTag, out bowlFloorActors);
             if(bowlFloorActors[0] != null)
@@ -125,6 +135,7 @@ namespace HelloUSharp
             {
                 gamemaster.OnPinHasFallen -= UpdatePinCount;
                 gamemaster.BowlNewTurnIsReady -= ResetPinCount;
+                gamemaster.BowlTurnIsFinished -= OnTurnIsFinished;
             }
         }
         #endregion
@@ -158,6 +169,38 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
+        void OnTurnIsFinished(bool _isRoundOver)
+        {
+            if (CleanUpSweepLevelSequence == null ||
+                ClearSweepLevelSequence == null)
+            {
+                MyOwner.PrintString("Please Assign Animation Clips To Clear and Cleanup Level Sequence UProperties", FLinearColor.Red);
+                return;
+            }
+
+            ALevelSequenceActor _mySequenceActor;
+            ULevelSequencePlayer _myPlayer;
+            FMovieSceneSequencePlaybackSettings _settings = new FMovieSceneSequencePlaybackSettings
+            {
+                StartTime = 0,
+                RestoreState = true,
+                PlayRate = 1.0f
+            };
+
+            if (_isRoundOver)
+            {
+                _myPlayer = ULevelSequencePlayer.CreateLevelSequencePlayer(this, ClearSweepLevelSequence, _settings, out _mySequenceActor);
+            }
+            else
+            {
+                _myPlayer = ULevelSequencePlayer.CreateLevelSequencePlayer(this, CleanUpSweepLevelSequence, _settings, out _mySequenceActor);
+            }
+            
+            _myPlayer.Play();
+            float _waitLength = _myPlayer.GetLength();
+            WaitTillSweepingIsDone(_waitLength);
+        }
+
         void UpdatePinCount(BowlingPinComponent _pin)
         {
             StandingPinCount--;
