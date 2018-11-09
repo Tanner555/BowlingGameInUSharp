@@ -304,17 +304,77 @@ namespace HelloUSharp
                 }
             }
         }
-
+        
         public void SetCurrentBowlTurnValue(int _value)
         {
-            int _ballTurnIndex = BowlTurnCount - 1;
-            if (_ballTurnIndex >= 0 && _ballTurnIndex < AllBowlFrameTurns.Count)
+            switch (BowlTurnCount)
             {
-                AllBowlFrameTurns[_ballTurnIndex] = _value;
-            }
-            else
-            {
-                MyOwner.PrintString("Couldn't Set Bowl Turn At Index: " + _ballTurnIndex, FLinearColor.Red, printToLog:true);
+                case 1:
+                    Frame01_BowlA = _value;
+                    break;
+                case 2:
+                    Frame01_BowlB = _value;
+                    break;
+                case 3:
+                    Frame02_BowlA = _value;
+                    break;
+                case 4:
+                    Frame02_BowlB = _value;
+                    break;
+                case 5:
+                    Frame03_BowlA = _value;
+                    break;
+                case 6:
+                    Frame03_BowlB = _value;
+                    break;
+                case 7:
+                    Frame04_BowlA = _value;
+                    break;
+                case 8:
+                    Frame04_BowlB = _value;
+                    break;
+                case 9:
+                    Frame05_BowlA = _value;
+                    break;
+                case 10:
+                    Frame05_BowlB = _value;
+                    break;
+                case 11:
+                    Frame06_BowlA = _value;
+                    break;
+                case 12:
+                    Frame06_BowlB = _value;
+                    break;
+                case 13:
+                    Frame07_BowlA = _value;
+                    break;
+                case 14:
+                    Frame07_BowlB = _value;
+                    break;
+                case 15:
+                    Frame08_BowlA = _value;
+                    break;
+                case 16:
+                    Frame08_BowlB = _value;
+                    break;
+                case 17:
+                    Frame09_BowlA = _value;
+                    break;
+                case 18:
+                    Frame09_BowlB = _value;
+                    break;
+                case 19:
+                    Frame10_BowlA = _value;
+                    break;
+                case 20:
+                    Frame10_BowlB = _value;
+                    break;
+                case 21:
+                    Frame10_BowlC = _value;
+                    break;
+                default:
+                    MyOwner.PrintString("Couldn't Set Bowl Turn At: " + BowlTurnCount, FLinearColor.Red, printToLog: true);
+                    break;
             }
         }
         #endregion
