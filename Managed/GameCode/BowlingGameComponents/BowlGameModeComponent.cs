@@ -304,6 +304,20 @@ namespace HelloUSharp
                 }
             }
         }
+
+        public void SetResultsFromFrameTurns()
+        {
+            Frame01_Results = Frame01_BowlA + Frame01_BowlB;
+            Frame02_Results = Frame02_BowlA + Frame02_BowlB;
+            Frame03_Results = Frame03_BowlA + Frame03_BowlB;
+            Frame04_Results = Frame04_BowlA + Frame04_BowlB;
+            Frame05_Results = Frame05_BowlA + Frame05_BowlB;
+            Frame06_Results = Frame06_BowlA + Frame06_BowlB;
+            Frame07_Results = Frame07_BowlA + Frame07_BowlB;
+            Frame08_Results = Frame08_BowlA + Frame08_BowlB;
+            Frame09_Results = Frame09_BowlA + Frame09_BowlB;
+            Frame10_Results = Frame10_BowlA + Frame10_BowlB + Frame10_BowlC;
+        }
         
         public void SetCurrentBowlTurnValue(int _value)
         {
@@ -388,7 +402,7 @@ namespace HelloUSharp
                 MyOwner.PrintString("Please Assign Animation Clips To Clear and Cleanup Level Sequence UProperties", FLinearColor.Red);
                 return;
             }
-
+            
             ALevelSequenceActor _mySequenceActor;
             ULevelSequencePlayer _myPlayer;
             FMovieSceneSequencePlaybackSettings _settings = new FMovieSceneSequencePlaybackSettings
@@ -417,6 +431,7 @@ namespace HelloUSharp
             int _pinFall = GetPinFallCount();
             lastSettledCount = StandingPinCount;
             BowlAction _action = Bowl(_pinFall);
+            SetResultsFromFrameTurns();
             gamemaster.CallOnSendBowlActionResults(_action);
         }
 
