@@ -13,7 +13,4 @@
   </PropertyGroup>
 
   <!--Create Empty ItemGroup To Help With Generating Project Wrappers-->
-  <ItemGroup>
-
-  </ItemGroup>
 </Project>

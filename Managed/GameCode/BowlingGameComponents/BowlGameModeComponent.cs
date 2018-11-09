@@ -75,6 +75,71 @@ namespace HelloUSharp
         public ULevelSequence ClearSweepLevelSequence { get; set; }
         #endregion
 
+        #region BowlUProperties
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame01_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame01_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame01_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame02_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame02_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame02_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame03_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame03_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame03_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame04_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame04_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame04_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame05_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame05_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame05_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame06_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame06_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame06_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame07_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame07_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame07_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame08_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame08_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame08_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame09_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame09_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame09_Results { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame10_BowlA { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame10_BowlB { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame10_BowlC { get; set; }
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
+        public int Frame10_Results { get; set; }
+        #endregion
+
         #region Fields
         protected APlayerCameraManager myCameraManager = null;
         protected BowlingBallComponent myBall = null;
@@ -89,6 +154,53 @@ namespace HelloUSharp
         private float boundsYPaddingCheck = 10.0f;
 
         protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
+
+        private int lastSettledCount = 10;
+        /// <summary>
+        /// Should Start At 1 Before Taking First Bowl Turn,
+        /// Gets AllTurnsList Starting at 0, Excludes Final Turn Number
+        /// </summary>
+        private int BowlTurnCount = 0;
+
+        private List<int> AllBowlFrameResults
+        {
+            get
+            {
+                return new List<int>
+                {
+                    Frame01_BowlA, Frame01_BowlB, Frame01_Results,
+                    Frame02_BowlA, Frame02_BowlB, Frame02_Results,
+                    Frame03_BowlA, Frame03_BowlB, Frame03_Results,
+                    Frame04_BowlA, Frame04_BowlB, Frame04_Results,
+                    Frame05_BowlA, Frame05_BowlB, Frame05_Results,
+                    Frame06_BowlA, Frame06_BowlB, Frame06_Results,
+                    Frame07_BowlA, Frame07_BowlB, Frame07_Results,
+                    Frame08_BowlA, Frame08_BowlB, Frame08_Results,
+                    Frame09_BowlA, Frame09_BowlB, Frame09_Results,
+                    Frame10_BowlA, Frame10_BowlB, Frame10_BowlC, Frame10_Results
+                };
+            }
+        }
+
+        private List<int> AllBowlFrameTurns
+        {
+            get
+            {
+                return new List<int>
+                {
+                    Frame01_BowlA, Frame01_BowlB,
+                    Frame02_BowlA, Frame02_BowlB,
+                    Frame03_BowlA, Frame03_BowlB,
+                    Frame04_BowlA, Frame04_BowlB,
+                    Frame05_BowlA, Frame05_BowlB,
+                    Frame06_BowlA, Frame06_BowlB,
+                    Frame07_BowlA, Frame07_BowlB,
+                    Frame08_BowlA, Frame08_BowlB,
+                    Frame09_BowlA, Frame09_BowlB,
+                    Frame10_BowlA, Frame10_BowlB, Frame10_BowlC
+                };
+            }
+        }
         #endregion
 
         #region Overrides
@@ -110,6 +222,7 @@ namespace HelloUSharp
             gamemaster.OnPinHasFallen += UpdatePinCount;
             gamemaster.BowlNewTurnIsReady += ResetPinCount;
             gamemaster.BowlTurnIsFinished += OnTurnIsFinished;
+            gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
 
             List<AActor> bowlFloorActors;
             MyOwner.World.GetAllActorsWithTag(BowlingFloorTag, out bowlFloorActors);
@@ -145,11 +258,12 @@ namespace HelloUSharp
                 gamemaster.OnPinHasFallen -= UpdatePinCount;
                 gamemaster.BowlNewTurnIsReady -= ResetPinCount;
                 gamemaster.BowlTurnIsFinished -= OnTurnIsFinished;
+                gamemaster.OnSendBowlActionResults -= OnSendBowlActionResults;
             }
         }
         #endregion
 
-        #region Getter
+        #region Getters
         public static BowlGameModeComponent GetInstance(UObject worldContextObject)
         {
             var _instanceHelper = ThisInstance.Get(worldContextObject);
@@ -159,6 +273,21 @@ namespace HelloUSharp
                 ThisInstance.Set(worldContextObject, _instanceHelper);
             }
             return _instanceHelper; 
+        }
+
+        public int GetPinFallCount()
+        {
+            return lastSettledCount - StandingPinCount;
+        }
+
+        public List<int> GetBowlTurnListFromCount()
+        {
+            List<int> _bowlTurns = new List<int>();
+            for (int i = 0; i < BowlTurnCount; i++)
+            {
+                _bowlTurns.Add(AllBowlFrameTurns[i]);
+            }
+            return _bowlTurns;
         }
         #endregion
 
@@ -175,10 +304,23 @@ namespace HelloUSharp
                 }
             }
         }
+
+        public void SetCurrentBowlTurnValue(int _value)
+        {
+            int _ballTurnIndex = BowlTurnCount - 1;
+            if (_ballTurnIndex >= 0 && _ballTurnIndex < AllBowlFrameTurns.Count)
+            {
+                AllBowlFrameTurns[_ballTurnIndex] = _value;
+            }
+            else
+            {
+                MyOwner.PrintString("Couldn't Set Bowl Turn At Index: " + _ballTurnIndex, FLinearColor.Red, printToLog:true);
+            }
+        }
         #endregion
 
         #region Handlers
-        void OnTurnIsFinished(bool _isRoundOver)
+        void OnSendBowlActionResults(BowlAction _action)
         {
             if (CleanUpSweepLevelSequence == null ||
                 ClearSweepLevelSequence == null)
@@ -196,7 +338,7 @@ namespace HelloUSharp
                 PlayRate = 1.0f
             };
 
-            if (_isRoundOver)
+            if (_action == BowlAction.Tidy)
             {
                 _myPlayer = ULevelSequencePlayer.CreateLevelSequencePlayer(this, ClearSweepLevelSequence, _settings, out _mySequenceActor);
             }
@@ -204,10 +346,18 @@ namespace HelloUSharp
             {
                 _myPlayer = ULevelSequencePlayer.CreateLevelSequencePlayer(this, CleanUpSweepLevelSequence, _settings, out _mySequenceActor);
             }
-            
+
             _myPlayer.Play();
             float _waitLength = _myPlayer.GetLength();
             WaitTillSweepingIsDone(_waitLength);
+        }
+
+        void OnTurnIsFinished(bool _isRoundOver)
+        {
+            int _pinFall = GetPinFallCount();
+            lastSettledCount = StandingPinCount;
+            BowlAction _action = Bowl(_pinFall);
+            gamemaster.CallOnSendBowlActionResults(_action);
         }
 
         void UpdatePinCount(BowlingPinComponent _pin)
@@ -220,6 +370,7 @@ namespace HelloUSharp
             if (_roundIsOver)
             {
                 StandingPinCount = 10;
+                lastSettledCount = 10;
             }
         }
         #endregion
@@ -341,6 +492,17 @@ namespace HelloUSharp
         void CallNewTurnIsReadyAfterWaiting()
         {
             gamemaster.CallBowlNewTurnIsReady();
+        }
+        #endregion
+
+        #region Bowling
+        [UFunctionIgnore]
+        public BowlAction Bowl(int pinFall)
+        {
+            BowlTurnCount += 1;
+            SetCurrentBowlTurnValue(pinFall);
+            List<int> _rolls = GetBowlTurnListFromCount();
+            return BowlActionMaster.NextAction(_rolls);
         }
         #endregion
 

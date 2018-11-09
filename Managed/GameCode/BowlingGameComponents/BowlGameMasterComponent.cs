@@ -60,6 +60,7 @@ namespace HelloUSharp
         public delegate void OneFloatArgHandler(float famount);
         public delegate void OneBoolArgHandler(bool _isTrue);
         public delegate void OnePinArgHandler(BowlingPinComponent _pin);
+        public delegate void BowlActionArgHandler(BowlAction _action);
         #endregion
 
         #region FMulticastDelegates
@@ -116,6 +117,7 @@ namespace HelloUSharp
         public event OneFloatArgHandler OnNudgeBallLeft;
         public event OneFloatArgHandler OnNudgeBallRight;
         public event OnePinArgHandler OnPinHasFallen;
+        public event BowlActionArgHandler OnSendBowlActionResults;
         #endregion
 
         #region EventCalls
@@ -172,6 +174,11 @@ namespace HelloUSharp
             {
                 UpdatePinCountDelegate.Invoke(_count);
             }
+        }
+
+        public void CallOnSendBowlActionResults(BowlAction _action)
+        {
+            if (OnSendBowlActionResults != null) OnSendBowlActionResults(_action);
         }
         #endregion
 
