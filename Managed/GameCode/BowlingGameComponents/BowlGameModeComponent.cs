@@ -338,7 +338,7 @@ namespace HelloUSharp
                 PlayRate = 1.0f
             };
 
-            if (_action == BowlAction.Tidy)
+            if (_action != BowlAction.Tidy)
             {
                 _myPlayer = ULevelSequencePlayer.CreateLevelSequencePlayer(this, ClearSweepLevelSequence, _settings, out _mySequenceActor);
             }

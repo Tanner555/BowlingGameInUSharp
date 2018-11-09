@@ -70,7 +70,7 @@ namespace HelloUSharp
                 GetOwner().PrintString("Couldn't Find Pin Manager Component", FLinearColor.Red, printToLog: true);
             }
 
-            gamemaster.BowlTurnIsFinished += BowlTurnHasFinished;
+            gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
             gamemaster.BowlNewTurnIsReady += NewBowlTurnHasStarted;
         }
 
@@ -94,7 +94,7 @@ namespace HelloUSharp
             //GetOwner().PrintString("Ending Play", FLinearColor.Green, printToLog: true);
             if(gamemaster != null)
             {
-                gamemaster.BowlTurnIsFinished -= BowlTurnHasFinished;
+                gamemaster.OnSendBowlActionResults -= OnSendBowlActionResults;
                 gamemaster.BowlNewTurnIsReady -= NewBowlTurnHasStarted;
                 //Pin should have fallen
                 //Checking Just In Case
@@ -113,7 +113,7 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void BowlTurnHasFinished(bool _endOfRound)
+        void OnSendBowlActionResults(BowlAction _action)
         {
             var _pinManager = pinManager;
             //Only If Collider Mesh Comp Has Been Assigned AND
@@ -122,8 +122,15 @@ namespace HelloUSharp
                 _pinManager != null &&
                 (MyOwner.GetParentActor() == _pinManager.MyOwner && bPinHasFallen == false))
             {
-                AttachToParentWithOldPosition();
-                MyColliderMeshComponent.SetSimulatePhysics(false);
+                if (_action == BowlAction.Tidy)
+                {
+                    AttachToParentWithOldPosition();
+                    MyColliderMeshComponent.SetSimulatePhysics(false);
+                }
+                else
+                {
+                    MyColliderMeshComponent.SetSimulatePhysics(true);
+                }
             }
         }
 
