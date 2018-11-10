@@ -120,7 +120,7 @@ namespace HelloUSharp
             //Parent Actor is the PinManager Actor Blueprint
             if (MyColliderMeshComponent != null &&
                 _pinManager != null &&
-                (MyOwner.GetParentActor() == _pinManager.MyOwner && bPinHasFallen == false))
+                bPinHasFallen == false)
             {
                 if (_action == BowlAction.Tidy)
                 {
