@@ -37,8 +37,8 @@ namespace HelloUSharp
         #endregion
 
         #region UProperties
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Pin Management")]
-        public AActor PinPrefab { get; set; }
+        //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Pin Management")]
+        private AActor PinPrefab;
         #endregion
 
         #region Fields
@@ -78,10 +78,35 @@ namespace HelloUSharp
         {
             List<AActor> outPinActors;
             UGameplayStatics.GetAllActorsWithTag(MyOwner, gamemode.PinTag, out outPinActors);
+            if(outPinActors != null && outPinActors.Count > 0 &&
+                outPinActors[0] != null)
+            {
+                PinPrefab = outPinActors[0];
+            }
+
             foreach (var _pin in outPinActors)
             {
                 //AttachPinToManager(_pin);
                 PinLocations.Add(_pin.GetActorLocation());
+            }
+            gamemaster.BowlNewTurnIsReady += BowlNewTurnIsReady;
+        }
+
+        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        {
+            if(gamemaster != null)
+            {
+                gamemaster.BowlNewTurnIsReady -= BowlNewTurnIsReady;
+            }
+        }
+        #endregion
+
+        #region Handlers
+        void BowlNewTurnIsReady(bool _isRoundOver, BowlAction _action)
+        {
+            if(_action != BowlAction.Tidy)
+            {
+                RespawnPins();
             }
         }
         #endregion
@@ -89,6 +114,12 @@ namespace HelloUSharp
         #region Spawn-Attach-Pins
         public void RespawnPins()
         {
+            if (PinPrefab == null)
+            {
+                MyOwner.PrintString("No PinPrefab On Pin Manager BP", FLinearColor.Red, printToLog: true);
+                return;
+            }
+
             foreach (var _pinLocation in PinLocations)
             {
                 SpawnPin(_pinLocation);

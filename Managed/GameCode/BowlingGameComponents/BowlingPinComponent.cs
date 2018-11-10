@@ -134,7 +134,7 @@ namespace HelloUSharp
             }
         }
 
-        void NewBowlTurnHasStarted(bool _roundIsOver)
+        void NewBowlTurnHasStarted(bool _roundIsOver, BowlAction _action)
         {
             if (MyColliderMeshComponent != null)
             {

@@ -423,7 +423,7 @@ namespace HelloUSharp
 
             _myPlayer.Play();
             float _waitLength = _myPlayer.GetLength();
-            WaitTillSweepingIsDone(_waitLength);
+            WaitTillSweepingIsDone(_waitLength, _action);
         }
 
         void OnTurnIsFinished(bool _isRoundOver)
@@ -440,7 +440,7 @@ namespace HelloUSharp
             StandingPinCount--;
         }
 
-        void ResetPinCount(bool _roundIsOver)
+        void ResetPinCount(bool _roundIsOver, BowlAction _action)
         {
             if (_roundIsOver)
             {
@@ -552,21 +552,20 @@ namespace HelloUSharp
         #endregion
 
         #region SweepingAnimationWaitCalls
-        [UFunction, BlueprintCallable]
-        public void WaitTillSweepingIsDone(float _animLength)
+        public void WaitTillSweepingIsDone(float _animLength, BowlAction _action)
         {
-            StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength));
+            StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength, _action));
         }
 
-        private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength)
+        private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength, BowlAction _action)
         {
             yield return new WaitForSeconds(_animLength);
-            CallNewTurnIsReadyAfterWaiting();
+            CallNewTurnIsReadyAfterWaiting(_action);
         }
 
-        void CallNewTurnIsReadyAfterWaiting()
+        void CallNewTurnIsReadyAfterWaiting(BowlAction _action)
         {
-            gamemaster.CallBowlNewTurnIsReady();
+            gamemaster.CallBowlNewTurnIsReady(_action);
         }
         #endregion
 

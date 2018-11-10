@@ -59,6 +59,7 @@ namespace HelloUSharp
         public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
         public delegate void OneFloatArgHandler(float famount);
         public delegate void OneBoolArgHandler(bool _isTrue);
+        public delegate void OneBoolOneBowlActionArgHandler(bool _isTrue, BowlAction _action);
         public delegate void OnePinArgHandler(BowlingPinComponent _pin);
         public delegate void BowlActionArgHandler(BowlAction _action);
         #endregion
@@ -111,7 +112,7 @@ namespace HelloUSharp
         #endregion
 
         #region Events
-        public event OneBoolArgHandler BowlNewTurnIsReady;
+        public event OneBoolOneBowlActionArgHandler BowlNewTurnIsReady;
         public event OneBoolArgHandler BowlTurnIsFinished;
         public event FVectorAndBallRefHandler OnBallLaunch;
         public event OneFloatArgHandler OnNudgeBallLeft;
@@ -127,12 +128,12 @@ namespace HelloUSharp
             if (OnBallLaunch != null) OnBallLaunch(launchVelocity, bowlingBall);
         }
 
-        public void CallBowlNewTurnIsReady()
+        public void CallBowlNewTurnIsReady(BowlAction _action)
         {
             bBowlTurnIsOver = false;
             bCanLaunchBall = true;
             bool _bPlayerRoundIsOver = gamemode.IsPlayerRoundCompletelyOver();
-            if (BowlNewTurnIsReady != null) BowlNewTurnIsReady(_bPlayerRoundIsOver);
+            if (BowlNewTurnIsReady != null) BowlNewTurnIsReady(_bPlayerRoundIsOver, _action);
         }
 
         public void CallBowlTurnIsFinished()
