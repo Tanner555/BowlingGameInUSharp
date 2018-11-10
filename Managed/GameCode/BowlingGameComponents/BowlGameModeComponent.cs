@@ -73,6 +73,13 @@ namespace HelloUSharp
 
         [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
         public ULevelSequence ClearSweepLevelSequence { get; set; }
+
+        /// <summary>
+        /// Should Start At 1 Before Taking First Bowl Turn,
+        /// Gets AllTurnsList Starting at 0, Excludes Final Turn Number
+        /// </summary>
+        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
+        public int BowlTurnCount { get; set; }
         #endregion
 
         #region BowlUProperties
@@ -156,11 +163,6 @@ namespace HelloUSharp
         protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
 
         private int lastSettledCount = 10;
-        /// <summary>
-        /// Should Start At 1 Before Taking First Bowl Turn,
-        /// Gets AllTurnsList Starting at 0, Excludes Final Turn Number
-        /// </summary>
-        private int BowlTurnCount = 1;
 
         private List<int> AllBowlFrameResults
         {
@@ -219,6 +221,7 @@ namespace HelloUSharp
             SetBallFromBallFindCollection(ballActors);
             myBowler = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
             StandingPinCount = 10;
+            BowlTurnCount = 1;
             gamemaster.OnPinHasFallen += UpdatePinCount;
             gamemaster.BowlNewTurnIsReady += ResetPinCount;
             gamemaster.BowlTurnIsFinished += OnTurnIsFinished;

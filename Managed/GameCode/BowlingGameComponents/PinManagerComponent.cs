@@ -37,13 +37,14 @@ namespace HelloUSharp
         #endregion
 
         #region UProperties
-        //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Pin Management")]
-        private AActor PinPrefab;
+    
         #endregion
 
         #region Fields
         protected static WorldStaticVar<PinManagerComponent> ThisInstance = new WorldStaticVar<PinManagerComponent>();
         protected List<FVector> PinLocations = new List<FVector>();
+        //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Pin Management")]
+        private UClass PinPrefabClass = null;
         #endregion
 
         #region Getter
@@ -81,7 +82,7 @@ namespace HelloUSharp
             if(outPinActors != null && outPinActors.Count > 0 &&
                 outPinActors[0] != null)
             {
-                PinPrefab = outPinActors[0];
+                PinPrefabClass = outPinActors[0].GetClass();
             }
 
             foreach (var _pin in outPinActors)
@@ -114,7 +115,7 @@ namespace HelloUSharp
         #region Spawn-Attach-Pins
         public void RespawnPins()
         {
-            if (PinPrefab == null)
+            if (PinPrefabClass == null)
             {
                 MyOwner.PrintString("No PinPrefab On Pin Manager BP", FLinearColor.Red, printToLog: true);
                 return;
@@ -129,7 +130,7 @@ namespace HelloUSharp
         AActor SpawnPin(FVector _pinLocation)
         {
             FRotator _pinRot = FRotator.ZeroRotator;
-            return MyOwner.World.SpawnActor(PinPrefab.GetClass(), ref _pinLocation, ref _pinRot);
+            return MyOwner.World.SpawnActor(PinPrefabClass, ref _pinLocation, ref _pinRot);
         }
 
         void AttachPinToManager(AActor _pin)
