@@ -46,7 +46,7 @@ namespace HelloUSharp
                 { // First bowl of frame
                     if (rolls[i] == 10)
                     {
-                        rolls.Insert(i, 0); // Insert virtual 0 after strike
+                        //rolls.Insert(i, 0); // Insert virtual 0 after strike
                         nextAction = BowlAction.EndTurn;
                     }
                     else
