@@ -72,6 +72,7 @@ namespace HelloUSharp
 
             gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
             gamemaster.BowlNewTurnIsReady += NewBowlTurnHasStarted;
+            gamemaster.Debug_OnSimulateStrike += OnSimulateStrike;
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
@@ -96,9 +97,10 @@ namespace HelloUSharp
             {
                 gamemaster.OnSendBowlActionResults -= OnSendBowlActionResults;
                 gamemaster.BowlNewTurnIsReady -= NewBowlTurnHasStarted;
+                gamemaster.Debug_OnSimulateStrike -= OnSimulateStrike;
                 //Pin should have fallen
                 //Checking Just In Case
-                if(bPinHasFallen == false)
+                if (bPinHasFallen == false)
                 {
                     bPinHasFallen = true;
                     gamemaster.CallOnPinHasFallen(this);
@@ -110,6 +112,7 @@ namespace HelloUSharp
         #region Fields
         bool bPinHasFallen = false;
         float standingThreshold = 15f;
+        bool bDebugInstantStrike = false;
         #endregion
 
         #region Handlers
@@ -141,6 +144,12 @@ namespace HelloUSharp
                 MyColliderMeshComponent.SetSimulatePhysics(true);
             }
         }
+
+        //Debug
+        void OnSimulateStrike()
+        {
+            bDebugInstantStrike = true;
+        }
         #endregion
 
         #region PublicMethodCalls
@@ -152,6 +161,12 @@ namespace HelloUSharp
             float _tiltInX = FMath.Abs(_rotationInEuler.X);
             float _tiltInY = FMath.Abs(_rotationInEuler.Y);
             bPinHasFallen = _tiltInX > standingThreshold && _tiltInY > standingThreshold;
+
+            if (bDebugInstantStrike)
+            {
+                bPinHasFallen = true;
+            }
+
             if (bPinHasFallen)
             {
                 gamemaster.CallOnPinHasFallen(this);

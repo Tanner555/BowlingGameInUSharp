@@ -181,6 +181,7 @@ namespace HelloUSharp
         }
         #endregion
 
+        #region PublicUFunctions
         [UFunction, BlueprintCallable]
         public void OnDragStart(FVector2D mousePos)
         {
@@ -189,7 +190,7 @@ namespace HelloUSharp
             {
                 gamemode.OnStartDrag(mousePos);
             }
-            
+
         }
 
         [UFunction, BlueprintCallable]
@@ -201,5 +202,12 @@ namespace HelloUSharp
                 gamemode.OnStopDrag(mousePos);
             }
         }
+
+        [UFunction, BlueprintCallable]
+        public void Debug_InstantStrike()
+        {
+            gamemaster.CallDebug_OnSimulateStrike();
+        }
+        #endregion
     }
 }

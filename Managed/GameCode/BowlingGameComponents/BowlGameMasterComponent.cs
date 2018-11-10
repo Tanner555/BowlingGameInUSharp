@@ -119,6 +119,8 @@ namespace HelloUSharp
         public event OneFloatArgHandler OnNudgeBallRight;
         public event OnePinArgHandler OnPinHasFallen;
         public event BowlActionArgHandler OnSendBowlActionResults;
+        //Debug
+        public event GeneralEventHandler Debug_OnSimulateStrike;
         #endregion
 
         #region EventCalls
@@ -180,6 +182,15 @@ namespace HelloUSharp
         public void CallOnSendBowlActionResults(BowlAction _action)
         {
             if (OnSendBowlActionResults != null) OnSendBowlActionResults(_action);
+        }
+
+        //Debug
+        public void CallDebug_OnSimulateStrike()
+        {
+            if (Debug_OnSimulateStrike != null)
+            {
+                Debug_OnSimulateStrike();
+            }
         }
         #endregion
 
