@@ -442,7 +442,7 @@ namespace HelloUSharp
 
         void ResetPinCount(bool _roundIsOver, BowlAction _action)
         {
-            if (_roundIsOver)
+            if(_action != BowlAction.Tidy)
             {
                 StandingPinCount = 10;
                 lastSettledCount = 10;
