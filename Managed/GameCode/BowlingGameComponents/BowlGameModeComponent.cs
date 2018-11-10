@@ -160,7 +160,7 @@ namespace HelloUSharp
         /// Should Start At 1 Before Taking First Bowl Turn,
         /// Gets AllTurnsList Starting at 0, Excludes Final Turn Number
         /// </summary>
-        private int BowlTurnCount = 0;
+        private int BowlTurnCount = 1;
 
         private List<int> AllBowlFrameResults
         {
@@ -431,6 +431,24 @@ namespace HelloUSharp
             int _pinFall = GetPinFallCount();
             lastSettledCount = StandingPinCount;
             BowlAction _action = Bowl(_pinFall);
+            if (BowlTurnCount >= 19)
+            {
+                //TODO: End Game Event
+            }
+            //If Action Is Tidy Or Bowlturn is the Second One.
+            //Second Turns Are Even Except For the Last Few Turns.
+            else if (_action == BowlAction.Tidy ||
+                BowlTurnCount % 2 == 0)
+            {
+                BowlTurnCount += 1;
+            }
+            //If Bowl Turn Count Is Not the Second One.
+            //Second Turns Are Even Except For the Last Few Turns.
+            else if(BowlTurnCount % 2 != 0)
+            {
+                //Most Likely End Of Turn
+                BowlTurnCount += 2;
+            }
             SetResultsFromFrameTurns();
             gamemaster.CallOnSendBowlActionResults(_action);
         }
@@ -573,7 +591,6 @@ namespace HelloUSharp
         [UFunctionIgnore]
         public BowlAction Bowl(int pinFall)
         {
-            BowlTurnCount += 1;
             SetCurrentBowlTurnValue(pinFall);
             List<int> _rolls = GetBowlTurnListFromCount();
             return BowlActionMaster.NextAction(_rolls);
