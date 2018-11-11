@@ -51,25 +51,6 @@ namespace HelloUSharp
 
         protected override void ReceiveBeginPlay_Implementation()
         {
-            if(pinManager != null)
-            {
-                var _pinManagerBP = pinManager.MyOwner;
-                if(MyColliderMeshComponent != null)
-                {
-                    AttachToParentWithOldPosition();
-                    MyColliderMeshComponent.SetSimulatePhysics(false);
-                    MyColliderMeshComponent.SetSimulatePhysics(true);
-                }
-                else
-                {
-                    MyOwner.PrintString("Please Attach Collider Mesh To Pin Comp UProperty", FLinearColor.Red, printToLog: true);
-                }
-            }
-            else
-            {
-                GetOwner().PrintString("Couldn't Find Pin Manager Component", FLinearColor.Red, printToLog: true);
-            }
-
             gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
             gamemaster.BowlNewTurnIsReady += NewBowlTurnHasStarted;
             gamemaster.Debug_OnSimulateStrike += OnSimulateStrike;
@@ -172,6 +153,41 @@ namespace HelloUSharp
                 gamemaster.CallOnPinHasFallen(this);
             }
             return bPinHasFallen;
+        }
+        #endregion
+
+        #region Initialization
+        [UFunction, BlueprintCallable]
+        public void MyBeginPlayInitializer(UStaticMeshComponent _collidermesh)
+        {
+            MyColliderMeshComponent = _collidermesh;
+            MyBeginPlayPostInitialization();
+        }
+
+        /// <summary>
+        /// Took Part Of BeginPlay Code Out Because It Depends On Initialization
+        /// Which Should Be Called On Begin Play Inside Blueprints
+        /// </summary>
+        private void MyBeginPlayPostInitialization()
+        {
+            if (pinManager != null)
+            {
+                var _pinManagerBP = pinManager.MyOwner;
+                if (MyColliderMeshComponent != null)
+                {
+                    AttachToParentWithOldPosition();
+                    MyColliderMeshComponent.SetSimulatePhysics(false);
+                    MyColliderMeshComponent.SetSimulatePhysics(true);
+                }
+                else
+                {
+                    MyOwner.PrintString("Please Attach Collider Mesh To Pin Comp UProperty", FLinearColor.Red, printToLog: true);
+                }
+            }
+            else
+            {
+                GetOwner().PrintString("Couldn't Find Pin Manager Component", FLinearColor.Red, printToLog: true);
+            }
         }
         #endregion
 

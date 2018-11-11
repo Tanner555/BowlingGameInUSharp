@@ -36,6 +36,12 @@ namespace HelloUSharp
         }
 
         [UPropertyIngore]
+        public UStaticMeshComponent MyMeshComponent { get; set; }
+
+        [UPropertyIngore]
+        public UAudioComponent MyAudioSourceComponent { get; set; }
+
+        [UPropertyIngore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
         [UPropertyIngore]
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
@@ -50,12 +56,6 @@ namespace HelloUSharp
         #region MyUProperties
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public FVector LaunchVelocity { get; set; }
-
-        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
-        public UStaticMeshComponent MyMeshComponent { get; set; }
-
-        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
-        public UAudioComponent MyAudioSourceComponent { get; set; }
 
         [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
         public USoundBase BallRollingSound { get; set; }
@@ -161,6 +161,15 @@ namespace HelloUSharp
             MyOwner.SetActorLocation(
                 MyOwner.GetActorLocation() +
                 new FVector(0, famount, 0), false, out _hit, false);
+        }
+        #endregion
+
+        #region Initialization
+        [UFunction, BlueprintCallable]
+        public void MyBeginPlayInitializer(UStaticMeshComponent _mymeshcomponent, UAudioComponent _myaudiosourcecomponent)
+        {
+            MyMeshComponent = _mymeshcomponent;
+            MyAudioSourceComponent = _myaudiosourcecomponent;
         }
         #endregion
     }
