@@ -16,6 +16,23 @@ using UnrealEngine.MovieScene;
 
 namespace HelloUSharp
 {
+    #region GlobalEnums
+    [UEnum]
+    public enum EBowlFrame : System.Byte
+    {
+        Frame01 = 0,
+        Frame02 = 1,
+        Frame03 = 2,
+        Frame04 = 3,
+        Frame05 = 4,
+        Frame06 = 5,
+        Frame07 = 6,
+        Frame08 = 7,
+        Frame09 = 8,
+        Frame10 = 9
+    }
+    #endregion
+
     [UClass, Blueprintable, BlueprintType]
     public class BowlGameModeComponent : UActorComponent
     {
@@ -569,6 +586,78 @@ namespace HelloUSharp
         public int GetStandingPinCount()
         {
             return StandingPinCount;
+        }
+
+        [UFunction, BlueprintCallable]
+        public void GetBowlFrameProperties(EBowlFrame bowlframe, out int bowlAProperty, out int bowlBProperty, out int bowlCProperty, out int bowlResultProperty)
+        {
+            bowlAProperty = 0;
+            bowlBProperty = 0;
+            bowlCProperty = 0;
+            bowlResultProperty = 0;
+
+            switch (bowlframe)
+            {
+                case EBowlFrame.Frame01:
+                    bowlAProperty = Frame01_BowlA;
+                    bowlBProperty = Frame01_BowlB;
+                    bowlResultProperty = Frame01_Results;
+                    break;
+                case EBowlFrame.Frame02:
+                    bowlAProperty = Frame02_BowlA;
+                    bowlBProperty = Frame02_BowlB;
+                    bowlResultProperty = Frame02_Results;
+                    break;
+                case EBowlFrame.Frame03:
+                    bowlAProperty = Frame03_BowlA;
+                    bowlBProperty = Frame03_BowlB;
+                    bowlResultProperty = Frame03_Results;
+                    break;
+                case EBowlFrame.Frame04:
+                    bowlAProperty = Frame04_BowlA;
+                    bowlBProperty = Frame04_BowlB;
+                    bowlResultProperty = Frame04_Results;
+                    break;
+                case EBowlFrame.Frame05:
+                    bowlAProperty = Frame05_BowlA;
+                    bowlBProperty = Frame05_BowlB;
+                    bowlResultProperty = Frame05_Results;
+                    break;
+                case EBowlFrame.Frame06:
+                    bowlAProperty = Frame06_BowlA;
+                    bowlBProperty = Frame06_BowlB;
+                    bowlResultProperty = Frame06_Results;
+                    break;
+                case EBowlFrame.Frame07:
+                    bowlAProperty = Frame07_BowlA;
+                    bowlBProperty = Frame07_BowlB;
+                    bowlResultProperty = Frame07_Results;
+                    break;
+                case EBowlFrame.Frame08:
+                    bowlAProperty = Frame08_BowlA;
+                    bowlBProperty = Frame08_BowlB;
+                    bowlResultProperty = Frame08_Results;
+                    break;
+                case EBowlFrame.Frame09:
+                    bowlAProperty = Frame09_BowlA;
+                    bowlBProperty = Frame09_BowlB;
+                    bowlResultProperty = Frame09_Results;
+                    break;
+                case EBowlFrame.Frame10:
+                    bowlAProperty = Frame10_BowlA;
+                    bowlBProperty = Frame10_BowlB;
+                    bowlCProperty = Frame10_BowlC;
+                    bowlResultProperty = Frame10_Results;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        [UFunction, BlueprintCallable]
+        public int GetBowlTurnCount()
+        {
+            return BowlTurnCount;
         }
         #endregion
 
