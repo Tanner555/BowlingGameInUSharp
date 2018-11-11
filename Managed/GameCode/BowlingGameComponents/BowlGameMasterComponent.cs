@@ -59,9 +59,9 @@ namespace HelloUSharp
         public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
         public delegate void OneFloatArgHandler(float famount);
         public delegate void OneBoolArgHandler(bool _isTrue);
-        public delegate void OneBoolOneBowlActionArgHandler(bool _isTrue, BowlAction _action);
+        public delegate void OneBoolOneBowlActionArgHandler(bool _isTrue, EBowlAction _action);
         public delegate void OnePinArgHandler(BowlingPinComponent _pin);
-        public delegate void BowlActionArgHandler(BowlAction _action);
+        public delegate void BowlActionArgHandler(EBowlAction _action);
         #endregion
 
         #region FMulticastDelegates
@@ -130,7 +130,7 @@ namespace HelloUSharp
             if (OnBallLaunch != null) OnBallLaunch(launchVelocity, bowlingBall);
         }
 
-        public void CallBowlNewTurnIsReady(BowlAction _action)
+        public void CallBowlNewTurnIsReady(EBowlAction _action)
         {
             bBowlTurnIsOver = false;
             bCanLaunchBall = true;
@@ -179,7 +179,7 @@ namespace HelloUSharp
             }
         }
 
-        public void CallOnSendBowlActionResults(BowlAction _action)
+        public void CallOnSendBowlActionResults(EBowlAction _action)
         {
             if (OnSendBowlActionResults != null) OnSendBowlActionResults(_action);
         }

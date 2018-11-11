@@ -116,7 +116,7 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void OnSendBowlActionResults(BowlAction _action)
+        void OnSendBowlActionResults(EBowlAction _action)
         {
             var _pinManager = pinManager;
             //Only If Collider Mesh Comp Has Been Assigned AND
@@ -125,7 +125,7 @@ namespace HelloUSharp
                 _pinManager != null &&
                 bPinHasFallen == false)
             {
-                if (_action == BowlAction.Tidy)
+                if (_action == EBowlAction.Tidy)
                 {
                     AttachToParentWithOldPosition();
                     MyColliderMeshComponent.SetSimulatePhysics(false);
@@ -137,7 +137,7 @@ namespace HelloUSharp
             }
         }
 
-        void NewBowlTurnHasStarted(bool _roundIsOver, BowlAction _action)
+        void NewBowlTurnHasStarted(bool _roundIsOver, EBowlAction _action)
         {
             if (MyColliderMeshComponent != null)
             {

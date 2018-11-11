@@ -51,29 +51,6 @@ namespace HelloUSharp
         private AActor _owner = null;
 
         [UPropertyIngore]
-        public FName BallTag => new FName("Ball");
-        [UPropertyIngore]
-        public FName PinTag => new FName("Pin");
-        [UPropertyIngore]
-        public FName PinManagerTag => new FName("PinManager");
-        [UPropertyIngore]
-        public FName BowlingFloorTag => new FName("BowlingFloor");
-
-        [UPropertyIngore]
-        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
-        #endregion
-
-        #region UProperties
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
-        public float MinimalForwardLaunchVelocity { get; set; }
-
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
-        public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
-
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
-        public float ForwardMultipleVelocityFactor { get; set; }
-
-        [UPropertyIngore]
         public int StandingPinCount
         {
             get { return _standingPinCount; }
@@ -85,102 +62,26 @@ namespace HelloUSharp
         }
         private int _standingPinCount = 0;
 
-        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
-        public ULevelSequence CleanUpSweepLevelSequence { get; set; }
-
-        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
-        public ULevelSequence ClearSweepLevelSequence { get; set; }
-
         /// <summary>
         /// Should Start At 1 Before Taking First Bowl Turn,
         /// Gets AllTurnsList Starting at 0, Excludes Final Turn Number
         /// </summary>
-        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
+        [UPropertyIngore]
         public int BowlTurnCount { get; set; }
-        #endregion
 
-        #region BowlUProperties
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame01_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame01_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame01_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame02_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame02_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame02_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame03_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame03_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame03_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame04_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame04_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame04_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame05_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame05_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame05_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame06_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame06_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame06_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame07_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame07_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame07_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame08_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame08_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame08_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame09_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame09_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame09_Results { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame10_BowlA { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame10_BowlB { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame10_BowlC { get; set; }
-        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowl Scores")]
-        public int Frame10_Results { get; set; }
-        #endregion
+        [UPropertyIngore]
+        public FName BallTag => new FName("Ball");
+        [UPropertyIngore]
+        public FName PinTag => new FName("Pin");
+        [UPropertyIngore]
+        public FName PinManagerTag => new FName("PinManager");
+        [UPropertyIngore]
+        public FName BowlingFloorTag => new FName("BowlingFloor");
 
-        #region Fields
-        protected APlayerCameraManager myCameraManager = null;
-        protected BowlingBallComponent myBall = null;
-        protected MyBowlPlayerComponent myBowler = null;
+        [UPropertyIngore]
+        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
 
-        private FVector2D dragStart, dragEnd;
-        private float startTime, endTime;
-
-        private AStaticMeshActor BowlFloorMeshActor = null;
-        private float boundsYLeftEdge;
-        private float boundsYRightEdge;
-        private float boundsYPaddingCheck = 10.0f;
-
-        protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
-
-        private int lastSettledCount = 10;
-
+        [UPropertyIngore]
         private List<int> AllBowlFrameResults
         {
             get
@@ -201,6 +102,7 @@ namespace HelloUSharp
             }
         }
 
+        [UPropertyIngore]
         private List<int> AllBowlFrameTurns
         {
             get
@@ -220,6 +122,106 @@ namespace HelloUSharp
                 };
             }
         }
+        #endregion
+
+        #region UProperties
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public float MinimalForwardLaunchVelocity { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public TSubclassOf<AActor> BowlingBallSubClassReference { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
+        public float ForwardMultipleVelocityFactor { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
+        public ULevelSequence CleanUpSweepLevelSequence { get; set; }
+
+        [UProperty, EditAnywhere, BlueprintReadOnly, Category("Bowling")]
+        public ULevelSequence ClearSweepLevelSequence { get; set; }
+        #endregion
+
+        #region BowlUProperties
+        [UPropertyIngore]
+        public int Frame01_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame01_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame01_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame02_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame02_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame02_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame03_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame03_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame03_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame04_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame04_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame04_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame05_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame05_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame05_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame06_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame06_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame06_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame07_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame07_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame07_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame08_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame08_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame08_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame09_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame09_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame09_Results { get; set; }
+        [UPropertyIngore]
+        public int Frame10_BowlA { get; set; }
+        [UPropertyIngore]
+        public int Frame10_BowlB { get; set; }
+        [UPropertyIngore]
+        public int Frame10_BowlC { get; set; }
+        [UPropertyIngore]
+        public int Frame10_Results { get; set; }
+        #endregion
+
+        #region Fields
+        protected APlayerCameraManager myCameraManager = null;
+        protected BowlingBallComponent myBall = null;
+        protected MyBowlPlayerComponent myBowler = null;
+
+        private FVector2D dragStart, dragEnd;
+        private float startTime, endTime;
+
+        private AStaticMeshActor BowlFloorMeshActor = null;
+        private float boundsYLeftEdge;
+        private float boundsYRightEdge;
+        private float boundsYPaddingCheck = 10.0f;
+
+        protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
+
+        private int lastSettledCount = 10;
         #endregion
 
         #region Overrides
@@ -414,7 +416,7 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void OnSendBowlActionResults(BowlAction _action)
+        void OnSendBowlActionResults(EBowlAction _action)
         {
             if (CleanUpSweepLevelSequence == null ||
                 ClearSweepLevelSequence == null)
@@ -432,7 +434,7 @@ namespace HelloUSharp
                 PlayRate = 1.0f
             };
 
-            if (_action != BowlAction.Tidy)
+            if (_action != EBowlAction.Tidy)
             {
                 _myPlayer = ULevelSequencePlayer.CreateLevelSequencePlayer(this, ClearSweepLevelSequence, _settings, out _mySequenceActor);
             }
@@ -450,14 +452,14 @@ namespace HelloUSharp
         {
             int _pinFall = GetPinFallCount();
             lastSettledCount = StandingPinCount;
-            BowlAction _action = Bowl(_pinFall);
+            EBowlAction _action = Bowl(_pinFall);
             if (BowlTurnCount >= 19)
             {
                 //TODO: End Game Event
             }
             //If Action Is Tidy Or Bowlturn is the Second One.
             //Second Turns Are Even Except For the Last Few Turns.
-            else if (_action == BowlAction.Tidy ||
+            else if (_action == EBowlAction.Tidy ||
                 BowlTurnCount % 2 == 0)
             {
                 BowlTurnCount += 1;
@@ -478,9 +480,9 @@ namespace HelloUSharp
             StandingPinCount--;
         }
 
-        void ResetPinCount(bool _roundIsOver, BowlAction _action)
+        void ResetPinCount(bool _roundIsOver, EBowlAction _action)
         {
-            if(_action != BowlAction.Tidy)
+            if(_action != EBowlAction.Tidy)
             {
                 StandingPinCount = 10;
                 lastSettledCount = 10;
@@ -662,18 +664,18 @@ namespace HelloUSharp
         #endregion
 
         #region SweepingAnimationWaitCalls
-        public void WaitTillSweepingIsDone(float _animLength, BowlAction _action)
+        public void WaitTillSweepingIsDone(float _animLength, EBowlAction _action)
         {
             StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength, _action));
         }
 
-        private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength, BowlAction _action)
+        private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength, EBowlAction _action)
         {
             yield return new WaitForSeconds(_animLength);
             CallNewTurnIsReadyAfterWaiting(_action);
         }
 
-        void CallNewTurnIsReadyAfterWaiting(BowlAction _action)
+        void CallNewTurnIsReadyAfterWaiting(EBowlAction _action)
         {
             gamemaster.CallBowlNewTurnIsReady(_action);
         }
@@ -681,7 +683,7 @@ namespace HelloUSharp
 
         #region Bowling
         [UFunctionIgnore]
-        public BowlAction Bowl(int pinFall)
+        public EBowlAction Bowl(int pinFall)
         {
             SetCurrentBowlTurnValue(pinFall);
             List<int> _rolls = GetBowlTurnListFromCount();

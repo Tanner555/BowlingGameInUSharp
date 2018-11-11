@@ -103,7 +103,7 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void NewTurnIsReady(bool _roundIsOver, BowlAction _action)
+        void NewTurnIsReady(bool _roundIsOver, EBowlAction _action)
         {
             if (MyMeshComponent == null) return;
 

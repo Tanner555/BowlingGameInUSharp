@@ -103,9 +103,9 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void BowlNewTurnIsReady(bool _isRoundOver, BowlAction _action)
+        void BowlNewTurnIsReady(bool _isRoundOver, EBowlAction _action)
         {
-            if(_action != BowlAction.Tidy)
+            if(_action != EBowlAction.Tidy)
             {
                 RespawnPins();
             }
