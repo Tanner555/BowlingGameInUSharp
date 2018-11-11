@@ -45,9 +45,17 @@ namespace HelloUSharp
         protected List<FVector> PinLocations = new List<FVector>();
         //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Pin Management")]
         private UClass PinPrefabClass = null;
+        private Dictionary<string, bool> AllPinsStandingDictionary = new Dictionary<string, bool>();
         #endregion
 
         #region Getter
+        List<AActor> GetAllPins()
+        {
+            List<AActor> outPinActors;
+            UGameplayStatics.GetAllActorsWithTag(MyOwner, gamemode.PinTag, out outPinActors);
+            return outPinActors;
+        }
+
         public static PinManagerComponent GetInstance(UObject worldContextObject)
         {
             var _instanceHelper = ThisInstance.Get(worldContextObject);
@@ -77,9 +85,8 @@ namespace HelloUSharp
 
         protected override void ReceiveBeginPlay_Implementation()
         {
-            List<AActor> outPinActors;
-            UGameplayStatics.GetAllActorsWithTag(MyOwner, gamemode.PinTag, out outPinActors);
-            if(outPinActors != null && outPinActors.Count > 0 &&
+            List<AActor> outPinActors = GetAllPins();
+            if (outPinActors != null && outPinActors.Count > 0 &&
                 outPinActors[0] != null)
             {
                 PinPrefabClass = outPinActors[0].GetClass();
@@ -90,7 +97,12 @@ namespace HelloUSharp
                 //AttachPinToManager(_pin);
                 PinLocations.Add(_pin.GetActorLocation());
             }
+
+            InitializePinStandingDictionary(outPinActors);
+
             gamemaster.BowlNewTurnIsReady += BowlNewTurnIsReady;
+            gamemaster.OnPinHasFallen += PinHasFallen;
+            gamemaster.OnPinHasGottenBackUp += PinGottenBackUp;
         }
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
@@ -98,33 +110,49 @@ namespace HelloUSharp
             if(gamemaster != null)
             {
                 gamemaster.BowlNewTurnIsReady -= BowlNewTurnIsReady;
+                gamemaster.OnPinHasFallen -= PinHasFallen;
+                gamemaster.OnPinHasGottenBackUp -= PinGottenBackUp;
             }
         }
         #endregion
 
         #region Handlers
+        void PinHasFallen(BowlingPinComponent _pin)
+        {
+            UpdatePinHasStandingDictionary(_pin, true);
+        }
+
+        void PinGottenBackUp(BowlingPinComponent _pin)
+        {
+            UpdatePinHasStandingDictionary(_pin, false);
+        }
+
         void BowlNewTurnIsReady(bool _isRoundOver, EBowlAction _action)
         {
             if(_action != EBowlAction.Tidy)
             {
-                RespawnPins();
+                List<AActor> _outPins = RespawnPins();
+                InitializePinStandingDictionary(_outPins);
             }
         }
         #endregion
 
         #region Spawn-Attach-Pins
-        public void RespawnPins()
+        public List<AActor> RespawnPins()
         {
+            List<AActor> _outPins = new List<AActor>();
             if (PinPrefabClass == null)
             {
                 MyOwner.PrintString("No PinPrefab On Pin Manager BP", FLinearColor.Red, printToLog: true);
-                return;
+                return null;
             }
 
             foreach (var _pinLocation in PinLocations)
             {
-                SpawnPin(_pinLocation);
+                _outPins.Add(SpawnPin(_pinLocation));
             }
+
+            return _outPins;
         }
 
         AActor SpawnPin(FVector _pinLocation)
@@ -138,6 +166,35 @@ namespace HelloUSharp
             _pin.AttachToActor(MyOwner, new FName("None"),
                 EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld,
                 EAttachmentRule.KeepWorld, true);
+        }
+        #endregion
+
+        #region PinFallenDictionaryHandling
+        void InitializePinStandingDictionary(List<AActor> pinActors)
+        {
+            AllPinsStandingDictionary = new Dictionary<string, bool>();
+            foreach (AActor _pin in pinActors)
+            {
+                if(_pin != null)
+                {
+                    AllPinsStandingDictionary.Add(_pin.GetName(), true);
+                }
+            }
+        }
+
+        void UpdatePinHasStandingDictionary(BowlingPinComponent _pin, bool _fallen)
+        {
+            string _key = _pin.MyOwner.GetName();
+            if (AllPinsStandingDictionary.ContainsKey(_key))
+            {
+                AllPinsStandingDictionary[_key] = !_fallen;
+                int _pinStandingCount = 0;
+                foreach (bool _pinStanding in AllPinsStandingDictionary.Values)
+                {
+                    if (_pinStanding) _pinStandingCount++;
+                }
+                gamemaster.CallOnUpdatePinCount(_pinStandingCount);
+            }
         }
         #endregion
     }

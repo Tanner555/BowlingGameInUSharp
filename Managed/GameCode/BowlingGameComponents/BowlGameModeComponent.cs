@@ -241,7 +241,7 @@ namespace HelloUSharp
             myBowler = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
             StandingPinCount = 10;
             BowlTurnCount = 1;
-            gamemaster.OnPinHasFallen += UpdatePinCount;
+            gamemaster.OnUpdatePinCount += UpdatePinCount;
             gamemaster.BowlNewTurnIsReady += ResetPinCount;
             gamemaster.BowlTurnIsFinished += OnTurnIsFinished;
             gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
@@ -277,7 +277,7 @@ namespace HelloUSharp
             StopAllCoroutines();
             if(gamemaster != null)
             {
-                gamemaster.OnPinHasFallen -= UpdatePinCount;
+                gamemaster.OnUpdatePinCount -= UpdatePinCount;
                 gamemaster.BowlNewTurnIsReady -= ResetPinCount;
                 gamemaster.BowlTurnIsFinished -= OnTurnIsFinished;
                 gamemaster.OnSendBowlActionResults -= OnSendBowlActionResults;
@@ -475,9 +475,9 @@ namespace HelloUSharp
             gamemaster.CallOnSendBowlActionResults(_action);
         }
 
-        void UpdatePinCount(BowlingPinComponent _pin)
+        void UpdatePinCount(int _pinCount)
         {
-            StandingPinCount--;
+            StandingPinCount = _pinCount;
         }
 
         void ResetPinCount(bool _roundIsOver, EBowlAction _action)

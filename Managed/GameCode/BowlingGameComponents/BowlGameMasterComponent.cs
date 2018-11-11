@@ -58,6 +58,7 @@ namespace HelloUSharp
         public delegate void GeneralEventHandler();
         public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
         public delegate void OneFloatArgHandler(float famount);
+        public delegate void OneIntArgHandler(int iamount);
         public delegate void OneBoolArgHandler(bool _isTrue);
         public delegate void OneBoolOneBowlActionArgHandler(bool _isTrue, EBowlAction _action);
         public delegate void OnePinArgHandler(BowlingPinComponent _pin);
@@ -112,12 +113,18 @@ namespace HelloUSharp
         #endregion
 
         #region Events
+        /// <summary>
+        /// Isn't Called On Begin Play, Only After Pin Sweep Is Finished
+        /// </summary>
         public event OneBoolOneBowlActionArgHandler BowlNewTurnIsReady;
+
         public event OneBoolArgHandler BowlTurnIsFinished;
         public event FVectorAndBallRefHandler OnBallLaunch;
         public event OneFloatArgHandler OnNudgeBallLeft;
         public event OneFloatArgHandler OnNudgeBallRight;
         public event OnePinArgHandler OnPinHasFallen;
+        public event OnePinArgHandler OnPinHasGottenBackUp;
+        public event OneIntArgHandler OnUpdatePinCount;
         public event BowlActionArgHandler OnSendBowlActionResults;
         //Debug
         public event GeneralEventHandler Debug_OnSimulateStrike;
@@ -169,6 +176,16 @@ namespace HelloUSharp
             //{
             //    OnPinHasFallenDelegate.Invoke(_pin);
             //}
+        }
+
+        public void CallOnPinHasGottenBackUp(BowlingPinComponent _pin)
+        {
+            if (OnPinHasGottenBackUp != null) OnPinHasGottenBackUp(_pin);
+        }
+
+        public void CallOnUpdatePinCount(int _pinCount)
+        {
+            if (OnUpdatePinCount != null) OnUpdatePinCount(_pinCount);
         }
 
         public void CallUpdatePinCount(int _count)

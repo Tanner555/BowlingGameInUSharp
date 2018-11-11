@@ -141,17 +141,28 @@ namespace HelloUSharp
             FVector _rotationInEuler = MyOwner.GetActorRotation().Euler();
             float _tiltInX = FMath.Abs(_rotationInEuler.X);
             float _tiltInY = FMath.Abs(_rotationInEuler.Y);
-            bPinHasFallen = _tiltInX > standingThreshold && _tiltInY > standingThreshold;
+            bool _previouslyFallen = bPinHasFallen;
+            bPinHasFallen = _tiltInX > standingThreshold || _tiltInY > standingThreshold;
 
             if (bDebugInstantStrike)
             {
                 bPinHasFallen = true;
             }
 
-            if (bPinHasFallen)
+            if (bPinHasFallen && _previouslyFallen != bPinHasFallen)
             {
                 gamemaster.CallOnPinHasFallen(this);
             }
+            else if(bPinHasFallen == false && 
+                _previouslyFallen != bPinHasFallen &&
+                bDebugInstantStrike == false)
+            {
+                //If Pin Has Gotten Back Up Because
+                //Pin Has Fallen, But Now PinHasFallen Equals False
+                //MyOwner.PrintString("Pin has gotten back up", FLinearColor.Green, printToLog: true);
+                gamemaster.CallOnPinHasGottenBackUp(this);
+            }
+
             return bPinHasFallen;
         }
         #endregion
