@@ -75,6 +75,7 @@ namespace HelloUSharp
             gamemaster.OnNudgeBallLeft += NudgeBallLeft;
             gamemaster.OnNudgeBallRight += NudgeBallRight;
             gamemaster.BowlNewTurnIsReady += NewTurnIsReady;
+            gamemaster.OnWinGame += OnWinGame;
 
             MyStartLocation = MyOwner.GetActorLocation();
             MyStartRotation = MyOwner.GetActorRotation();
@@ -111,6 +112,7 @@ namespace HelloUSharp
                 gamemaster.OnNudgeBallLeft -= NudgeBallLeft;
                 gamemaster.OnNudgeBallRight -= NudgeBallRight;
                 gamemaster.BowlNewTurnIsReady -= NewTurnIsReady;
+                gamemaster.OnWinGame -= OnWinGame;
             }
         }
         #endregion
@@ -140,6 +142,11 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
+        void OnWinGame()
+        {
+            OnWinGameImplementEvent();
+        }
+
         void NewTurnIsReady(bool _roundIsOver, EBowlAction _action)
         {
             MyOwner.SetActorLocation(
@@ -178,6 +185,14 @@ namespace HelloUSharp
             MyOwner.SetActorLocation(
                 MyOwner.GetActorLocation() +
                 new FVector(0, famount, 0), false, out _hit, false);
+        }
+        #endregion
+
+        #region BlueprintImplementableEvents
+        [UFunction, BlueprintImplementedEvent]
+        public void OnWinGameImplementEvent()
+        {
+
         }
         #endregion
 

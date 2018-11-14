@@ -453,9 +453,14 @@ namespace HelloUSharp
             int _pinFall = GetPinFallCount();
             lastSettledCount = StandingPinCount;
             EBowlAction _action = Bowl(_pinFall);
-            if (BowlTurnCount >= 19)
+            if(BowlTurnCount >= 21)
             {
-                //TODO: End Game Event
+                MyOwner.PrintString("Won Game From C#", FLinearColor.Green, printToLog: true);
+                gamemaster.CallOnWinGame();
+            }
+            else if (BowlTurnCount >= 19)
+            {
+                BowlTurnCount += 1;
             }
             //If Action Is Tidy Or Bowlturn is the Second One.
             //Second Turns Are Even Except For the Last Few Turns.

@@ -92,6 +92,8 @@ namespace HelloUSharp
         public OneIntArgDelegateHandler UpdatePinCountDelegate { get; set; }
         //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
         //public OnePinArgDelegateHandler OnPinHasFallenDelegate { get; set; }
+        //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
+        //public GeneralDelegateHandler OnWinGameDelegate { get; set; }
         #endregion
 
         #region Overrides
@@ -126,6 +128,7 @@ namespace HelloUSharp
         public event OnePinArgHandler OnPinHasGottenBackUp;
         public event OneIntArgHandler OnUpdatePinCount;
         public event BowlActionArgHandler OnSendBowlActionResults;
+        public event GeneralEventHandler OnWinGame;
         //Debug
         public event GeneralEventHandler Debug_OnSimulateStrike;
         #endregion
@@ -199,6 +202,11 @@ namespace HelloUSharp
         public void CallOnSendBowlActionResults(EBowlAction _action)
         {
             if (OnSendBowlActionResults != null) OnSendBowlActionResults(_action);
+        }
+
+        public void CallOnWinGame()
+        {
+            if (OnWinGame != null) OnWinGame();
         }
 
         //Debug
