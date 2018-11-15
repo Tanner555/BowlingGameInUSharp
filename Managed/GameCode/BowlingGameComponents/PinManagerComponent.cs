@@ -127,7 +127,7 @@ namespace HelloUSharp
             UpdatePinHasStandingDictionary(_pin, false);
         }
 
-        void BowlNewTurnIsReady(bool _isRoundOver, EBowlAction _action)
+        void BowlNewTurnIsReady(EBowlAction _action)
         {
             if(_action != EBowlAction.Tidy)
             {

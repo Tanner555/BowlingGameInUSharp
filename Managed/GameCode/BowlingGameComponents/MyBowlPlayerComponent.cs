@@ -147,7 +147,7 @@ namespace HelloUSharp
             OnWinGameImplementEvent();
         }
 
-        void NewTurnIsReady(bool _roundIsOver, EBowlAction _action)
+        void NewTurnIsReady(EBowlAction _action)
         {
             MyOwner.SetActorLocation(
                 MyStartLocation, false, out myHit, false

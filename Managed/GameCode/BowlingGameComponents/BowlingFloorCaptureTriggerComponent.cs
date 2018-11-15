@@ -56,7 +56,7 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void CancelTriggerCoroutines(bool _roundIsOver)
+        void CancelTriggerCoroutines()
         {
             StopAllCoroutines();
         }

@@ -453,7 +453,7 @@ namespace HelloUSharp
             WaitTillSweepingIsDone(_waitLength, _action);
         }
 
-        void OnTurnIsFinished(bool _isRoundOver)
+        void OnTurnIsFinished()
         {
             EBowlAction _action = Bowl();
             SetResultsFromFrameTurns();
@@ -465,7 +465,7 @@ namespace HelloUSharp
             StandingPinCount = _pinCount;
         }
 
-        void ResetPinCount(bool _roundIsOver, EBowlAction _action)
+        void ResetPinCount(EBowlAction _action)
         {
             if(_action != EBowlAction.Tidy)
             {
@@ -581,12 +581,6 @@ namespace HelloUSharp
             {
                 gamemaster.CallBowlTurnIsFinished();
             }
-        }
-
-        [UFunction, BlueprintCallable]
-        public bool IsPlayerRoundCompletelyOver()
-        {
-            return false;
         }
 
         [UFunction, BlueprintCallable]

@@ -60,7 +60,7 @@ namespace HelloUSharp
         public delegate void OneFloatArgHandler(float famount);
         public delegate void OneIntArgHandler(int iamount);
         public delegate void OneBoolArgHandler(bool _isTrue);
-        public delegate void OneBoolOneBowlActionArgHandler(bool _isTrue, EBowlAction _action);
+        //public delegate void OneBoolOneBowlActionArgHandler(bool _isTrue, EBowlAction _action);
         public delegate void OnePinArgHandler(BowlingPinComponent _pin);
         public delegate void BowlActionArgHandler(EBowlAction _action);
         #endregion
@@ -86,8 +86,8 @@ namespace HelloUSharp
             public delegate void Signature(int _number);
         }
 
-        [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
-        public OneBoolArgDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
+        //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
+        //public OneBoolArgDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
         [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
         public OneIntArgDelegateHandler UpdatePinCountDelegate { get; set; }
         //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
@@ -118,9 +118,9 @@ namespace HelloUSharp
         /// <summary>
         /// Isn't Called On Begin Play, Only After Pin Sweep Is Finished
         /// </summary>
-        public event OneBoolOneBowlActionArgHandler BowlNewTurnIsReady;
+        public event BowlActionArgHandler BowlNewTurnIsReady;
 
-        public event OneBoolArgHandler BowlTurnIsFinished;
+        public event GeneralEventHandler BowlTurnIsFinished;
         public event FVectorAndBallRefHandler OnBallLaunch;
         public event OneFloatArgHandler OnNudgeBallLeft;
         public event OneFloatArgHandler OnNudgeBallRight;
@@ -145,8 +145,7 @@ namespace HelloUSharp
         {
             bBowlTurnIsOver = false;
             bCanLaunchBall = true;
-            bool _bPlayerRoundIsOver = gamemode.IsPlayerRoundCompletelyOver();
-            if (BowlNewTurnIsReady != null) BowlNewTurnIsReady(_bPlayerRoundIsOver, _action);
+            if (BowlNewTurnIsReady != null) BowlNewTurnIsReady(_action);
         }
 
         public void CallBowlTurnIsFinished()
@@ -155,12 +154,7 @@ namespace HelloUSharp
             if (bBowlTurnIsOver) return;
 
             bBowlTurnIsOver = true;
-            bool _bPlayerRoundIsOver = gamemode.IsPlayerRoundCompletelyOver();
-            if (BowlTurnIsFinished != null) BowlTurnIsFinished(_bPlayerRoundIsOver);
-            if (BowlTurnIsFinishedDelegate.IsBound)
-            {
-                BowlTurnIsFinishedDelegate.Invoke(_bPlayerRoundIsOver);
-            }
+            if (BowlTurnIsFinished != null) BowlTurnIsFinished();
         }
 
         public void CallOnNudgeBallLeft(float famount)

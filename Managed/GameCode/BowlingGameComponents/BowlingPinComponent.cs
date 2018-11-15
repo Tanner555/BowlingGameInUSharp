@@ -9,6 +9,7 @@ using UnrealEngine;
 using UnrealEngine.GameplayTasks;
 using UnrealEngine.SlateCore;
 using UnrealEngine.NavigationSystem;
+using System.Collections;
 
 namespace HelloUSharp
 {
@@ -35,12 +36,29 @@ namespace HelloUSharp
             }
         }
         private AActor _owner = null;
+
+        [UPropertyIngore]
+        public UAudioComponent MyAudioSourceComponent { get; set; }
         #endregion
 
         #region UProperties
         [UProperty, EditAnywhere, BlueprintReadWrite, Category("Bowling")]
         public UStaticMeshComponent MyColliderMeshComponent { get; set; }
 
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
+        public USoundBase PinStrikeSoundVolume1 { get; set; }
+
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
+        public USoundBase PinStrikeSoundVolume2 { get; set; }
+
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
+        public USoundBase PinStrikeSoundVolume3 { get; set; }
+
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
+        public USoundBase PinStrikeSoundVolume4 { get; set; }
+
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
+        public USoundBase PinStrikeSoundVolume5 { get; set; }
         #endregion
 
         #region Overrides
@@ -51,6 +69,8 @@ namespace HelloUSharp
 
         protected override void ReceiveBeginPlay_Implementation()
         {
+            gamemaster.BowlTurnIsFinished += OnTurnIsFinished;
+            gamemaster.OnWinGame += OnTurnIsFinished;
             gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
             gamemaster.BowlNewTurnIsReady += NewBowlTurnHasStarted;
             gamemaster.Debug_OnSimulateStrike += OnSimulateStrike;
@@ -66,16 +86,50 @@ namespace HelloUSharp
         {
             if (Other != null && Other.ActorHasTag(gamemode.BallTag))
             {
-                
+                if(bHitFirstPin.Get(this) == false)
+                {
+                    bHitFirstPin.Set(this, true);
+                    if (MyAudioSourceComponent == null)
+                    {
+                        MyOwner.PrintString("Please Assign an audio component to the uproperty", FLinearColor.OrangeRed);
+                    }
+                    else if (PinStrikeSoundVolume1 == null)
+                    {
+                        MyOwner.PrintString("Please Assign a sound clip to the PinStrikeSoundVolume1 sound uproperty", FLinearColor.OrangeRed);
+                    }
+                    else if (PinStrikeSoundVolume2 == null)
+                    {
+                        MyOwner.PrintString("Please Assign a sound clip to the PinStrikeSoundVolume2 sound uproperty", FLinearColor.OrangeRed);
+                    }
+                    else if (PinStrikeSoundVolume3 == null)
+                    {
+                        MyOwner.PrintString("Please Assign a sound clip to the PinStrikeSoundVolume3 sound uproperty", FLinearColor.OrangeRed);
+                    }
+                    else if (PinStrikeSoundVolume4 == null)
+                    {
+                        MyOwner.PrintString("Please Assign a sound clip to the PinStrikeSoundVolume4 sound uproperty", FLinearColor.OrangeRed);
+                    }
+                    else if (PinStrikeSoundVolume5 == null)
+                    {
+                        MyOwner.PrintString("Please Assign a sound clip to the PinStrikeSoundVolume5 sound uproperty", FLinearColor.OrangeRed);
+                    }
+                    else
+                    {
+                        StartCoroutine(this, WaitForBallToHitPins(pinStrikeSoundWaitTime, Other.GetVelocity(), Other));
+                    }
+                }
             }
         }
 
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
+            StopAllCoroutines();
             //MyOwner.DetachFromActor(EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld);
             //GetOwner().PrintString("Ending Play", FLinearColor.Green, printToLog: true);
             if(gamemaster != null)
             {
+                gamemaster.BowlTurnIsFinished -= OnTurnIsFinished;
+                gamemaster.OnWinGame -= OnTurnIsFinished;
                 gamemaster.OnSendBowlActionResults -= OnSendBowlActionResults;
                 gamemaster.BowlNewTurnIsReady -= NewBowlTurnHasStarted;
                 gamemaster.Debug_OnSimulateStrike -= OnSimulateStrike;
@@ -94,9 +148,20 @@ namespace HelloUSharp
         bool bPinHasFallen = false;
         float standingThreshold = 15f;
         bool bDebugInstantStrike = false;
+
+        protected static WorldStaticVar<bool> bHitFirstPin = new WorldStaticVar<bool>();
+        float pinStrikeSoundWaitTime = 0.5f;
         #endregion
 
         #region Handlers
+        /// <summary>
+        /// Also Called When Won Game 
+        /// </summary>
+        void OnTurnIsFinished()
+        {
+            StopAllCoroutines();
+        }
+
         void OnSendBowlActionResults(EBowlAction _action)
         {
             var _pinManager = pinManager;
@@ -118,8 +183,13 @@ namespace HelloUSharp
             }
         }
 
-        void NewBowlTurnHasStarted(bool _roundIsOver, EBowlAction _action)
+        void NewBowlTurnHasStarted(EBowlAction _action)
         {
+            if(bHitFirstPin.Get(this) == true)
+            {
+                bHitFirstPin.Set(this, false);
+            }
+
             if (bPinHasFallen)
             {
                 //Destroy Pin If It Hasn't Been Sweeped Into the Floor
@@ -174,9 +244,10 @@ namespace HelloUSharp
 
         #region Initialization
         [UFunction, BlueprintCallable]
-        public void MyBeginPlayInitializer(UStaticMeshComponent _collidermesh)
+        public void MyBeginPlayInitializer(UStaticMeshComponent _collidermesh, UAudioComponent _uaudiocomponent)
         {
             MyColliderMeshComponent = _collidermesh;
+            MyAudioSourceComponent = _uaudiocomponent;
             MyBeginPlayPostInitialization();
         }
 
@@ -208,6 +279,19 @@ namespace HelloUSharp
         #endregion
 
         #region OtherMethods
+        IEnumerator WaitForBallToHitPins(float _waitLength, FVector _velocity, AActor _other)
+        {
+            yield return new WaitForSeconds(_waitLength);
+            PlayPinStrikeSounds(_velocity, _other);
+        }
+
+        void PlayPinStrikeSounds(FVector _velocity, AActor _other)
+        {
+            MyOwner.PrintString("Ready To Pin Strike With Velocity: " + _velocity.ToString(), FLinearColor.Green, printToLog: true);
+            MyAudioSourceComponent.Sound = PinStrikeSoundVolume4;
+            MyAudioSourceComponent.Play();
+        }
+
         void AttachToParentWithOldPosition()
         {
             var _pinManagerBP = pinManager.MyOwner;

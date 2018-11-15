@@ -103,7 +103,7 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void NewTurnIsReady(bool _roundIsOver, EBowlAction _action)
+        void NewTurnIsReady(EBowlAction _action)
         {
             if (MyMeshComponent == null) return;
 
@@ -120,7 +120,7 @@ namespace HelloUSharp
 
         //Only Public Because I was testing Delegate Binding
         [UFunction, BlueprintCallable]
-        public void BowlTurnIsFinished(bool _playerRoundIsOver)
+        public void BowlTurnIsFinished()
         {
             //MyOwner.PrintString("BowlTurnIsFinishedd", FLinearColor.Green);
         }
