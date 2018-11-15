@@ -222,7 +222,7 @@ namespace HelloUSharp
 
         protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
 
-        private int lastSettledCount = 10;
+        public int lastSettledCount = 10;
         #endregion
 
         #region Overrides

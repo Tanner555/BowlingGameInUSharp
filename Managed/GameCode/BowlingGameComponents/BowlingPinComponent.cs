@@ -115,7 +115,7 @@ namespace HelloUSharp
                     }
                     else
                     {
-                        StartCoroutine(this, WaitForBallToHitPins(pinStrikeSoundWaitTime, Other.GetVelocity(), Other));
+                        PlayPinStrikeSounds(Other.GetVelocity(), Other);
                     }
                 }
             }
@@ -279,16 +279,44 @@ namespace HelloUSharp
         #endregion
 
         #region OtherMethods
-        IEnumerator WaitForBallToHitPins(float _waitLength, FVector _velocity, AActor _other)
-        {
-            yield return new WaitForSeconds(_waitLength);
-            PlayPinStrikeSounds(_velocity, _other);
-        }
-
         void PlayPinStrikeSounds(FVector _velocity, AActor _other)
         {
-            MyOwner.PrintString("Ready To Pin Strike With Velocity: " + _velocity.ToString(), FLinearColor.Green, printToLog: true);
-            MyAudioSourceComponent.Sound = PinStrikeSoundVolume4;
+            int _settledPins = gamemode.lastSettledCount;
+            float _center = 50f;
+            float _otherYLoc = _other.GetActorLocation().Y;
+            float _offset = _otherYLoc >= 0 ?
+                FMath.Abs(_otherYLoc - _center) : FMath.Abs(_otherYLoc + _center);
+            float _highoffset = 350f;
+            float _offsetAsPercentageDecimal = (_offset / _highoffset);
+            float _highVelX = 2500f;
+            float _lowVelX = 1000f;
+            float _velX = FMath.Clamp(_other.GetVelocity().X, _lowVelX, _highVelX);
+            float _velXAsPercentageDecimal = ((_velX - _lowVelX) / (_highVelX - _lowVelX));
+            //The Less Pins, The Higher The Percentage
+            float _pinSettledPenaltyAsPercentage = 1 - (_settledPins / 10);
+            float _VelXMinusOffsetYDecimal = _velXAsPercentageDecimal - _offsetAsPercentageDecimal - _pinSettledPenaltyAsPercentage;
+            if (_offsetAsPercentageDecimal > 0.80f)
+            {
+                _VelXMinusOffsetYDecimal = FMath.Min(-0.5f, _VelXMinusOffsetYDecimal - 0.5f);
+            }
+
+            //MyOwner.PrintString($"Pin Strike. Vel: {_velX} VelAsPerc: {_velXAsPercentageDecimal} Off: {_offset} OffAsPerc: {_offsetAsPercentageDecimal} VelMinusOffset: {_VelXMinusOffsetYDecimal}", FLinearColor.Green, printToLog: true);
+            Random _ran = new Random();
+            if(_VelXMinusOffsetYDecimal <= -0.5)
+            {
+                MyAudioSourceComponent.Sound = _ran.Next(0, 2) == 0 ?
+                        PinStrikeSoundVolume1 : PinStrikeSoundVolume2;
+            }
+            else if(_VelXMinusOffsetYDecimal <= 0.2)
+            {
+                MyAudioSourceComponent.Sound = _ran.Next(0, 2) == 0 ?
+                        PinStrikeSoundVolume3 : PinStrikeSoundVolume4;
+            }
+            else
+            {
+                MyAudioSourceComponent.Sound = PinStrikeSoundVolume5;
+            }
+
             MyAudioSourceComponent.Play();
         }
 
