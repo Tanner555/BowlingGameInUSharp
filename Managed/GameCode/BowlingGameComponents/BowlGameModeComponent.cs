@@ -342,6 +342,7 @@ namespace HelloUSharp
             Frame08_Results = Frame08_BowlA + Frame08_BowlB;
             Frame09_Results = Frame09_BowlA + Frame09_BowlB;
             Frame10_Results = Frame10_BowlA + Frame10_BowlB + Frame10_BowlC;
+            UpdateBowlTurnFramesBPEvent();
         }
         
         public void SetCurrentBowlTurnValue(int _value)
@@ -415,6 +416,7 @@ namespace HelloUSharp
                     MyOwner.PrintString("Couldn't Set Bowl Turn At: " + BowlTurnCount, FLinearColor.Red, printToLog: true);
                     break;
             }
+            UpdateBowlTurnFramesBPEvent();
         }
         #endregion
 
