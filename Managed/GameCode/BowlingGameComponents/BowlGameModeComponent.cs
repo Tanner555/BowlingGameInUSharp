@@ -81,48 +81,6 @@ namespace HelloUSharp
 
         [UPropertyIngore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
-
-        [UPropertyIngore]
-        private List<int> AllBowlFrameResults
-        {
-            get
-            {
-                return new List<int>
-                {
-                    Frame01_BowlA, Frame01_BowlB, Frame01_Results,
-                    Frame02_BowlA, Frame02_BowlB, Frame02_Results,
-                    Frame03_BowlA, Frame03_BowlB, Frame03_Results,
-                    Frame04_BowlA, Frame04_BowlB, Frame04_Results,
-                    Frame05_BowlA, Frame05_BowlB, Frame05_Results,
-                    Frame06_BowlA, Frame06_BowlB, Frame06_Results,
-                    Frame07_BowlA, Frame07_BowlB, Frame07_Results,
-                    Frame08_BowlA, Frame08_BowlB, Frame08_Results,
-                    Frame09_BowlA, Frame09_BowlB, Frame09_Results,
-                    Frame10_BowlA, Frame10_BowlB, Frame10_BowlC, Frame10_Results
-                };
-            }
-        }
-
-        [UPropertyIngore]
-        private List<int> AllBowlFrameTurns
-        {
-            get
-            {
-                return new List<int>
-                {
-                    Frame01_BowlA, Frame01_BowlB,
-                    Frame02_BowlA, Frame02_BowlB,
-                    Frame03_BowlA, Frame03_BowlB,
-                    Frame04_BowlA, Frame04_BowlB,
-                    Frame05_BowlA, Frame05_BowlB,
-                    Frame06_BowlA, Frame06_BowlB,
-                    Frame07_BowlA, Frame07_BowlB,
-                    Frame08_BowlA, Frame08_BowlB,
-                    Frame09_BowlA, Frame09_BowlB,
-                    Frame10_BowlA, Frame10_BowlB, Frame10_BowlC
-                };
-            }
-        }
         #endregion
 
         #region UProperties
@@ -223,6 +181,9 @@ namespace HelloUSharp
         protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
 
         public int lastSettledCount = 10;
+
+        private List<int> AllBowlFrameResults = new List<int>();
+        private List<int> AllBowlFrameTurns = new List<int>();
         #endregion
 
         #region Overrides
@@ -236,6 +197,7 @@ namespace HelloUSharp
         {
             MyOwner.World.GetPlayerController(0).ShowMouseCursor = true;
 
+            InitializationBowlLists();
             List<AActor> ballActors;
             MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
             SetBallFromBallFindCollection(ballActors);
@@ -740,6 +702,39 @@ namespace HelloUSharp
                 BowlTurnCount += 2;
             }
             return _action;
+        }
+        #endregion
+
+        #region Initialization
+        void InitializationBowlLists()
+        {
+            AllBowlFrameTurns = new List<int>
+            {
+                Frame01_BowlA, Frame01_BowlB,
+                Frame02_BowlA, Frame02_BowlB,
+                Frame03_BowlA, Frame03_BowlB,
+                Frame04_BowlA, Frame04_BowlB,
+                Frame05_BowlA, Frame05_BowlB,
+                Frame06_BowlA, Frame06_BowlB,
+                Frame07_BowlA, Frame07_BowlB,
+                Frame08_BowlA, Frame08_BowlB,
+                Frame09_BowlA, Frame09_BowlB,
+                Frame10_BowlA, Frame10_BowlB, Frame10_BowlC
+            };
+
+            AllBowlFrameResults = new List<int>
+            {
+                Frame01_BowlA, Frame01_BowlB, Frame01_Results,
+                Frame02_BowlA, Frame02_BowlB, Frame02_Results,
+                Frame03_BowlA, Frame03_BowlB, Frame03_Results,
+                Frame04_BowlA, Frame04_BowlB, Frame04_Results,
+                Frame05_BowlA, Frame05_BowlB, Frame05_Results,
+                Frame06_BowlA, Frame06_BowlB, Frame06_Results,
+                Frame07_BowlA, Frame07_BowlB, Frame07_Results,
+                Frame08_BowlA, Frame08_BowlB, Frame08_Results,
+                Frame09_BowlA, Frame09_BowlB, Frame09_Results,
+                Frame10_BowlA, Frame10_BowlB, Frame10_BowlC, Frame10_Results
+            };
         }
         #endregion
 
