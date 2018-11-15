@@ -120,7 +120,12 @@ namespace HelloUSharp
 
         void NewBowlTurnHasStarted(bool _roundIsOver, EBowlAction _action)
         {
-            if (MyColliderMeshComponent != null)
+            if (bPinHasFallen)
+            {
+                //Destroy Pin If It Hasn't Been Sweeped Into the Floor
+                MyOwner.DestroyActor();
+            }
+            else if (MyColliderMeshComponent != null)
             {
                 MyColliderMeshComponent.SetSimulatePhysics(true);
             }
