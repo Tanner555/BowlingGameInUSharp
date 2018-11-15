@@ -455,7 +455,7 @@ namespace HelloUSharp
             int _pinFall = GetPinFallCount();
             lastSettledCount = StandingPinCount;
             EBowlAction _action = Bowl(_pinFall);
-            if(BowlTurnCount >= 21)
+            if(BowlTurnCount >= 21 || _action == EBowlAction.EndGame)
             {
                 MyOwner.PrintString("Won Game From C#", FLinearColor.Green, printToLog: true);
                 gamemaster.CallOnWinGame();
