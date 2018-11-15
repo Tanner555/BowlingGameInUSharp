@@ -74,6 +74,11 @@ namespace HelloUSharp
             gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
             gamemaster.BowlNewTurnIsReady += NewBowlTurnHasStarted;
             gamemaster.Debug_OnSimulateStrike += OnSimulateStrike;
+
+            if (bHitFirstPin.Get(this) == true)
+            {
+                bHitFirstPin.Set(this, false);
+            }
         }
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
