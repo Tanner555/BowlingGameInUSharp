@@ -452,8 +452,8 @@ namespace HelloUSharp
 
         void OnTurnIsFinished(bool _isRoundOver)
         {
-            SetResultsFromFrameTurns();
             EBowlAction _action = Bowl();
+            SetResultsFromFrameTurns();
             gamemaster.CallOnSendBowlActionResults(_action);
         }
 
@@ -477,10 +477,9 @@ namespace HelloUSharp
             int _lastMinuteYield = 0;
             while(BowlTurnCount < 19)
             {
-                SetResultsFromFrameTurns();
                 //Currently Set Random Value So That Two Values
                 //Will Never Be Over 10
-                BowlHelper(_random.Next(0, 5));
+                BowlHelper(_random.Next(0, 6));
                 //Used To Prevent The Game From Crashing
                 if (BowlTurnCount >= 20 || _lastMinuteYield >= 50)
                 {
@@ -488,8 +487,8 @@ namespace HelloUSharp
                     break;
                 }
                 _lastMinuteYield++;
+                SetResultsFromFrameTurns();
             }
-            SetResultsFromFrameTurns();
         }
         #endregion
 
