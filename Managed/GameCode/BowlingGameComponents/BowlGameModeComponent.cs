@@ -474,10 +474,20 @@ namespace HelloUSharp
         void Debug_Fill18ScoreSlots()
         {
             Random _random = new Random();
-            for (BowlTurnCount = 1; BowlTurnCount < 19; BowlTurnCount++)
+            int _lastMinuteYield = 0;
+            while(BowlTurnCount < 19)
             {
-                SetCurrentBowlTurnValue(_random.Next(0, 10));
-                BowlTurnCount++;
+                SetResultsFromFrameTurns();
+                //Currently Set Random Value So That Two Values
+                //Will Never Be Over 10
+                BowlHelper(_random.Next(0, 5));
+                //Used To Prevent The Game From Crashing
+                if (BowlTurnCount >= 20 || _lastMinuteYield >= 50)
+                {
+                    MyOwner.PrintString("Breaking Out Of Loop, No Crashing!", FLinearColor.Red);
+                    break;
+                }
+                _lastMinuteYield++;
             }
             SetResultsFromFrameTurns();
         }
@@ -680,6 +690,17 @@ namespace HelloUSharp
         {
             int _pinFall = GetPinFallCount();
             lastSettledCount = StandingPinCount;
+            return BowlHelper(_pinFall);
+        }
+
+        /// <summary>
+        /// Used For Helping Bowl Method And Generating Fake Bowl Results
+        /// </summary>
+        /// <param name="_pinFall"></param>
+        /// <returns></returns>
+        [UFunctionIgnore]
+        public EBowlAction BowlHelper(int _pinFall)
+        {
             //Old Bowl Method
             SetCurrentBowlTurnValue(_pinFall);
             List<int> _rolls = GetBowlTurnListFromCount();
