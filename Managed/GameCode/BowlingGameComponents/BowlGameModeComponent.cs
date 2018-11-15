@@ -58,6 +58,7 @@ namespace HelloUSharp
             {
                 _standingPinCount = value;
                 gamemaster.CallUpdatePinCount(_standingPinCount);
+                UpdatePinCountBPEvent(_standingPinCount);
             }
         }
         private int _standingPinCount = 0;
@@ -662,6 +663,20 @@ namespace HelloUSharp
         public int GetBowlTurnCount()
         {
             return BowlTurnCount;
+        }
+        #endregion
+
+        #region BlueprintImplementedEvents
+        [UFunction, BlueprintImplementedEvent]
+        public void UpdatePinCountBPEvent(int pinCount)
+        {
+
+        }
+
+        [UFunction, BlueprintImplementedEvent]
+        public void UpdateBowlTurnFramesBPEvent()
+        {
+
         }
         #endregion
 
