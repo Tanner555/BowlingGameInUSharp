@@ -452,33 +452,8 @@ namespace HelloUSharp
 
         void OnTurnIsFinished(bool _isRoundOver)
         {
-            int _pinFall = GetPinFallCount();
-            lastSettledCount = StandingPinCount;
-            EBowlAction _action = Bowl(_pinFall);
-            if(BowlTurnCount >= 21 || _action == EBowlAction.EndGame)
-            {
-                MyOwner.PrintString("Won Game From C#", FLinearColor.Green, printToLog: true);
-                gamemaster.CallOnWinGame();
-            }
-            else if (BowlTurnCount >= 19)
-            {
-                BowlTurnCount += 1;
-            }
-            //If Action Is Tidy Or Bowlturn is the Second One.
-            //Second Turns Are Even Except For the Last Few Turns.
-            else if (_action == EBowlAction.Tidy ||
-                BowlTurnCount % 2 == 0)
-            {
-                BowlTurnCount += 1;
-            }
-            //If Bowl Turn Count Is Not the Second One.
-            //Second Turns Are Even Except For the Last Few Turns.
-            else if(BowlTurnCount % 2 != 0)
-            {
-                //Most Likely End Of Turn
-                BowlTurnCount += 2;
-            }
             SetResultsFromFrameTurns();
+            EBowlAction _action = Bowl();
             gamemaster.CallOnSendBowlActionResults(_action);
         }
 
@@ -701,11 +676,39 @@ namespace HelloUSharp
 
         #region Bowling
         [UFunctionIgnore]
-        public EBowlAction Bowl(int pinFall)
+        public EBowlAction Bowl()
         {
-            SetCurrentBowlTurnValue(pinFall);
+            int _pinFall = GetPinFallCount();
+            lastSettledCount = StandingPinCount;
+            //Old Bowl Method
+            SetCurrentBowlTurnValue(_pinFall);
             List<int> _rolls = GetBowlTurnListFromCount();
-            return BowlActionMaster.NextAction(_rolls);
+            EBowlAction _action = BowlActionMaster.NextAction(_rolls);
+            //Old Bowl Method End
+            if (BowlTurnCount >= 21 || _action == EBowlAction.EndGame)
+            {
+                MyOwner.PrintString("Won Game From C#", FLinearColor.Green, printToLog: true);
+                gamemaster.CallOnWinGame();
+            }
+            else if (BowlTurnCount >= 19)
+            {
+                BowlTurnCount += 1;
+            }
+            //If Action Is Tidy Or Bowlturn is the Second One.
+            //Second Turns Are Even Except For the Last Few Turns.
+            else if (_action == EBowlAction.Tidy ||
+                BowlTurnCount % 2 == 0)
+            {
+                BowlTurnCount += 1;
+            }
+            //If Bowl Turn Count Is Not the Second One.
+            //Second Turns Are Even Except For the Last Few Turns.
+            else if (BowlTurnCount % 2 != 0)
+            {
+                //Most Likely End Of Turn
+                BowlTurnCount += 2;
+            }
+            return _action;
         }
         #endregion
 
