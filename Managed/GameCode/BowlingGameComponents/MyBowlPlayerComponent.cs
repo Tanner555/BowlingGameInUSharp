@@ -223,6 +223,12 @@ namespace HelloUSharp
         {
             gamemaster.CallDebug_OnSimulateStrike();
         }
+
+        [UFunction, BlueprintCallable]
+        public void Debug_Fill18ScoreSlots()
+        {
+            gamemaster.CallDebug_Fill18ScoreSlots();
+        }
         #endregion
     }
 }

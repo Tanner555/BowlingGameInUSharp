@@ -131,6 +131,7 @@ namespace HelloUSharp
         public event GeneralEventHandler OnWinGame;
         //Debug
         public event GeneralEventHandler Debug_OnSimulateStrike;
+        public event GeneralEventHandler Debug_Fill18ScoreSlots;
         #endregion
 
         #region EventCalls
@@ -215,6 +216,14 @@ namespace HelloUSharp
             if (Debug_OnSimulateStrike != null)
             {
                 Debug_OnSimulateStrike();
+            }
+        }
+
+        public void CallDebug_Fill18ScoreSlots()
+        {
+            if(Debug_Fill18ScoreSlots != null)
+            {
+                Debug_Fill18ScoreSlots();
             }
         }
         #endregion

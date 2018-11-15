@@ -245,6 +245,7 @@ namespace HelloUSharp
             gamemaster.BowlNewTurnIsReady += ResetPinCount;
             gamemaster.BowlTurnIsFinished += OnTurnIsFinished;
             gamemaster.OnSendBowlActionResults += OnSendBowlActionResults;
+            gamemaster.Debug_Fill18ScoreSlots += Debug_Fill18ScoreSlots;
 
             List<AActor> bowlFloorActors;
             MyOwner.World.GetAllActorsWithTag(BowlingFloorTag, out bowlFloorActors);
@@ -281,6 +282,7 @@ namespace HelloUSharp
                 gamemaster.BowlNewTurnIsReady -= ResetPinCount;
                 gamemaster.BowlTurnIsFinished -= OnTurnIsFinished;
                 gamemaster.OnSendBowlActionResults -= OnSendBowlActionResults;
+                gamemaster.Debug_Fill18ScoreSlots -= Debug_Fill18ScoreSlots;
             }
         }
         #endregion
@@ -492,6 +494,17 @@ namespace HelloUSharp
                 StandingPinCount = 10;
                 lastSettledCount = 10;
             }
+        }
+
+        void Debug_Fill18ScoreSlots()
+        {
+            Random _random = new Random();
+            for (BowlTurnCount = 1; BowlTurnCount < 19; BowlTurnCount++)
+            {
+                SetCurrentBowlTurnValue(_random.Next(0, 10));
+                BowlTurnCount++;
+            }
+            SetResultsFromFrameTurns();
         }
         #endregion
 
