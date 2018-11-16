@@ -144,7 +144,11 @@ namespace HelloUSharp
         #region Handlers
         void OnWinGame()
         {
-            OnWinGameImplementEvent();
+            //OnWinGameImplementEvent();
+            if (OnWinGameDelegate.IsBound)
+            {
+                OnWinGameDelegate.Invoke();
+            }
         }
 
         void NewTurnIsReady(EBowlAction _action)
@@ -194,6 +198,11 @@ namespace HelloUSharp
         {
 
         }
+        #endregion
+
+        #region TestingDelegates
+        [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
+        public BowlGameMasterComponent.GeneralDelegateHandler OnWinGameDelegate { get; set; }
         #endregion
 
         #region PublicUFunctions
