@@ -308,9 +308,10 @@ namespace HelloUSharp
         public List<int> GetBowlTurnListFromCount()
         {
             List<int> _bowlTurns = new List<int>();
+            List<int> _allbowlframeturns = AllBowlFrameTurns;
             for (int i = 0; i < BowlTurnCount; i++)
             {
-                _bowlTurns.Add(AllBowlFrameTurns[i]);
+                _bowlTurns.Add(_allbowlframeturns[i]);
             }
             return _bowlTurns;
         }
