@@ -64,7 +64,7 @@ namespace HelloUSharp
         #region Overrides
         public override void Initialize(FObjectInitializer initializer)
         {
-            //base.Initialize(initializer);
+            
         }
 
         protected override void ReceiveBeginPlay_Implementation()
@@ -83,7 +83,7 @@ namespace HelloUSharp
 
         protected override void ReceiveTick_Implementation(float DeltaSeconds)
         {
-            //base.ReceiveTick_Implementation(DeltaSeconds);
+            
         }
 
         [UFunction, BlueprintCallable]
@@ -120,7 +120,7 @@ namespace HelloUSharp
                     }
                     else
                     {
-                        PlayPinStrikeSounds(Other.GetVelocity(), Other);
+                        PlayPinStrikeSounds(Other);
                     }
                 }
             }
@@ -129,8 +129,7 @@ namespace HelloUSharp
         protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
         {
             StopAllCoroutines();
-            //MyOwner.DetachFromActor(EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld, EDetachmentRule.KeepWorld);
-            //GetOwner().PrintString("Ending Play", FLinearColor.Green, printToLog: true);
+
             if(gamemaster != null)
             {
                 gamemaster.BowlTurnIsFinished -= OnTurnIsFinished;
@@ -265,7 +264,6 @@ namespace HelloUSharp
         {
             if (pinManager != null)
             {
-                var _pinManagerBP = pinManager.MyOwner;
                 if (MyColliderMeshComponent != null)
                 {
                     AttachToParentWithOldPosition();
@@ -279,13 +277,13 @@ namespace HelloUSharp
             }
             else
             {
-                GetOwner().PrintString("Couldn't Find Pin Manager Component", FLinearColor.Red, printToLog: true);
+                MyOwner.PrintString("Couldn't Find Pin Manager Component", FLinearColor.Red, printToLog: true);
             }
         }
         #endregion
 
         #region OtherMethods
-        void PlayPinStrikeSounds(FVector _velocity, AActor _other)
+        void PlayPinStrikeSounds(AActor _other)
         {
             int _settledPins = gamemode.lastSettledCount;
             float _center = 50f;
