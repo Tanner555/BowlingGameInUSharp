@@ -156,6 +156,7 @@ namespace HelloUSharp
 
         protected static WorldStaticVar<bool> bHitFirstPin = new WorldStaticVar<bool>();
         float pinStrikeSoundWaitTime = 0.5f;
+        float offsetAsPercentageMultplier = 1.5f;
         #endregion
 
         #region Handlers
@@ -299,7 +300,7 @@ namespace HelloUSharp
             float _velXAsPercentageDecimal = ((_velX - _lowVelX) / (_highVelX - _lowVelX));
             //The Less Pins, The Higher The Percentage
             float _pinSettledPenaltyAsPercentage = 1 - (_settledPins / 10);
-            float _VelXMinusOffsetYDecimal = _velXAsPercentageDecimal - _offsetAsPercentageDecimal - _pinSettledPenaltyAsPercentage;
+            float _VelXMinusOffsetYDecimal = _velXAsPercentageDecimal - (_offsetAsPercentageDecimal * offsetAsPercentageMultplier) - _pinSettledPenaltyAsPercentage;
             if (_offsetAsPercentageDecimal > 0.80f)
             {
                 _VelXMinusOffsetYDecimal = FMath.Min(-0.5f, _VelXMinusOffsetYDecimal - 0.5f);
