@@ -44,10 +44,11 @@
 *.VC.db
 *.VC.opendb
 
-# Don't Include C# Prop Files
+# Don't Include C# Prop Or CsProj User Files
 *.props
 *.usharpGenerated
 *.targets
+*.csproj.user
 
 # Precompiled Assets
 SourceArt/**/*.png
@@ -88,6 +89,7 @@ Content/MyStarterContent/*
 # Don't Include C# Binaries
 Managed/Binaries/*
 Managed/GameCode/obj/*
+Managed/UnrealBowlingUSharp.Managed/obj/*
 
 # Other Files To Not Include
 Managed/Readme.md
