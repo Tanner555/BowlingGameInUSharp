@@ -67,7 +67,7 @@ namespace HelloUSharp
             //base.Initialize();
         }
 
-        protected override void ReceiveBeginPlay_Implementation()
+        public override void BeginPlay()
         {
             //base.ReceiveBeginPlay_Implementation();
             //LaunchBall();
@@ -88,7 +88,7 @@ namespace HelloUSharp
             //SetActorLocation(myPos + new FVector(DefaultMoveSpeed, 0, 0), false, out myHit, false);
         }
 
-        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        public override void EndPlay(EEndPlayReason endPlayReason)
         {
             if (gamemaster != null)
             {

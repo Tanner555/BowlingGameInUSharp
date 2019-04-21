@@ -41,14 +41,14 @@ namespace HelloUSharp
         #endregion
 
         #region Overrides
-        protected override void ReceiveBeginPlay_Implementation()
+        public override void BeginPlay()
         {
             gamemaster.BowlTurnIsFinished += CancelTriggerCoroutines;
         }
 
-        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        public override void EndPlay(EEndPlayReason endPlayReason)
         {
-            if(gamemaster != null)
+            if (gamemaster != null)
             {
                 gamemaster.BowlTurnIsFinished -= CancelTriggerCoroutines;
             }

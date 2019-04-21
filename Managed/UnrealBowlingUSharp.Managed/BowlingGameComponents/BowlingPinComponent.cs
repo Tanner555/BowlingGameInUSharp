@@ -67,7 +67,7 @@ namespace HelloUSharp
             
         }
 
-        protected override void ReceiveBeginPlay_Implementation()
+        public override void BeginPlay()
         {
             gamemaster.BowlTurnIsFinished += OnTurnIsFinished;
             gamemaster.OnWinGame += OnTurnIsFinished;
@@ -126,11 +126,11 @@ namespace HelloUSharp
             }
         }
 
-        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        public override void EndPlay(EEndPlayReason endPlayReason)
         {
             StopAllCoroutines();
 
-            if(gamemaster != null)
+            if (gamemaster != null)
             {
                 gamemaster.BowlTurnIsFinished -= OnTurnIsFinished;
                 gamemaster.OnWinGame -= OnTurnIsFinished;

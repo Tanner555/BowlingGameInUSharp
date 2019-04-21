@@ -68,7 +68,7 @@ namespace HelloUSharp
             BallFollowLimitDistance = 3200.0f;
         }
 
-        protected override void ReceiveBeginPlay_Implementation()
+        public override void BeginPlay()
         {
             PawnStartXPoint = MyOwner.GetActorLocation().X;
             gamemaster.OnBallLaunch += StartFollowingBall;
@@ -104,7 +104,7 @@ namespace HelloUSharp
             }
         }
 
-        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        public override void EndPlay(EEndPlayReason endPlayReason)
         {
             if (gamemaster != null)
             {

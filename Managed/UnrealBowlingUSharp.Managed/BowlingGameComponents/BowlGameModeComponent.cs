@@ -13,6 +13,7 @@ using UnrealEngine.NavigationSystem;
 using System.Threading.Tasks;
 using UnrealEngine.LevelSequence;
 using UnrealEngine.MovieScene;
+using UnrealEngine.TimeManagement;
 
 namespace HelloUSharp
 {
@@ -232,7 +233,7 @@ namespace HelloUSharp
             ForwardMultipleVelocityFactor = 1.5f;
         }
 
-        protected override void ReceiveBeginPlay_Implementation()
+        public override void BeginPlay()
         {
             MyOwner.World.GetPlayerController(0).ShowMouseCursor = true;
 
@@ -250,10 +251,10 @@ namespace HelloUSharp
 
             List<AActor> bowlFloorActors;
             MyOwner.World.GetAllActorsWithTag(BowlingFloorTag, out bowlFloorActors);
-            if(bowlFloorActors[0] != null)
+            if (bowlFloorActors[0] != null)
             {
                 var _staticActor = bowlFloorActors[0].Cast<AStaticMeshActor>();
-                if(_staticActor != null)
+                if (_staticActor != null)
                 {
                     BowlFloorMeshActor = _staticActor;
                     FVector _origin;
@@ -274,10 +275,10 @@ namespace HelloUSharp
 
         }
 
-        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        public override void EndPlay(EEndPlayReason endPlayReason)
         {
             StopAllCoroutines();
-            if(gamemaster != null)
+            if (gamemaster != null)
             {
                 gamemaster.OnUpdatePinCount -= UpdatePinCount;
                 gamemaster.BowlNewTurnIsReady -= ResetPinCount;
@@ -450,7 +451,8 @@ namespace HelloUSharp
             }
 
             _myPlayer.Play();
-            float _waitLength = _myPlayer.GetLength();
+            //TODO: Get Accurate Wait For Seconds Length, Used To Be GetLength()
+            float _waitLength = 6.0f;
             WaitTillSweepingIsDone(_waitLength, _action);
         }
 

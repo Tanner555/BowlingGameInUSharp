@@ -83,7 +83,7 @@ namespace HelloUSharp
             
         }
 
-        protected override void ReceiveBeginPlay_Implementation()
+        public override void BeginPlay()
         {
             List<AActor> outPinActors = GetAllPins();
             if (outPinActors != null && outPinActors.Count > 0 &&
@@ -105,9 +105,9 @@ namespace HelloUSharp
             gamemaster.OnPinHasGottenBackUp += PinGottenBackUp;
         }
 
-        protected override void ReceiveEndPlay_Implementation(EEndPlayReason EndPlayReason)
+        public override void EndPlay(EEndPlayReason endPlayReason)
         {
-            if(gamemaster != null)
+            if (gamemaster != null)
             {
                 gamemaster.BowlNewTurnIsReady -= BowlNewTurnIsReady;
                 gamemaster.OnPinHasFallen -= PinHasFallen;
