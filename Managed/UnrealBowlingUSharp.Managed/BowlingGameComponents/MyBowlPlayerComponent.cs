@@ -193,11 +193,11 @@ namespace HelloUSharp
         #endregion
 
         #region BlueprintImplementableEvents
-        [UFunction, BlueprintImplementedEvent]
-        public void OnWinGameImplementEvent()
-        {
+        ////[UFunction, BlueprintImplementedEvent]
+        ////public void OnWinGameImplementEvent()
+        ////{
 
-        }
+        ////}
         #endregion
 
         #region TestingDelegates
