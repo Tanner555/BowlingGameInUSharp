@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AE269122-75B2-4CF4-9044-F2AC7C56B7AB}</ProjectGuid>
+    <ProjectGuid>{383F64F2-41EF-9E0B-EF90-E7AA9A2FF3EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>UnrealBowlingUSharp</RootNamespace>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
