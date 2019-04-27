@@ -45,7 +45,7 @@
 *.VC.opendb
 
 # Don't Include C# Prop Or CsProj User Files
-*.props
+#*.props
 *.usharpGenerated
 *.targets
 *.csproj.user
