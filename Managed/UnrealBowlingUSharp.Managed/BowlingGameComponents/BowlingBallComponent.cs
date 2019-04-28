@@ -59,6 +59,9 @@ namespace HelloUSharp
 
         [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
         public USoundBase BallRollingSound { get; set; }
+
+        [UProperty, EditDefaultsOnly, BlueprintReadWrite, Category("Initialization")]
+        public USoundBase BallNudgeSound { get; set; }
         #endregion
 
         #region Overrides
@@ -153,6 +156,12 @@ namespace HelloUSharp
             MyOwner.SetActorLocation(
                 MyOwner.GetActorLocation() +
                 new FVector(0, famount, 0), false, out _hit, false);
+
+            if (BallNudgeSound != null)
+            {
+                MyAudioSourceComponent.Sound = BallNudgeSound;
+                MyAudioSourceComponent.Play();
+            }
         }
 
         void NudgeBallRight(float famount)
@@ -161,6 +170,12 @@ namespace HelloUSharp
             MyOwner.SetActorLocation(
                 MyOwner.GetActorLocation() +
                 new FVector(0, famount, 0), false, out _hit, false);
+
+            if (BallNudgeSound != null)
+            {
+                MyAudioSourceComponent.Sound = BallNudgeSound;
+                MyAudioSourceComponent.Play();
+            }
         }
         #endregion
 
