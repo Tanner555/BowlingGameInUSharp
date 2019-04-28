@@ -94,3 +94,4 @@ Managed/UnrealBowlingUSharp.Managed/obj/*
 # Other Files To Not Include
 Managed/Readme.md
 GenerateProjectFiles.bat
+BowlingLaneMap_BuiltData.uasset

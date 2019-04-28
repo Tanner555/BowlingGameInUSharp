@@ -179,6 +179,16 @@ namespace HelloUSharp
         }
         #endregion
 
+        #region PublicMethodCalls
+        public void StopRollingSound()
+        {
+            if (MyAudioSourceComponent.IsPlaying())
+            {
+                MyAudioSourceComponent.Stop();
+            }
+        }
+        #endregion
+
         #region Initialization
         [UFunction, BlueprintCallable]
         public void MyBeginPlayInitializer(UStaticMeshComponent _mymeshcomponent, UAudioComponent _myaudiosourcecomponent)

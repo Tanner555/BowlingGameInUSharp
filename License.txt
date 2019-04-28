@@ -1,0 +1,3 @@
+This project is free to use for anyone. Pretty much MIT. 
+
+All the assets I used in this project are licensed under Creative Commons (CC), so you should have no issues using them in your game.

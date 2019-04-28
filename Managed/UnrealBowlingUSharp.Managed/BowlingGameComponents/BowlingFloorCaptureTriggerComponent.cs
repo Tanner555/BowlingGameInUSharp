@@ -70,6 +70,11 @@ namespace HelloUSharp
                 if (OtherActor.ActorHasTag(gamemode.BallTag) &&
                     gamemaster.bBowlTurnIsOver == false)
                 {
+                    var _ballComp = OtherActor.GetComponentByClass<BowlingBallComponent>();
+                    if (_ballComp != null)
+                    {
+                        _ballComp.StopRollingSound();
+                    }
                     StartCoroutine(this, WaitForPinsToFall());
                 }
                 else if (OtherActor.ActorHasTag(gamemode.PinTag))
