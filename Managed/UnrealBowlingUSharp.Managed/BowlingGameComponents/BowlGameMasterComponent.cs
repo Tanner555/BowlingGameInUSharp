@@ -13,7 +13,7 @@ namespace HelloUSharp
     public class BowlGameMasterComponent : UActorComponent
     {
         #region IgnoreProperties
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public AActor MyOwner
         {
             get
@@ -26,7 +26,7 @@ namespace HelloUSharp
         }
         private AActor _owner = null;
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
 
         public bool bBowlTurnIsOver { get; protected set; }

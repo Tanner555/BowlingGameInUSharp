@@ -17,14 +17,14 @@ namespace HelloUSharp
     public class BowlingPinComponent : UActorComponent
     {
         #region UPropertyIgnore
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected PinManagerComponent pinManager => PinManagerComponent.GetInstance(MyOwner);
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public AActor MyOwner
         {
             get
@@ -37,7 +37,7 @@ namespace HelloUSharp
         }
         private AActor _owner = null;
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public UAudioComponent MyAudioSourceComponent { get; set; }
         #endregion
 

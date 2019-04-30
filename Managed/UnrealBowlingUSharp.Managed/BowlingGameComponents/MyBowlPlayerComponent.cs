@@ -25,9 +25,9 @@ namespace HelloUSharp
         #endregion
 
         #region IgnoreProperties
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected float PawnStartXPoint { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public AActor MyOwner
         {
             get
@@ -39,9 +39,9 @@ namespace HelloUSharp
             }
         }
         private AActor _owner = null;
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 

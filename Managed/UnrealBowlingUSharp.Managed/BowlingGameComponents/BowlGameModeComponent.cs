@@ -38,7 +38,7 @@ namespace HelloUSharp
     public class BowlGameModeComponent : UActorComponent
     {
         #region IgnoreProperties
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public AActor MyOwner
         {
             get
@@ -51,7 +51,7 @@ namespace HelloUSharp
         }
         private AActor _owner = null;
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int StandingPinCount
         {
             get { return _standingPinCount; }
@@ -68,22 +68,22 @@ namespace HelloUSharp
         /// Should Start At 1 Before Taking First Bowl Turn,
         /// Gets AllTurnsList Starting at 0, Excludes Final Turn Number
         /// </summary>
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int BowlTurnCount { get; set; }
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public FName BallTag => new FName("Ball");
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public FName PinTag => new FName("Pin");
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public FName PinManagerTag => new FName("PinManager");
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public FName BowlingFloorTag => new FName("BowlingFloor");
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         private List<int> AllBowlFrameResults
         {
             get
@@ -104,7 +104,7 @@ namespace HelloUSharp
             }
         }
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         private List<int> AllBowlFrameTurns
         {
             get
@@ -144,67 +144,67 @@ namespace HelloUSharp
         #endregion
 
         #region BowlUProperties
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame01_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame01_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame01_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame02_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame02_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame02_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame03_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame03_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame03_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame04_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame04_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame04_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame05_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame05_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame05_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame06_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame06_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame06_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame07_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame07_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame07_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame08_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame08_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame08_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame09_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame09_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame09_Results { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame10_BowlA { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame10_BowlB { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame10_BowlC { get; set; }
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public int Frame10_Results { get; set; }
         #endregion
 

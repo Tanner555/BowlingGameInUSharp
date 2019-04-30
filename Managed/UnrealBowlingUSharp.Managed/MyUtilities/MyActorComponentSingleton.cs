@@ -17,7 +17,7 @@ namespace HelloUSharp
     public class MyActorComponentSingleton<T> : UActorComponent where T : UActorComponent
     {
         #region IgnoreProperties
-        //[UPropertyIngore]
+        //[UPropertyIgnore]
         
         #endregion
 

@@ -17,7 +17,7 @@ namespace HelloUSharp
     public class PinManagerComponent : UActorComponent
     {
         #region IgnoreProperties
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public AActor MyOwner
         {
             get
@@ -30,9 +30,9 @@ namespace HelloUSharp
         }
         private AActor _owner = null;
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 

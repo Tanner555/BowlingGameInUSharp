@@ -16,7 +16,7 @@ namespace HelloUSharp
     public class BowlingBallComponent : UActorComponent
     {
         #region IgnoreProperties
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public AActor MyOwner
         {
             get
@@ -29,21 +29,21 @@ namespace HelloUSharp
         }
         private AActor _owner = null;
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         private FVector myPos
         {
             get { return MyOwner.GetActorLocation(); }
         }
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public UStaticMeshComponent MyMeshComponent { get; set; }
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         public UAudioComponent MyAudioSourceComponent { get; set; }
 
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
-        [UPropertyIngore]
+        [UPropertyIgnore]
         protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
