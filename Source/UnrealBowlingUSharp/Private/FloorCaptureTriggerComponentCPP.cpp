@@ -1,35 +1,35 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Public/FloorCaptureTriggerComponent.h"
+#include "Public/FloorCaptureTriggerComponentCPP.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
-#include "BowlGameMasterComponent.h"
-#include "BowlGameModeComponent.h"
+#include "BowlGameMasterComponentCPP.h"
+#include "BowlGameModeComponentCPP.h"
 
 
 #pragma region Component Getters
-UBowlGameMasterComponent* UFloorCaptureTriggerComponent::GetGameMaster()
+UBowlGameMasterComponentCPP* UFloorCaptureTriggerComponentCPP::GetGameMaster()
 {
 	if (bowlGameMaster == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMaster = Cast<UBowlGameMasterComponent>(_gamemode->GetComponentByClass(UBowlGameMasterComponent::StaticClass()));
+			bowlGameMaster = Cast<UBowlGameMasterComponentCPP>(_gamemode->GetComponentByClass(UBowlGameMasterComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMaster;
 }
 
-UBowlGameModeComponent* UFloorCaptureTriggerComponent::GetBowlGameMode()
+UBowlGameModeComponentCPP* UFloorCaptureTriggerComponentCPP::GetBowlGameMode()
 {
 	if (bowlGameMode == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMode = Cast<UBowlGameModeComponent>(_gamemode->GetComponentByClass(UBowlGameModeComponent::StaticClass()));
+			bowlGameMode = Cast<UBowlGameModeComponentCPP>(_gamemode->GetComponentByClass(UBowlGameModeComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMode;
@@ -38,7 +38,7 @@ UBowlGameModeComponent* UFloorCaptureTriggerComponent::GetBowlGameMode()
 
 #pragma region OverridesAndInit
 // Sets default values for this component's properties
-UFloorCaptureTriggerComponent::UFloorCaptureTriggerComponent()
+UFloorCaptureTriggerComponentCPP::UFloorCaptureTriggerComponentCPP()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -49,7 +49,7 @@ UFloorCaptureTriggerComponent::UFloorCaptureTriggerComponent()
 
 
 // Called when the game starts
-void UFloorCaptureTriggerComponent::BeginPlay()
+void UFloorCaptureTriggerComponentCPP::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -59,7 +59,7 @@ void UFloorCaptureTriggerComponent::BeginPlay()
 
 
 // Called every frame
-void UFloorCaptureTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UFloorCaptureTriggerComponentCPP::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -68,7 +68,7 @@ void UFloorCaptureTriggerComponent::TickComponent(float DeltaTime, ELevelTick Ti
 #pragma endregion
 
 #pragma region UFunctions
-void UFloorCaptureTriggerComponent::OnBeginOverlapWrapper(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+void UFloorCaptureTriggerComponentCPP::OnBeginOverlapWrapper(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, FHitResult SweepResult)
 {
 	if(OtherActor != nullptr)
@@ -95,7 +95,7 @@ void UFloorCaptureTriggerComponent::OnBeginOverlapWrapper(UPrimitiveComponent* O
 	}
 }
 
-void UFloorCaptureTriggerComponent::CallTurnIsFinishedAfterWaiting()
+void UFloorCaptureTriggerComponentCPP::CallTurnIsFinishedAfterWaiting()
 {
 	auto _gamemaster = GetGameMaster();
 	if(ensure(_gamemaster != nullptr) && _gamemaster->bBowlTurnIsOver == false)

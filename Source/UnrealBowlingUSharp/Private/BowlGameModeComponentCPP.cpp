@@ -1,19 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Public/BowlGameModeComponent.h"
+#include "Public/BowlGameModeComponentCPP.h"
 #include "GameFramework/Actor.h"
-#include "BowlGameMasterComponent.h"
+#include "BowlGameMasterComponentCPP.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/PlayerCameraManager.h"
 #include "GameFramework/GameModeBase.h"
-#include "BowlingBallComponent.h"
-#include "MyBowlPlayerComponent.h"
+#include "BowlingBallComponentCPP.h"
+#include "MyBowlPlayerComponentCPP.h"
 #include "Engine/World.h"
 #include "Engine/StaticMeshActor.h"
 
 #pragma region Initialization
 // Sets default values for this component's properties
-UBowlGameModeComponent::UBowlGameModeComponent()
+UBowlGameModeComponentCPP::UBowlGameModeComponentCPP()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -23,14 +23,14 @@ UBowlGameModeComponent::UBowlGameModeComponent()
 #pragma endregion
 
 #pragma region ComponentGetters
-UBowlGameMasterComponent* UBowlGameModeComponent::GetGameMaster()
+UBowlGameMasterComponentCPP* UBowlGameModeComponentCPP::GetGameMaster()
 {
 	if (bowlGameMaster == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMaster = Cast<UBowlGameMasterComponent>(_gamemode->GetComponentByClass(UBowlGameMasterComponent::StaticClass()));
+			bowlGameMaster = Cast<UBowlGameMasterComponentCPP>(_gamemode->GetComponentByClass(UBowlGameMasterComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMaster;
@@ -38,12 +38,12 @@ UBowlGameMasterComponent* UBowlGameModeComponent::GetGameMaster()
 #pragma endregion
 
 #pragma region OtherGetters
-int32 UBowlGameModeComponent::GetStandingPinCount()
+int32 UBowlGameModeComponentCPP::GetStandingPinCount()
 {
 	return StandingPinCount;
 }
 
-TArray<int32> UBowlGameModeComponent::GetAllBowlFrameResults()
+TArray<int32> UBowlGameModeComponentCPP::GetAllBowlFrameResults()
 {
 	return TArray<int32>{
 		Frame01_BowlA, Frame01_BowlB, Frame01_Results,
@@ -59,7 +59,7 @@ TArray<int32> UBowlGameModeComponent::GetAllBowlFrameResults()
 	};
 }
 
-TArray<int32> UBowlGameModeComponent::GetAllBowlFrameTurns()
+TArray<int32> UBowlGameModeComponentCPP::GetAllBowlFrameTurns()
 {
 	return TArray<int32>{
 		Frame01_BowlA, Frame01_BowlB,
@@ -75,12 +75,12 @@ TArray<int32> UBowlGameModeComponent::GetAllBowlFrameTurns()
 	};
 }
 
-int32 UBowlGameModeComponent::GetPinFallCount()
+int32 UBowlGameModeComponentCPP::GetPinFallCount()
 {
 	return lastSettledCount - StandingPinCount;
 }
 
-TArray<int32> UBowlGameModeComponent::GetBowlTurnListFromCount()
+TArray<int32> UBowlGameModeComponentCPP::GetBowlTurnListFromCount()
 {
 	TArray<int32> _bowlTurns = TArray<int32>();
 	TArray<int32> _allbowlframeturns = GetAllBowlFrameTurns();
@@ -93,7 +93,7 @@ TArray<int32> UBowlGameModeComponent::GetBowlTurnListFromCount()
 	return _bowlTurns;
 }
 
-int32 UBowlGameModeComponent::GetBowlTurnCount()
+int32 UBowlGameModeComponentCPP::GetBowlTurnCount()
 {
 	return BowlTurnCount;
 }
@@ -101,7 +101,7 @@ int32 UBowlGameModeComponent::GetBowlTurnCount()
 
 #pragma region Setters
 /// A Setter For StandingPinCount, which also Calls A Few Update Events.
-void UBowlGameModeComponent::SetStandingPinCount(int32 pinCount)
+void UBowlGameModeComponentCPP::SetStandingPinCount(int32 pinCount)
 {
 	StandingPinCount = pinCount;
 	auto _gamemaster = GetGameMaster();
@@ -112,7 +112,7 @@ void UBowlGameModeComponent::SetStandingPinCount(int32 pinCount)
 	UpdatePinCountBPEvent(pinCount);
 }
 
-void UBowlGameModeComponent::SetResultsFromFrameTurns()
+void UBowlGameModeComponentCPP::SetResultsFromFrameTurns()
 {
 	Frame01_Results = Frame01_BowlA + Frame01_BowlB;
 	Frame02_Results = Frame02_BowlA + Frame02_BowlB;
@@ -127,7 +127,7 @@ void UBowlGameModeComponent::SetResultsFromFrameTurns()
 	UpdateBowlTurnFramesBPEvent();
 }
 
-void UBowlGameModeComponent::SetCurrentBowlTurnValue(int32 _value)
+void UBowlGameModeComponentCPP::SetCurrentBowlTurnValue(int32 _value)
 {
 	switch (BowlTurnCount)
 	{
@@ -203,14 +203,14 @@ void UBowlGameModeComponent::SetCurrentBowlTurnValue(int32 _value)
 #pragma endregion
 
 #pragma region Overrides
-void UBowlGameModeComponent::InitializeComponent()
+void UBowlGameModeComponentCPP::InitializeComponent()
 {
 	MinimalForwardLaunchVelocity = 1500;
 	ForwardMultipleVelocityFactor = 1.5f;
 }
 
 // Called when the game starts
-void UBowlGameModeComponent::BeginPlay()
+void UBowlGameModeComponentCPP::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -230,42 +230,42 @@ void UBowlGameModeComponent::BeginPlay()
 		_playerController->bShowMouseCursor = true;
 		if(_ballActors.Num() > 0 && _ballActors[0] != nullptr)
 		{
-			auto _ballComp = Cast<UBowlingBallComponent>(_ballActors[0]->GetComponentByClass(UBowlingBallComponent::StaticClass()));
+			auto _ballComp = Cast<UBowlingBallComponentCPP>(_ballActors[0]->GetComponentByClass(UBowlingBallComponentCPP::StaticClass()));
 			if(ensure(_ballComp != nullptr))
 			{
 				myBall = _ballComp;
 			}
 		}
-		auto _playerComp = Cast<UMyBowlPlayerComponent>(_playerPawn->GetComponentByClass(UMyBowlPlayerComponent::StaticClass()));
+		auto _playerComp = Cast<UMyBowlPlayerComponentCPP>(_playerPawn->GetComponentByClass(UMyBowlPlayerComponentCPP::StaticClass()));
 		if(ensure(_playerComp != nullptr))
 		{
 			myBowler = _playerComp;
 		}
 		StandingPinCount = 10;
 		BowlTurnCount = 1;
-		if(ensure(_gamemaster->OnUpdatePinCount.IsAlreadyBound(this, &UBowlGameModeComponent::UpdatePinCount) == false))
+		if(ensure(_gamemaster->OnUpdatePinCount.IsAlreadyBound(this, &UBowlGameModeComponentCPP::UpdatePinCount) == false))
 		{
-			_gamemaster->OnUpdatePinCount.AddDynamic(this, &UBowlGameModeComponent::UpdatePinCount);
+			_gamemaster->OnUpdatePinCount.AddDynamic(this, &UBowlGameModeComponentCPP::UpdatePinCount);
 		}
 
-		if (ensure(_gamemaster->BowlNewTurnIsReady.IsAlreadyBound(this, &UBowlGameModeComponent::ResetPinCount) == false))
+		if (ensure(_gamemaster->BowlNewTurnIsReady.IsAlreadyBound(this, &UBowlGameModeComponentCPP::ResetPinCount) == false))
 		{
-			_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UBowlGameModeComponent::ResetPinCount);
+			_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UBowlGameModeComponentCPP::ResetPinCount);
 		}
 
-		if (ensure(_gamemaster->BowlTurnIsFinished.IsAlreadyBound(this, &UBowlGameModeComponent::OnTurnIsFinished) == false))
+		if (ensure(_gamemaster->BowlTurnIsFinished.IsAlreadyBound(this, &UBowlGameModeComponentCPP::OnTurnIsFinished) == false))
 		{
-			_gamemaster->BowlTurnIsFinished.AddDynamic(this, &UBowlGameModeComponent::OnTurnIsFinished);
+			_gamemaster->BowlTurnIsFinished.AddDynamic(this, &UBowlGameModeComponentCPP::OnTurnIsFinished);
 		}
 
-		if (ensure(_gamemaster->OnSendBowlActionResults.IsAlreadyBound(this, &UBowlGameModeComponent::OnSendBowlActionResults) == false))
+		if (ensure(_gamemaster->OnSendBowlActionResults.IsAlreadyBound(this, &UBowlGameModeComponentCPP::OnSendBowlActionResults) == false))
 		{
-			_gamemaster->OnSendBowlActionResults.AddDynamic(this, &UBowlGameModeComponent::OnSendBowlActionResults);
+			_gamemaster->OnSendBowlActionResults.AddDynamic(this, &UBowlGameModeComponentCPP::OnSendBowlActionResults);
 		}
 
-		if (ensure(_gamemaster->Debug_Fill18ScoreSlots.IsAlreadyBound(this, &UBowlGameModeComponent::Debug_Fill18ScoreSlots) == false))
+		if (ensure(_gamemaster->Debug_Fill18ScoreSlots.IsAlreadyBound(this, &UBowlGameModeComponentCPP::Debug_Fill18ScoreSlots) == false))
 		{
-			_gamemaster->Debug_Fill18ScoreSlots.AddDynamic(this, &UBowlGameModeComponent::Debug_Fill18ScoreSlots);
+			_gamemaster->Debug_Fill18ScoreSlots.AddDynamic(this, &UBowlGameModeComponentCPP::Debug_Fill18ScoreSlots);
 		}
 
 		if(bowlFloorActors.Num() > 0 && bowlFloorActors[0] != nullptr)
@@ -286,50 +286,50 @@ void UBowlGameModeComponent::BeginPlay()
 
 
 // Called every frame
-void UBowlGameModeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UBowlGameModeComponentCPP::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
 
-void UBowlGameModeComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void UBowlGameModeComponentCPP::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 
 }
 #pragma endregion
 
 #pragma region Handlers
-void UBowlGameModeComponent::OnSendBowlActionResults(EBowlAction _action)
+void UBowlGameModeComponentCPP::OnSendBowlActionResults(EBowlActionCPP _action)
 {
 	SendBowlActionResultsAndWaitBPEvent(_action);
 }
 
-void UBowlGameModeComponent::OnTurnIsFinished()
+void UBowlGameModeComponentCPP::OnTurnIsFinished()
 {
 	auto _gamemaster = GetGameMaster();
 	if (ensure(_gamemaster != nullptr)) {
-		EBowlAction _action = Bowl();
+		EBowlActionCPP _action = Bowl();
 		SetResultsFromFrameTurns();
 		_gamemaster->CallOnSendBowlActionResults(_action);
 	}
 }
 
-void UBowlGameModeComponent::UpdatePinCount(int32 _pinCount)
+void UBowlGameModeComponentCPP::UpdatePinCount(int32 _pinCount)
 {
 	StandingPinCount = _pinCount;
 }
 
-void UBowlGameModeComponent::ResetPinCount(EBowlAction _action)
+void UBowlGameModeComponentCPP::ResetPinCount(EBowlActionCPP _action)
 {
-	if (_action != EBowlAction::Tidy)
+	if (_action != EBowlActionCPP::Tidy)
 	{
 		StandingPinCount = 10;
 		lastSettledCount = 10;
 	}
 }
 
-void UBowlGameModeComponent::Debug_Fill18ScoreSlots()
+void UBowlGameModeComponentCPP::Debug_Fill18ScoreSlots()
 {
 	int32 _lastMinuteYield = 0;
 	while (BowlTurnCount < 19)
@@ -350,13 +350,13 @@ void UBowlGameModeComponent::Debug_Fill18ScoreSlots()
 #pragma endregion
 
 #pragma region DraggingAndBallLaunch
-void UBowlGameModeComponent::OnStartDrag(FVector2D mousePos)
+void UBowlGameModeComponentCPP::OnStartDrag(FVector2D mousePos)
 {
 	dragStart = mousePos;	
 	startTime = UGameplayStatics::GetTimeSeconds(this);
 }
 
-void UBowlGameModeComponent::OnStopDrag(FVector2D mousePos)
+void UBowlGameModeComponentCPP::OnStopDrag(FVector2D mousePos)
 {
 	dragEnd = mousePos;
 	endTime = UGameplayStatics::GetTimeSeconds(this);
@@ -384,7 +384,7 @@ void UBowlGameModeComponent::OnStopDrag(FVector2D mousePos)
 	}
 }
 
-void UBowlGameModeComponent::StartLaunchingTheBall(FVector launchVelocity)
+void UBowlGameModeComponentCPP::StartLaunchingTheBall(FVector launchVelocity)
 {
 	auto _gamemaster = GetGameMaster();
 	if (myBall != nullptr && ensure(_gamemaster != nullptr) &&
@@ -396,7 +396,7 @@ void UBowlGameModeComponent::StartLaunchingTheBall(FVector launchVelocity)
 #pragma endregion
 
 #pragma region PublicUFunctionCalls
-void UBowlGameModeComponent::NudgeBallLeft()
+void UBowlGameModeComponentCPP::NudgeBallLeft()
 {
 	auto _gamemaster = GetGameMaster();
 	float _nudgeAmount = -50;
@@ -412,7 +412,7 @@ void UBowlGameModeComponent::NudgeBallLeft()
 	}
 }
 
-void UBowlGameModeComponent::NudgeBallRight()
+void UBowlGameModeComponentCPP::NudgeBallRight()
 {
 	auto _gamemaster = GetGameMaster();
 	float _nudgeAmount = 50;
@@ -428,7 +428,7 @@ void UBowlGameModeComponent::NudgeBallRight()
 	}
 }
 
-void UBowlGameModeComponent::EndBowlingTurn()
+void UBowlGameModeComponentCPP::EndBowlingTurn()
 {
 	auto _gamemaster = GetGameMaster();
 	if (ensure(_gamemaster != nullptr) && _gamemaster->bBowlTurnIsOver == false)
@@ -437,7 +437,7 @@ void UBowlGameModeComponent::EndBowlingTurn()
 	}
 }
 
-void UBowlGameModeComponent::GetBowlFrameProperties(EBowlFrame bowlframe, int32& bowlAProperty, int32& bowlBProperty, int32& bowlCProperty, int32& bowlResultProperty)
+void UBowlGameModeComponentCPP::GetBowlFrameProperties(EBowlFrameCPP bowlframe, int32& bowlAProperty, int32& bowlBProperty, int32& bowlCProperty, int32& bowlResultProperty)
 {
 	bowlAProperty = 0;
 	bowlBProperty = 0;
@@ -446,52 +446,52 @@ void UBowlGameModeComponent::GetBowlFrameProperties(EBowlFrame bowlframe, int32&
 
 	switch (bowlframe)
 	{
-	case EBowlFrame::Frame01:
+	case EBowlFrameCPP::Frame01:
 		bowlAProperty = Frame01_BowlA;
 		bowlBProperty = Frame01_BowlB;
 		bowlResultProperty = Frame01_Results;
 		break;
-	case EBowlFrame::Frame02:
+	case EBowlFrameCPP::Frame02:
 		bowlAProperty = Frame02_BowlA;
 		bowlBProperty = Frame02_BowlB;
 		bowlResultProperty = Frame02_Results;
 		break;
-	case EBowlFrame::Frame03:
+	case EBowlFrameCPP::Frame03:
 		bowlAProperty = Frame03_BowlA;
 		bowlBProperty = Frame03_BowlB;
 		bowlResultProperty = Frame03_Results;
 		break;
-	case EBowlFrame::Frame04:
+	case EBowlFrameCPP::Frame04:
 		bowlAProperty = Frame04_BowlA;
 		bowlBProperty = Frame04_BowlB;
 		bowlResultProperty = Frame04_Results;
 		break;
-	case EBowlFrame::Frame05:
+	case EBowlFrameCPP::Frame05:
 		bowlAProperty = Frame05_BowlA;
 		bowlBProperty = Frame05_BowlB;
 		bowlResultProperty = Frame05_Results;
 		break;
-	case EBowlFrame::Frame06:
+	case EBowlFrameCPP::Frame06:
 		bowlAProperty = Frame06_BowlA;
 		bowlBProperty = Frame06_BowlB;
 		bowlResultProperty = Frame06_Results;
 		break;
-	case EBowlFrame::Frame07:
+	case EBowlFrameCPP::Frame07:
 		bowlAProperty = Frame07_BowlA;
 		bowlBProperty = Frame07_BowlB;
 		bowlResultProperty = Frame07_Results;
 		break;
-	case EBowlFrame::Frame08:
+	case EBowlFrameCPP::Frame08:
 		bowlAProperty = Frame08_BowlA;
 		bowlBProperty = Frame08_BowlB;
 		bowlResultProperty = Frame08_Results;
 		break;
-	case EBowlFrame::Frame09:
+	case EBowlFrameCPP::Frame09:
 		bowlAProperty = Frame09_BowlA;
 		bowlBProperty = Frame09_BowlB;
 		bowlResultProperty = Frame09_Results;
 		break;
-	case EBowlFrame::Frame10:
+	case EBowlFrameCPP::Frame10:
 		bowlAProperty = Frame10_BowlA;
 		bowlBProperty = Frame10_BowlB;
 		bowlCProperty = Frame10_BowlC;
@@ -502,7 +502,7 @@ void UBowlGameModeComponent::GetBowlFrameProperties(EBowlFrame bowlframe, int32&
 	}
 }
 
-void UBowlGameModeComponent::CallNewTurnIsReadyAfterWaiting(EBowlAction _action)
+void UBowlGameModeComponentCPP::CallNewTurnIsReadyAfterWaiting(EBowlActionCPP _action)
 {
 	auto _gamemaster = GetGameMaster();
 	if(ensure(_gamemaster != nullptr))
@@ -513,27 +513,27 @@ void UBowlGameModeComponent::CallNewTurnIsReadyAfterWaiting(EBowlAction _action)
 #pragma endregion
 
 #pragma region Bowling
-EBowlAction UBowlGameModeComponent::Bowl()
+EBowlActionCPP UBowlGameModeComponentCPP::Bowl()
 {
 	int32 _pinFall = GetPinFallCount();
 	lastSettledCount = StandingPinCount;
 	return BowlHelper(_pinFall);
 }
 
-EBowlAction UBowlGameModeComponent::BowlHelper(int32 _pinFall)
+EBowlActionCPP UBowlGameModeComponentCPP::BowlHelper(int32 _pinFall)
 {
 	//Old Bowl Method
 	SetCurrentBowlTurnValue(_pinFall);
 	TArray<int32> _rolls = GetBowlTurnListFromCount();
-	EBowlAction _action = NextAction(_rolls);
+	EBowlActionCPP _action = NextAction(_rolls);
 	auto _gamemaster = GetGameMaster();
 	if(_rolls.Num() <= 0 || ensure(_gamemaster != nullptr) == false)
 	{
-		return EBowlAction::Undefined;
+		return EBowlActionCPP::Undefined;
 	}
 
 	//Old Bowl Method End
-	if (BowlTurnCount >= 21 || _action == EBowlAction::EndGame)
+	if (BowlTurnCount >= 21 || _action == EBowlActionCPP::EndGame)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Won Game From C#"));
 		_gamemaster->CallOnWinGame();
@@ -544,7 +544,7 @@ EBowlAction UBowlGameModeComponent::BowlHelper(int32 _pinFall)
 	}
 	//If Action Is Tidy Or Bowlturn is the Second One.
 	//Second Turns Are Even Except For the Last Few Turns.
-	else if (_action == EBowlAction::Tidy ||
+	else if (_action == EBowlActionCPP::Tidy ||
 		BowlTurnCount % 2 == 0)
 	{
 		BowlTurnCount += 1;
@@ -559,9 +559,9 @@ EBowlAction UBowlGameModeComponent::BowlHelper(int32 _pinFall)
 	return _action;
 }
 
-EBowlAction UBowlGameModeComponent::NextAction(TArray<int32> rolls)
+EBowlActionCPP UBowlGameModeComponentCPP::NextAction(TArray<int32> rolls)
 {
-	EBowlAction nextAction = EBowlAction::Undefined;
+	EBowlActionCPP nextAction = EBowlActionCPP::Undefined;
 	if(ensure(rolls.Num() > 0) == false)
 	{
 		return nextAction;
@@ -572,29 +572,29 @@ EBowlAction UBowlGameModeComponent::NextAction(TArray<int32> rolls)
 
 		if (i == 20)
 		{
-			nextAction = EBowlAction::EndGame;
+			nextAction = EBowlActionCPP::EndGame;
 		}
 		else if (i >= 18 && rolls[i] == 10)
 		{ // Handle last-frame special cases
-			nextAction = EBowlAction::Reset;
+			nextAction = EBowlActionCPP::Reset;
 		}
 		else if (i == 19)
 		{
 			if (rolls[18] == 10 && rolls[19] == 0)
 			{
-				nextAction = EBowlAction::Tidy;
+				nextAction = EBowlActionCPP::Tidy;
 			}
 			else if (rolls[18] + rolls[19] == 10)
 			{
-				nextAction = EBowlAction::Reset;
+				nextAction = EBowlActionCPP::Reset;
 			}
 			else if (rolls[18] + rolls[19] >= 10)
 			{  // Roll 21 awarded
-				nextAction = EBowlAction::Tidy;
+				nextAction = EBowlActionCPP::Tidy;
 			}
 			else
 			{
-				nextAction = EBowlAction::EndGame;
+				nextAction = EBowlActionCPP::EndGame;
 			}
 		}
 		else if (i % 2 == 0)
@@ -602,16 +602,16 @@ EBowlAction UBowlGameModeComponent::NextAction(TArray<int32> rolls)
 			if (rolls[i] == 10)
 			{
 				//rolls.Insert(i, 0); // Insert virtual 0 after strike
-				nextAction = EBowlAction::EndTurn;
+				nextAction = EBowlActionCPP::EndTurn;
 			}
 			else
 			{
-				nextAction = EBowlAction::Tidy;
+				nextAction = EBowlActionCPP::Tidy;
 			}
 		}
 		else
 		{ // Second bowl of frame
-			nextAction = EBowlAction::EndTurn;
+			nextAction = EBowlActionCPP::EndTurn;
 		}
 	}
 

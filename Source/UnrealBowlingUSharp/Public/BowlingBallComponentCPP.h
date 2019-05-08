@@ -4,26 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "BowlingBallComponent.generated.h"
+#include "BowlingBallComponentCPP.generated.h"
 
 class UAudioComponent;
-class UBowlGameMasterComponent;
-class UBowlGameModeComponent;
-enum class EBowlAction : uint8;
+class UBowlGameMasterComponentCPP;
+class UBowlGameModeComponentCPP;
+enum class EBowlActionCPP : uint8;
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALBOWLINGUSHARP_API UBowlingBallComponent : public UActorComponent
+class UNREALBOWLINGUSHARP_API UBowlingBallComponentCPP : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UBowlingBallComponent();
+	UBowlingBallComponentCPP();
 
 #pragma region Fields
 private:
-	UBowlGameMasterComponent* bowlGameMaster;
-	UBowlGameModeComponent* bowlGameMode;
+	UBowlGameMasterComponentCPP* bowlGameMaster;
+	UBowlGameModeComponentCPP* bowlGameMode;
 
 	FHitResult myHit;
 	FVector MyStartLocation;
@@ -57,16 +57,16 @@ public:
 private:
 	//Component Getters
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
-	UBowlGameMasterComponent* GetGameMaster();
-	UBowlGameModeComponent* GetBowlGameMode();
+	UBowlGameMasterComponentCPP* GetGameMaster();
+	UBowlGameModeComponentCPP* GetBowlGameMode();
 protected:
 	//Handlers
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
-	void NewTurnIsReady(EBowlAction _action);
+	void NewTurnIsReady(EBowlActionCPP _action);
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void BowlTurnIsFinished();
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
-	void LaunchBall(FVector _launchVelocity, UBowlingBallComponent* bowlingBall);
+	void LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall);
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void NudgeBallLeft(float famount);
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")

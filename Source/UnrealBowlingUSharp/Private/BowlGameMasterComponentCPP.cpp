@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Public/BowlGameMasterComponent.h"
+#include "Public/BowlGameMasterComponentCPP.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
-#include "BowlGameModeComponent.h"
+#include "BowlGameModeComponentCPP.h"
 
 #pragma region Initialization
 // Sets default values for this component's properties
-UBowlGameMasterComponent::UBowlGameMasterComponent()
+UBowlGameMasterComponentCPP::UBowlGameMasterComponentCPP()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -21,7 +21,7 @@ UBowlGameMasterComponent::UBowlGameMasterComponent()
 
 #pragma region Overrides
 // Called when the game starts
-void UBowlGameMasterComponent::BeginPlay()
+void UBowlGameMasterComponentCPP::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -30,14 +30,14 @@ void UBowlGameMasterComponent::BeginPlay()
 }
 
 // Called every frame
-void UBowlGameMasterComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UBowlGameMasterComponentCPP::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
 
-void UBowlGameMasterComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void UBowlGameMasterComponentCPP::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if(BowlNewTurnIsReady.IsBound())
 	{
@@ -102,20 +102,20 @@ void UBowlGameMasterComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 #pragma endregion
 
 #pragma region EventCalls
-void UBowlGameMasterComponent::CallOnBallLaunch(FVector launchVelocity, UBowlingBallComponent* bowlingBall)
+void UBowlGameMasterComponentCPP::CallOnBallLaunch(FVector launchVelocity, UBowlingBallComponentCPP* bowlingBall)
 {
 	bCanLaunchBall = false;
 	if (OnBallLaunch.IsBound()) OnBallLaunch.Broadcast(launchVelocity, bowlingBall);
 }
 
-void UBowlGameMasterComponent::CallBowlNewTurnIsReady(EBowlAction _action)
+void UBowlGameMasterComponentCPP::CallBowlNewTurnIsReady(EBowlActionCPP _action)
 {
 	bBowlTurnIsOver = false;
 	bCanLaunchBall = true;
 	if (BowlNewTurnIsReady.IsBound()) BowlNewTurnIsReady.Broadcast(_action);
 }
 
-void UBowlGameMasterComponent::CallBowlTurnIsFinished()
+void UBowlGameMasterComponentCPP::CallBowlTurnIsFinished()
 {
 	//Only Call If Bowl Turn Isn't Finished Yet
 	if (bBowlTurnIsOver) return;;
@@ -124,61 +124,61 @@ void UBowlGameMasterComponent::CallBowlTurnIsFinished()
 	if (BowlTurnIsFinished.IsBound()) BowlTurnIsFinished.Broadcast();
 }
 
-void UBowlGameMasterComponent::CallOnNudgeBallLeft(float famount)
+void UBowlGameMasterComponentCPP::CallOnNudgeBallLeft(float famount)
 {
 	if (OnNudgeBallLeft.IsBound()) OnNudgeBallLeft.Broadcast(famount);
 }
 
-void UBowlGameMasterComponent::CallOnNudgeBallRight(float famount)
+void UBowlGameMasterComponentCPP::CallOnNudgeBallRight(float famount)
 {
 	if (OnNudgeBallRight.IsBound()) OnNudgeBallRight.Broadcast(famount);
 }
 
-void UBowlGameMasterComponent::CallOnPinHasFallen(UBowlingPinComponent* _pin)
+void UBowlGameMasterComponentCPP::CallOnPinHasFallen(UBowlingPinComponentCPP* _pin)
 {
 	if (OnPinHasFallen.IsBound()) OnPinHasFallen.Broadcast(_pin);
 }
 
-void UBowlGameMasterComponent::CallOnPinHasGottenBackUp(UBowlingPinComponent* _pin)
+void UBowlGameMasterComponentCPP::CallOnPinHasGottenBackUp(UBowlingPinComponentCPP* _pin)
 {
 	if (OnPinHasGottenBackUp.IsBound()) OnPinHasGottenBackUp.Broadcast(_pin);
 }
 
-void UBowlGameMasterComponent::CallUpdatePinCount(int32 _count)
+void UBowlGameMasterComponentCPP::CallUpdatePinCount(int32 _count)
 {
 	if (OnUpdatePinCount.IsBound()) OnUpdatePinCount.Broadcast(_count);
 }
 
-void UBowlGameMasterComponent::CallOnSendBowlActionResults(EBowlAction _action)
+void UBowlGameMasterComponentCPP::CallOnSendBowlActionResults(EBowlActionCPP _action)
 {
 	if (OnSendBowlActionResults.IsBound()) OnSendBowlActionResults.Broadcast(_action);
 }
 
-void UBowlGameMasterComponent::CallOnWinGame()
+void UBowlGameMasterComponentCPP::CallOnWinGame()
 {
 	if (OnWinGame.IsBound()) OnWinGame.Broadcast();
 }
 
-void UBowlGameMasterComponent::CallDebug_OnSimulateStrike()
+void UBowlGameMasterComponentCPP::CallDebug_OnSimulateStrike()
 {
 	if (Debug_OnSimulateStrike.IsBound()) Debug_OnSimulateStrike.Broadcast();
 }
 
-void UBowlGameMasterComponent::CallDebug_Fill18ScoreSlots()
+void UBowlGameMasterComponentCPP::CallDebug_Fill18ScoreSlots()
 {
 	if (Debug_Fill18ScoreSlots.IsBound()) Debug_Fill18ScoreSlots.Broadcast();
 }
 #pragma endregion
 
 #pragma region Getters
-UBowlGameModeComponent* UBowlGameMasterComponent::GetBowlGameMode()
+UBowlGameModeComponentCPP* UBowlGameMasterComponentCPP::GetBowlGameMode()
 {
 	if (bowlGameMode == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMode = Cast<UBowlGameModeComponent>(_gamemode->GetComponentByClass(UBowlGameModeComponent::StaticClass()));
+			bowlGameMode = Cast<UBowlGameModeComponentCPP>(_gamemode->GetComponentByClass(UBowlGameModeComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMode;

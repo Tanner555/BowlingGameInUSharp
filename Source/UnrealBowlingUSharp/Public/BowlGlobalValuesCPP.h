@@ -6,7 +6,7 @@
 
 #pragma region GlobalEnums
 UENUM(BlueprintType)
-enum class EBowlFrame : uint8 {
+enum class EBowlFrameCPP : uint8 {
 	Frame01 = 0,
 	Frame02 = 1,
 	Frame03 = 2,
@@ -20,7 +20,7 @@ enum class EBowlFrame : uint8 {
 };
 
 UENUM(BlueprintType)
-enum class EBowlAction : uint8 {
+enum class EBowlActionCPP : uint8 {
 	Tidy = 0,
 	Reset = 1,
 	EndTurn = 2,
@@ -32,9 +32,9 @@ enum class EBowlAction : uint8 {
 /**
  * 
  */
-class UNREALBOWLINGUSHARP_API BowlGlobalValues
+class UNREALBOWLINGUSHARP_API BowlGlobalValuesCPP
 {
 public:
-	BowlGlobalValues();
-	~BowlGlobalValues();
+	BowlGlobalValuesCPP();
+	~BowlGlobalValuesCPP();
 };

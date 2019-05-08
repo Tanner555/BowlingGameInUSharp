@@ -4,21 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "FloorCaptureTriggerComponent.generated.h"
+#include "FloorCaptureTriggerComponentCPP.generated.h"
 
-class UBowlGameMasterComponent;
-class UBowlGameModeComponent;
+class UBowlGameMasterComponentCPP;
+class UBowlGameModeComponentCPP;
 
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALBOWLINGUSHARP_API UFloorCaptureTriggerComponent : public UActorComponent
+class UNREALBOWLINGUSHARP_API UFloorCaptureTriggerComponentCPP : public UActorComponent
 {
 	GENERATED_BODY()
 
 #pragma region OverridesAndInit
 public:
 	// Sets default values for this component's properties
-	UFloorCaptureTriggerComponent();
+	UFloorCaptureTriggerComponentCPP();
 
 protected:
 	// Called when the game starts
@@ -33,12 +33,12 @@ public:
 
 #pragma region ComponentGetters
 private:
-	UBowlGameMasterComponent* bowlGameMaster;
-	UBowlGameModeComponent* bowlGameMode;
+	UBowlGameMasterComponentCPP* bowlGameMaster;
+	UBowlGameModeComponentCPP* bowlGameMode;
 
 	//Component Getters
-	UBowlGameMasterComponent* GetGameMaster();
-	UBowlGameModeComponent* GetBowlGameMode();
+	UBowlGameMasterComponentCPP* GetGameMaster();
+	UBowlGameModeComponentCPP* GetBowlGameMode();
 #pragma endregion
 
 #pragma region UFunctions

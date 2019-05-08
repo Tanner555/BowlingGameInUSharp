@@ -3,29 +3,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Public/BowlGlobalValues.h"
+#include "Public/BowlGlobalValuesCPP.h"
 #include "Components/ActorComponent.h"
-#include "BowlGameModeComponent.generated.h"
+#include "BowlGameModeComponentCPP.generated.h"
 
 class ULevelSequence;
-class UBowlGameMasterComponent;
+class UBowlGameMasterComponentCPP;
 class APlayerCameraManager;
-class UBowlingBallComponent;
-class UMyBowlPlayerComponent;
+class UBowlingBallComponentCPP;
+class UMyBowlPlayerComponentCPP;
 class AStaticMeshActor;
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALBOWLINGUSHARP_API UBowlGameModeComponent : public UActorComponent
+class UNREALBOWLINGUSHARP_API UBowlGameModeComponentCPP : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UBowlGameModeComponent();
+	UBowlGameModeComponentCPP();
 
 #pragma region Fields
 private:
-	UBowlGameMasterComponent* bowlGameMaster;
+	UBowlGameMasterComponentCPP* bowlGameMaster;
 	//static UBowlGameModeComponent* thisInstance;
 
 public:
@@ -36,8 +36,8 @@ public:
 
 protected:
 	APlayerCameraManager* myCameraManager = nullptr;
-	UBowlingBallComponent* myBall = nullptr;
-	UMyBowlPlayerComponent* myBowler = nullptr;
+	UBowlingBallComponentCPP* myBall = nullptr;
+	UMyBowlPlayerComponentCPP* myBowler = nullptr;
 
 private:
 	AStaticMeshActor* BowlFloorMeshActor = nullptr;
@@ -120,7 +120,7 @@ public:
 #pragma region UFunctions
 public:
 	//Component Getters
-	UBowlGameMasterComponent* GetGameMaster();
+	UBowlGameMasterComponentCPP* GetGameMaster();
 	//Other Getters
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	int32 GetStandingPinCount();
@@ -149,18 +149,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	void EndBowlingTurn();
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
-	void GetBowlFrameProperties(EBowlFrame bowlframe, int32& bowlAProperty, int32& bowlBProperty, int32& bowlCProperty, int32& bowlResultProperty);
+	void GetBowlFrameProperties(EBowlFrameCPP bowlframe, int32& bowlAProperty, int32& bowlBProperty, int32& bowlCProperty, int32& bowlResultProperty);
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
-	void CallNewTurnIsReadyAfterWaiting(EBowlAction _action);
+	void CallNewTurnIsReadyAfterWaiting(EBowlActionCPP _action);
 	//Handlers
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
-	void OnSendBowlActionResults(EBowlAction _action);
+	void OnSendBowlActionResults(EBowlActionCPP _action);
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	void OnTurnIsFinished();
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	void UpdatePinCount(int32 _pinCount);
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
-	void ResetPinCount(EBowlAction _action);
+	void ResetPinCount(EBowlActionCPP _action);
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	void Debug_Fill18ScoreSlots();
 
@@ -178,14 +178,14 @@ public:
 	void UpdateBowlTurnFramesBPEvent();
 	//Temporary Wrapper Because Implementing This in BP will be much easier than C++
 	UFUNCTION(BlueprintImplementableEvent, Category = "BowlGameMode")
-	void SendBowlActionResultsAndWaitBPEvent(EBowlAction _action);
+	void SendBowlActionResultsAndWaitBPEvent(EBowlActionCPP _action);
 	//Bowling
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
-	EBowlAction Bowl();
+	EBowlActionCPP Bowl();
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
-	EBowlAction BowlHelper(int32 _pinFall);
+	EBowlActionCPP BowlHelper(int32 _pinFall);
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
-	EBowlAction NextAction(TArray<int32> rolls);
+	EBowlActionCPP NextAction(TArray<int32> rolls);
 #pragma endregion
 
 };

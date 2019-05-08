@@ -4,21 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "MyBowlPlayerComponent.generated.h"
+#include "MyBowlPlayerComponentCPP.generated.h"
 
-enum class EBowlAction : uint8;
-class UBowlGameMasterComponent;
-class UBowlGameModeComponent;
-class UBowlingBallComponent;
+enum class EBowlActionCPP : uint8;
+class UBowlGameMasterComponentCPP;
+class UBowlGameModeComponentCPP;
+class UBowlingBallComponentCPP;
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALBOWLINGUSHARP_API UMyBowlPlayerComponent : public UActorComponent
+class UNREALBOWLINGUSHARP_API UMyBowlPlayerComponentCPP : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UMyBowlPlayerComponent();
+	UMyBowlPlayerComponentCPP();
 
 #pragma region UProperties
 public:
@@ -30,13 +30,13 @@ public:
 
 #pragma region Fields
 private:
-	UBowlGameMasterComponent* bowlGameMaster;
-	UBowlGameModeComponent* bowlGameMode;
+	UBowlGameMasterComponentCPP* bowlGameMaster;
+	UBowlGameModeComponentCPP* bowlGameMode;
 	FVector MyStartLocation;
 	FRotator MyStartRotation;
 
 	bool bShouldFollowBall = false;
-	UBowlingBallComponent* myBall;
+	UBowlingBallComponentCPP* myBall;
 protected:
 	float PawnStartXPoint;
 #pragma endregion
@@ -55,8 +55,8 @@ public:
 #pragma region UFunctions
 private:
 	//Component Getters
-	UBowlGameMasterComponent* GetGameMaster();
-	UBowlGameModeComponent* GetBowlGameMode();
+	UBowlGameMasterComponentCPP* GetGameMaster();
+	UBowlGameModeComponentCPP* GetBowlGameMode();
 public:
 	//Blueprint Callable
 	UFUNCTION(BlueprintCallable, Category = "BowlPlayer")
@@ -71,9 +71,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "BowlPlayer")
 	void OnWinGame();
 	UFUNCTION(BlueprintCallable, Category = "BowlPlayer")
-	void NewTurnIsReady(EBowlAction _action);
+	void NewTurnIsReady(EBowlActionCPP _action);
 	UFUNCTION(BlueprintCallable, Category = "BowlPlayer")
-	void StartFollowingBall(FVector launchVelocity, UBowlingBallComponent* bowlingBall);
+	void StartFollowingBall(FVector launchVelocity, UBowlingBallComponentCPP* bowlingBall);
 	UFUNCTION(BlueprintCallable, Category = "BowlPlayer")
 	void NudgeBallLeft(float famount);
 	UFUNCTION(BlueprintCallable, Category = "BowlPlayer")

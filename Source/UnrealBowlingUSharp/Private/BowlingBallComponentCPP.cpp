@@ -1,37 +1,37 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Public/BowlingBallComponent.h"
+#include "Public/BowlingBallComponentCPP.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
-#include "BowlGameMasterComponent.h"
-#include "BowlGameModeComponent.h"
+#include "BowlGameMasterComponentCPP.h"
+#include "BowlGameModeComponentCPP.h"
 #include "Sound/SoundBase.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/AudioComponent.h"
 
 #pragma region Component Getters
-UBowlGameMasterComponent* UBowlingBallComponent::GetGameMaster()
+UBowlGameMasterComponentCPP* UBowlingBallComponentCPP::GetGameMaster()
 {
 	if (bowlGameMaster == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMaster = Cast<UBowlGameMasterComponent>(_gamemode->GetComponentByClass(UBowlGameMasterComponent::StaticClass()));
+			bowlGameMaster = Cast<UBowlGameMasterComponentCPP>(_gamemode->GetComponentByClass(UBowlGameMasterComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMaster;
 }
 
-UBowlGameModeComponent* UBowlingBallComponent::GetBowlGameMode()
+UBowlGameModeComponentCPP* UBowlingBallComponentCPP::GetBowlGameMode()
 {
 	if (bowlGameMode == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMode = Cast<UBowlGameModeComponent>(_gamemode->GetComponentByClass(UBowlGameModeComponent::StaticClass()));
+			bowlGameMode = Cast<UBowlGameModeComponentCPP>(_gamemode->GetComponentByClass(UBowlGameModeComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMode;
@@ -39,7 +39,7 @@ UBowlGameModeComponent* UBowlingBallComponent::GetBowlGameMode()
 #pragma endregion
 
 #pragma region InitAndOverrides
-void UBowlingBallComponent::MyBeginPlayInitializer(UStaticMeshComponent* _mymeshcomponent,
+void UBowlingBallComponentCPP::MyBeginPlayInitializer(UStaticMeshComponent* _mymeshcomponent,
 	UAudioComponent* _myaudiosourcecomponent)
 {
 	this->MyMeshComponent = _mymeshcomponent;
@@ -47,7 +47,7 @@ void UBowlingBallComponent::MyBeginPlayInitializer(UStaticMeshComponent* _mymesh
 }
 
 // Sets default values for this component's properties
-UBowlingBallComponent::UBowlingBallComponent()
+UBowlingBallComponentCPP::UBowlingBallComponentCPP()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -58,7 +58,7 @@ UBowlingBallComponent::UBowlingBallComponent()
 
 
 // Called when the game starts
-void UBowlingBallComponent::BeginPlay()
+void UBowlingBallComponentCPP::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -68,27 +68,27 @@ void UBowlingBallComponent::BeginPlay()
 		return;
 	}
 
-	if (ensure(_gamemaster->BowlTurnIsFinished.IsAlreadyBound(this, &UBowlingBallComponent::BowlTurnIsFinished) == false))
+	if (ensure(_gamemaster->BowlTurnIsFinished.IsAlreadyBound(this, &UBowlingBallComponentCPP::BowlTurnIsFinished) == false))
 	{
-		_gamemaster->BowlTurnIsFinished.AddDynamic(this, &UBowlingBallComponent::BowlTurnIsFinished);
+		_gamemaster->BowlTurnIsFinished.AddDynamic(this, &UBowlingBallComponentCPP::BowlTurnIsFinished);
 	}
-	if (ensure(_gamemaster->BowlNewTurnIsReady.IsAlreadyBound(this, &UBowlingBallComponent::NewTurnIsReady) == false))
+	if (ensure(_gamemaster->BowlNewTurnIsReady.IsAlreadyBound(this, &UBowlingBallComponentCPP::NewTurnIsReady) == false))
 	{
-		_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UBowlingBallComponent::NewTurnIsReady);
+		_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UBowlingBallComponentCPP::NewTurnIsReady);
 	}
-	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UBowlingBallComponent::LaunchBall) == false))
+	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UBowlingBallComponentCPP::LaunchBall) == false))
 	{
 		if (bLaunchBallThroughBlueprints == false) {
-			_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponent::LaunchBall);
+			_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponentCPP::LaunchBall);
 		}
 	}
-	if (ensure(_gamemaster->OnNudgeBallLeft.IsAlreadyBound(this, &UBowlingBallComponent::NudgeBallLeft) == false))
+	if (ensure(_gamemaster->OnNudgeBallLeft.IsAlreadyBound(this, &UBowlingBallComponentCPP::NudgeBallLeft) == false))
 	{
-		_gamemaster->OnNudgeBallLeft.AddDynamic(this, &UBowlingBallComponent::NudgeBallLeft);
+		_gamemaster->OnNudgeBallLeft.AddDynamic(this, &UBowlingBallComponentCPP::NudgeBallLeft);
 	}
-	if (ensure(_gamemaster->OnNudgeBallRight.IsAlreadyBound(this, &UBowlingBallComponent::NudgeBallRight) == false))
+	if (ensure(_gamemaster->OnNudgeBallRight.IsAlreadyBound(this, &UBowlingBallComponentCPP::NudgeBallRight) == false))
 	{
-		_gamemaster->OnNudgeBallRight.AddDynamic(this, &UBowlingBallComponent::NudgeBallRight);
+		_gamemaster->OnNudgeBallRight.AddDynamic(this, &UBowlingBallComponentCPP::NudgeBallRight);
 	}
 
 	MyStartLocation = GetOwner()->GetActorLocation();
@@ -96,7 +96,7 @@ void UBowlingBallComponent::BeginPlay()
 }
 
 // Called every frame
-void UBowlingBallComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UBowlingBallComponentCPP::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -105,7 +105,7 @@ void UBowlingBallComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 #pragma endregion
 
 #pragma region Handlers
-void UBowlingBallComponent::NewTurnIsReady(EBowlAction _action)
+void UBowlingBallComponentCPP::NewTurnIsReady(EBowlActionCPP _action)
 {
 	if (MyMeshComponent == nullptr) return;
 
@@ -116,12 +116,12 @@ void UBowlingBallComponent::NewTurnIsReady(EBowlAction _action)
 	MyMeshComponent->SetSimulatePhysics(true);
 }
 
-void UBowlingBallComponent::BowlTurnIsFinished()
+void UBowlingBallComponentCPP::BowlTurnIsFinished()
 {
 
 }
 
-void UBowlingBallComponent::LaunchBall(FVector _launchVelocity, UBowlingBallComponent* bowlingBall)
+void UBowlingBallComponentCPP::LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall)
 {
 	if (bLaunchBallThroughBlueprints) return;
 
@@ -149,7 +149,7 @@ void UBowlingBallComponent::LaunchBall(FVector _launchVelocity, UBowlingBallComp
 	}
 }
 
-void UBowlingBallComponent::NudgeBallLeft(float famount)
+void UBowlingBallComponentCPP::NudgeBallLeft(float famount)
 {
 	GetOwner()->SetActorLocation(
 		GetOwner()->GetActorLocation() + FVector(0, famount, 0),
@@ -157,7 +157,7 @@ void UBowlingBallComponent::NudgeBallLeft(float famount)
 	);
 }
 
-void UBowlingBallComponent::NudgeBallRight(float famount)
+void UBowlingBallComponentCPP::NudgeBallRight(float famount)
 {
 	GetOwner()->SetActorLocation(
 		GetOwner()->GetActorLocation() + FVector(0, famount, 0),

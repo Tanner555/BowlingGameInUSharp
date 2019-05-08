@@ -4,25 +4,31 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "PinManagerComponent.generated.h"
+#include "BowlingPinComponentCPP.generated.h"
 
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALBOWLINGUSHARP_API UPinManagerComponent : public UActorComponent
+class UNREALBOWLINGUSHARP_API UBowlingPinComponentCPP : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UPinManagerComponent();
+	UBowlingPinComponentCPP();
 
+#pragma region Overrides
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+#pragma endregion
 
-		
+#pragma region UFunctions
+	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
+	bool SE_CheckForPinHasFallen();
+#pragma endregion
+
 };

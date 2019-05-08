@@ -4,39 +4,39 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Public/BowlGlobalValues.h"
-#include "BowlGameMasterComponent.generated.h"
+#include "Public/BowlGlobalValuesCPP.h"
+#include "BowlGameMasterComponentCPP.generated.h"
 
-class UBowlingBallComponent;
-class UBowlingPinComponent;
-class UBowlGameModeComponent;
+class UBowlingBallComponentCPP;
+class UBowlingPinComponentCPP;
+class UBowlGameModeComponentCPP;
 
-class BowlGlobalValues;
+class BowlGlobalValuesCPP;
 
 #pragma region Delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGeneralEventHandler);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FVectorAndBallRefHandler, FVector, launchVelocity, UBowlingBallComponent*, bowlingBall);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FVectorAndBallRefHandler, FVector, launchVelocity, UBowlingBallComponentCPP*, bowlingBall);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOneFloatArgHandler, float, famount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOneIntArgHandler, int32, iamount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOneBoolArgHandler, bool, _isTrue);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnePinArgHandler, UBowlingPinComponent*, _pin);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBowlActionArgHandler, EBowlAction, _action);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnePinArgHandler, UBowlingPinComponentCPP*, _pin);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBowlActionArgHandler, EBowlActionCPP, _action);
 
 #pragma endregion
 
 
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALBOWLINGUSHARP_API UBowlGameMasterComponent : public UActorComponent
+class UNREALBOWLINGUSHARP_API UBowlGameMasterComponentCPP : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UBowlGameMasterComponent();
+	UBowlGameMasterComponentCPP();
 
 #pragma region Fields
 private:
-	UBowlGameModeComponent* bowlGameMode;
+	UBowlGameModeComponentCPP* bowlGameMode;
 #pragma endregion
 
 #pragma region Events
@@ -71,9 +71,9 @@ public:
 #pragma region EventCalls
 public:
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
-		void CallOnBallLaunch(FVector launchVelocity, UBowlingBallComponent* bowlingBall);
+		void CallOnBallLaunch(FVector launchVelocity, UBowlingBallComponentCPP* bowlingBall);
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
-		void CallBowlNewTurnIsReady(EBowlAction _action);
+		void CallBowlNewTurnIsReady(EBowlActionCPP _action);
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
 		void CallBowlTurnIsFinished();
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
@@ -81,13 +81,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
 		void CallOnNudgeBallRight(float famount);
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
-		void CallOnPinHasFallen(UBowlingPinComponent* _pin);
+		void CallOnPinHasFallen(UBowlingPinComponentCPP* _pin);
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
-		void CallOnPinHasGottenBackUp(UBowlingPinComponent* _pin);
+		void CallOnPinHasGottenBackUp(UBowlingPinComponentCPP* _pin);
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
 		void CallUpdatePinCount(int32 _count);
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
-		void CallOnSendBowlActionResults(EBowlAction _action);
+		void CallOnSendBowlActionResults(EBowlActionCPP _action);
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
 		void CallOnWinGame();
 	UFUNCTION(BlueprintCallable, Category = "Bowl Events")
@@ -99,7 +99,7 @@ public:
 #pragma region UFunctions
 public:
 	//Getters
-	UBowlGameModeComponent* GetBowlGameMode();
+	UBowlGameModeComponentCPP* GetBowlGameMode();
 #pragma endregion
 
 #pragma region UProperties

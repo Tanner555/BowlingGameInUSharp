@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Public/MyBowlPlayerComponent.h"
+#include "Public/MyBowlPlayerComponentCPP.h"
 #include "Kismet/GameplayStatics.h"
-#include "BowlingBallComponent.h"
-#include "BowlGameMasterComponent.h"
-#include "BowlGameModeComponent.h"
+#include "BowlingBallComponentCPP.h"
+#include "BowlGameMasterComponentCPP.h"
+#include "BowlGameModeComponentCPP.h"
 #include "GameFramework/GameModeBase.h"
 
 // Sets default values for this component's properties
-UMyBowlPlayerComponent::UMyBowlPlayerComponent()
+UMyBowlPlayerComponentCPP::UMyBowlPlayerComponentCPP()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -19,27 +19,27 @@ UMyBowlPlayerComponent::UMyBowlPlayerComponent()
 }
 
 #pragma region Component Getters
-UBowlGameMasterComponent* UMyBowlPlayerComponent::GetGameMaster()
+UBowlGameMasterComponentCPP* UMyBowlPlayerComponentCPP::GetGameMaster()
 {
 	if (bowlGameMaster == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMaster = Cast<UBowlGameMasterComponent>(_gamemode->GetComponentByClass(UBowlGameMasterComponent::StaticClass()));
+			bowlGameMaster = Cast<UBowlGameMasterComponentCPP>(_gamemode->GetComponentByClass(UBowlGameMasterComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMaster;
 }
 
-UBowlGameModeComponent* UMyBowlPlayerComponent::GetBowlGameMode()
+UBowlGameModeComponentCPP* UMyBowlPlayerComponentCPP::GetBowlGameMode()
 {
 	if (bowlGameMode == nullptr)
 	{
 		auto _gamemode = UGameplayStatics::GetGameMode(this);
 		if (_gamemode != nullptr)
 		{
-			bowlGameMode = Cast<UBowlGameModeComponent>(_gamemode->GetComponentByClass(UBowlGameModeComponent::StaticClass()));
+			bowlGameMode = Cast<UBowlGameModeComponentCPP>(_gamemode->GetComponentByClass(UBowlGameModeComponentCPP::StaticClass()));
 		}
 	}
 	return bowlGameMode;
@@ -48,7 +48,7 @@ UBowlGameModeComponent* UMyBowlPlayerComponent::GetBowlGameMode()
 
 #pragma region Overrides
 // Called when the game starts
-void UMyBowlPlayerComponent::BeginPlay()
+void UMyBowlPlayerComponentCPP::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -58,25 +58,25 @@ void UMyBowlPlayerComponent::BeginPlay()
 		return;
 	}
 
-	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UMyBowlPlayerComponent::StartFollowingBall) == false))
+	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UMyBowlPlayerComponentCPP::StartFollowingBall) == false))
 	{
-		_gamemaster->OnBallLaunch.AddDynamic(this, &UMyBowlPlayerComponent::StartFollowingBall);
+		_gamemaster->OnBallLaunch.AddDynamic(this, &UMyBowlPlayerComponentCPP::StartFollowingBall);
 	}
-	if (ensure(_gamemaster->OnNudgeBallLeft.IsAlreadyBound(this, &UMyBowlPlayerComponent::NudgeBallLeft) == false))
+	if (ensure(_gamemaster->OnNudgeBallLeft.IsAlreadyBound(this, &UMyBowlPlayerComponentCPP::NudgeBallLeft) == false))
 	{
-		_gamemaster->OnNudgeBallLeft.AddDynamic(this, &UMyBowlPlayerComponent::NudgeBallLeft);
+		_gamemaster->OnNudgeBallLeft.AddDynamic(this, &UMyBowlPlayerComponentCPP::NudgeBallLeft);
 	}
-	if (ensure(_gamemaster->OnNudgeBallRight.IsAlreadyBound(this, &UMyBowlPlayerComponent::NudgeBallRight) == false))
+	if (ensure(_gamemaster->OnNudgeBallRight.IsAlreadyBound(this, &UMyBowlPlayerComponentCPP::NudgeBallRight) == false))
 	{
-		_gamemaster->OnNudgeBallRight.AddDynamic(this, &UMyBowlPlayerComponent::NudgeBallRight);
+		_gamemaster->OnNudgeBallRight.AddDynamic(this, &UMyBowlPlayerComponentCPP::NudgeBallRight);
 	}
-	if (ensure(_gamemaster->BowlNewTurnIsReady.IsAlreadyBound(this, &UMyBowlPlayerComponent::NewTurnIsReady) == false))
+	if (ensure(_gamemaster->BowlNewTurnIsReady.IsAlreadyBound(this, &UMyBowlPlayerComponentCPP::NewTurnIsReady) == false))
 	{
-		_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UMyBowlPlayerComponent::NewTurnIsReady);
+		_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UMyBowlPlayerComponentCPP::NewTurnIsReady);
 	}
-	if (ensure(_gamemaster->OnWinGame.IsAlreadyBound(this, &UMyBowlPlayerComponent::OnWinGame) == false))
+	if (ensure(_gamemaster->OnWinGame.IsAlreadyBound(this, &UMyBowlPlayerComponentCPP::OnWinGame) == false))
 	{
-		_gamemaster->OnWinGame.AddDynamic(this, &UMyBowlPlayerComponent::OnWinGame);
+		_gamemaster->OnWinGame.AddDynamic(this, &UMyBowlPlayerComponentCPP::OnWinGame);
 	}
 
 	MyStartLocation = GetOwner()->GetActorLocation();
@@ -85,7 +85,7 @@ void UMyBowlPlayerComponent::BeginPlay()
 
 
 // Called every frame
-void UMyBowlPlayerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UMyBowlPlayerComponentCPP::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -112,18 +112,18 @@ void UMyBowlPlayerComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 #pragma endregion
 
 #pragma region Handlers
-void UMyBowlPlayerComponent::OnWinGame()
+void UMyBowlPlayerComponentCPP::OnWinGame()
 {
 
 }
 
-void UMyBowlPlayerComponent::NewTurnIsReady(EBowlAction _action)
+void UMyBowlPlayerComponentCPP::NewTurnIsReady(EBowlActionCPP _action)
 {
 	GetOwner()->SetActorLocation(MyStartLocation, false);
 	GetOwner()->SetActorRotation(MyStartRotation);
 }
 
-void UMyBowlPlayerComponent::StartFollowingBall(FVector launchVelocity, UBowlingBallComponent* bowlingBall)
+void UMyBowlPlayerComponentCPP::StartFollowingBall(FVector launchVelocity, UBowlingBallComponentCPP* bowlingBall)
 {
 	myBall = bowlingBall;
 	if (myBall != nullptr)
@@ -137,7 +137,7 @@ void UMyBowlPlayerComponent::StartFollowingBall(FVector launchVelocity, UBowling
 	}
 }
 
-void UMyBowlPlayerComponent::NudgeBallLeft(float famount)
+void UMyBowlPlayerComponentCPP::NudgeBallLeft(float famount)
 {
 	GetOwner()->SetActorLocation(
 		GetOwner()->GetActorLocation() + FVector(0, famount, 0),
@@ -145,7 +145,7 @@ void UMyBowlPlayerComponent::NudgeBallLeft(float famount)
 	);
 }
 
-void UMyBowlPlayerComponent::NudgeBallRight(float famount)
+void UMyBowlPlayerComponentCPP::NudgeBallRight(float famount)
 {
 	GetOwner()->SetActorLocation(
 		GetOwner()->GetActorLocation() + FVector(0, famount, 0),
@@ -155,7 +155,7 @@ void UMyBowlPlayerComponent::NudgeBallRight(float famount)
 #pragma endregion
 
 #pragma region UFunctions
-void UMyBowlPlayerComponent::OnDragStart(FVector2D mousePos)
+void UMyBowlPlayerComponentCPP::OnDragStart(FVector2D mousePos)
 {
 	auto _gamemode = GetBowlGameMode();
 	auto _gamemaster = GetGameMaster();
@@ -166,7 +166,7 @@ void UMyBowlPlayerComponent::OnDragStart(FVector2D mousePos)
 	}
 }
 
-void UMyBowlPlayerComponent::OnDragStop(FVector2D mousePos)
+void UMyBowlPlayerComponentCPP::OnDragStop(FVector2D mousePos)
 {
 	auto _gamemode = GetBowlGameMode();
 	auto _gamemaster = GetGameMaster();
@@ -176,7 +176,7 @@ void UMyBowlPlayerComponent::OnDragStop(FVector2D mousePos)
 		_gamemode->OnStopDrag(mousePos);
 	}
 }
-void UMyBowlPlayerComponent::Debug_InstantStrike()
+void UMyBowlPlayerComponentCPP::Debug_InstantStrike()
 {
 	auto _gamemaster = GetGameMaster();
 	if(_gamemaster != nullptr)
@@ -184,7 +184,7 @@ void UMyBowlPlayerComponent::Debug_InstantStrike()
 		_gamemaster->CallDebug_OnSimulateStrike();
 	}
 }
-void UMyBowlPlayerComponent::Debug_Fill18ScoreSlots()
+void UMyBowlPlayerComponentCPP::Debug_Fill18ScoreSlots()
 {
 	auto _gamemaster = GetGameMaster();
 	if (_gamemaster != nullptr)

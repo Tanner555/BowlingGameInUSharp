@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Public/BowlingPinComponent.h"
+#include "Public/PinManagerComponentCPP.h"
 
 // Sets default values for this component's properties
-UBowlingPinComponent::UBowlingPinComponent()
+UPinManagerComponentCPP::UPinManagerComponentCPP()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -13,29 +13,22 @@ UBowlingPinComponent::UBowlingPinComponent()
 	// ...
 }
 
-#pragma region Overrides
+
 // Called when the game starts
-void UBowlingPinComponent::BeginPlay()
+void UPinManagerComponentCPP::BeginPlay()
 {
 	Super::BeginPlay();
 
 	// ...
-
+	
 }
 
 
 // Called every frame
-void UBowlingPinComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UPinManagerComponentCPP::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
-#pragma endregion
 
-#pragma region UFunctions
-bool UBowlingPinComponent::SE_CheckForPinHasFallen()
-{
-	return false;
-}
-#pragma endregion
