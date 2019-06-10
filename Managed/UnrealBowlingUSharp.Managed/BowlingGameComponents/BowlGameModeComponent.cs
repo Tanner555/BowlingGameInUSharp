@@ -666,13 +666,13 @@ namespace HelloUSharp
         #endregion
 
         #region BlueprintImplementedEvents
-        [UFunction, BlueprintImplementedEvent]
+        [UFunction, BlueprintImplementableEvent]
         public void UpdatePinCountBPEvent(int pinCount)
         {
 
         }
 
-        [UFunction, BlueprintImplementedEvent]
+        [UFunction, BlueprintImplementableEvent]
         public void UpdateBowlTurnFramesBPEvent()
         {
 
@@ -682,7 +682,7 @@ namespace HelloUSharp
         #region SweepingAnimationWaitCalls
         public void WaitTillSweepingIsDone(float _animLength, EBowlAction _action)
         {
-            StartCoroutine(this, WaitTillSweepingIsDoneCoroutine(_animLength, _action));
+            StartCoroutine(WaitTillSweepingIsDoneCoroutine(_animLength, _action));
         }
 
         private IEnumerator WaitTillSweepingIsDoneCoroutine(float _animLength, EBowlAction _action)

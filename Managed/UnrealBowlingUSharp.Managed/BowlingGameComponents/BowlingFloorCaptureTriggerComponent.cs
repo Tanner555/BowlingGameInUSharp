@@ -75,7 +75,7 @@ namespace HelloUSharp
                     {
                         _ballComp.StopRollingSound();
                     }
-                    StartCoroutine(this, WaitForPinsToFall());
+                    StartCoroutine(WaitForPinsToFall());
                 }
                 else if (OtherActor.ActorHasTag(gamemode.PinTag))
                 {
