@@ -7,7 +7,7 @@ using UnrealEngine.Runtime;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    public class HelloUFromUSharp : UObject
+    public class UHelloUFromUSharp : UObject
     {
         [UProperty, EditAnywhere, BlueprintReadWrite]
         public int Value123 { get; set; }
@@ -16,7 +16,7 @@ namespace HelloUSharp
         public string Value456 { get; set; }
 
         [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
-        public HelloUSharpDelegate DelegateTest { get; set; }
+        public FHelloUSharpDelegate DelegateTest { get; set; }
 
         [UFunction, BlueprintCallable]
         public void CallMe(string arg1)
@@ -25,7 +25,7 @@ namespace HelloUSharp
         }
     }
 
-    public class HelloUSharpDelegate : FMulticastDelegate<HelloUSharpDelegate.Signature>
+    public class FHelloUSharpDelegate : FMulticastDelegate<FHelloUSharpDelegate.Signature>
     {
         public delegate void Signature(byte param1, string param2, int param3);
     }

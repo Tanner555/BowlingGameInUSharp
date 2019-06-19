@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    public class MyBowlPlayerComponent : UActorComponent
+    public class UMyBowlPlayerComponent : UActorComponent
     {
         #region UProperties
         [UProperty, EditAnywhere, BlueprintReadWrite]
@@ -40,15 +40,15 @@ namespace HelloUSharp
         }
         private AActor _owner = null;
         [UPropertyIgnore]
-        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        protected UBowlGameMasterComponent gamemaster => UBowlGameMasterComponent.GetInstance(MyOwner);
         [UPropertyIgnore]
-        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+        protected UBowlGameModeComponent gamemode => UBowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
         #region Fields
         protected bool bShouldFollowBall = false;
         private FHitResult myHit;
-        private BowlingBallComponent myBall = null;
+        private UBowlingBallComponent myBall = null;
         private FVector MyStartLocation;
         private FRotator MyStartRotation;
         #endregion
@@ -129,13 +129,13 @@ namespace HelloUSharp
         }
 
         [UFunction, BlueprintCallable]
-        public BowlGameModeComponent GetBowlGameModeComponent()
+        public UBowlGameModeComponent GetBowlGameModeComponent()
         {
             return gamemode;
         }
 
         [UFunction, BlueprintCallable]
-        public BowlGameMasterComponent GetBowlGameMasterComponent()
+        public UBowlGameMasterComponent GetBowlGameMasterComponent()
         {
             return gamemaster;
         }
@@ -161,7 +161,7 @@ namespace HelloUSharp
                 );
         } 
 
-        void StartFollowingBall(FVector launchVelocity, BowlingBallComponent bowlingBall)
+        void StartFollowingBall(FVector launchVelocity, UBowlingBallComponent bowlingBall)
         {
             myBall = bowlingBall;
             if (myBall != null)
@@ -202,7 +202,7 @@ namespace HelloUSharp
 
         #region TestingDelegates
         [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
-        public BowlGameMasterComponent.GeneralDelegateHandler OnWinGameDelegate { get; set; }
+        public UBowlGameMasterComponent.FGeneralDelegateHandler OnWinGameDelegate { get; set; }
         #endregion
 
         #region PublicUFunctions

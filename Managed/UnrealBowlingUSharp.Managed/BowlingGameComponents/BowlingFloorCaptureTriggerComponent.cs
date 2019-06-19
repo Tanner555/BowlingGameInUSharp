@@ -14,7 +14,7 @@ using System.Collections;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    public class BowlingFloorCaptureTriggerComponent : UActorComponent
+    public class UBowlingFloorCaptureTriggerComponent : UActorComponent
     {
         #region IgnoreProperties
         [UPropertyIgnore]
@@ -31,9 +31,9 @@ namespace HelloUSharp
         private AActor _owner = null;
 
         [UPropertyIgnore]
-        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        protected UBowlGameMasterComponent gamemaster => UBowlGameMasterComponent.GetInstance(MyOwner);
         [UPropertyIgnore]
-        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+        protected UBowlGameModeComponent gamemode => UBowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
         #region Fields
@@ -70,7 +70,7 @@ namespace HelloUSharp
                 if (OtherActor.ActorHasTag(gamemode.BallTag) &&
                     gamemaster.bBowlTurnIsOver == false)
                 {
-                    var _ballComp = OtherActor.GetComponentByClass<BowlingBallComponent>();
+                    var _ballComp = OtherActor.GetComponentByClass<UBowlingBallComponent>();
                     if (_ballComp != null)
                     {
                         _ballComp.StopRollingSound();

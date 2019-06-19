@@ -13,7 +13,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    public class BowlingBallComponent : UActorComponent
+    public class UBowlingBallComponent : UActorComponent
     {
         #region IgnoreProperties
         [UPropertyIgnore]
@@ -42,9 +42,9 @@ namespace HelloUSharp
         public UAudioComponent MyAudioSourceComponent { get; set; }
 
         [UPropertyIgnore]
-        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        protected UBowlGameMasterComponent gamemaster => UBowlGameMasterComponent.GetInstance(MyOwner);
         [UPropertyIgnore]
-        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+        protected UBowlGameModeComponent gamemode => UBowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
         #region Fields
@@ -128,7 +128,7 @@ namespace HelloUSharp
             //MyOwner.PrintString("BowlTurnIsFinishedd", FLinearColor.Green);
         }
 
-        void LaunchBall(FVector launchVelocity, BowlingBallComponent bowlingBall)
+        void LaunchBall(FVector launchVelocity, UBowlingBallComponent bowlingBall)
         {
             if (MyMeshComponent == null)
             {

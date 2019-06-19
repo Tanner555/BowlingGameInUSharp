@@ -14,15 +14,15 @@ using System.Collections;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    public class BowlingPinComponent : UActorComponent
+    public class UBowlingPinComponent : UActorComponent
     {
         #region UPropertyIgnore
         [UPropertyIgnore]
-        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        protected UBowlGameMasterComponent gamemaster => UBowlGameMasterComponent.GetInstance(MyOwner);
         [UPropertyIgnore]
-        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+        protected UBowlGameModeComponent gamemode => UBowlGameModeComponent.GetInstance(MyOwner);
         [UPropertyIgnore]
-        protected PinManagerComponent pinManager => PinManagerComponent.GetInstance(MyOwner);
+        protected UPinManagerComponent pinManager => UPinManagerComponent.GetInstance(MyOwner);
 
         [UPropertyIgnore]
         public AActor MyOwner

@@ -35,7 +35,7 @@ namespace HelloUSharp
     #endregion
 
     [UClass, Blueprintable, BlueprintType]
-    public class BowlGameModeComponent : UActorComponent
+    public class UBowlGameModeComponent : UActorComponent
     {
         #region IgnoreProperties
         [UPropertyIgnore]
@@ -81,7 +81,7 @@ namespace HelloUSharp
         public FName BowlingFloorTag => new FName("BowlingFloor");
 
         [UPropertyIgnore]
-        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        protected UBowlGameMasterComponent gamemaster => UBowlGameMasterComponent.GetInstance(MyOwner);
 
         [UPropertyIgnore]
         private List<int> AllBowlFrameResults
@@ -210,8 +210,8 @@ namespace HelloUSharp
 
         #region Fields
         protected APlayerCameraManager myCameraManager = null;
-        protected BowlingBallComponent myBall = null;
-        protected MyBowlPlayerComponent myBowler = null;
+        protected UBowlingBallComponent myBall = null;
+        protected UMyBowlPlayerComponent myBowler = null;
 
         private FVector2D dragStart, dragEnd;
         private float startTime, endTime;
@@ -221,7 +221,7 @@ namespace HelloUSharp
         private float boundsYRightEdge;
         private float boundsYPaddingCheck = 10.0f;
 
-        protected static WorldStaticVar<BowlGameModeComponent> ThisInstance = new WorldStaticVar<BowlGameModeComponent>();
+        protected static WorldStaticVar<UBowlGameModeComponent> ThisInstance = new WorldStaticVar<UBowlGameModeComponent>();
 
         public int lastSettledCount = 10;
         #endregion
@@ -240,7 +240,7 @@ namespace HelloUSharp
             List<AActor> ballActors;
             MyOwner.World.GetAllActorsWithTag(BallTag, out ballActors);
             SetBallFromBallFindCollection(ballActors);
-            myBowler = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<MyBowlPlayerComponent>();
+            myBowler = MyOwner.World.GetPlayerPawn(0).GetComponentByClass<UMyBowlPlayerComponent>();
             StandingPinCount = 10;
             BowlTurnCount = 1;
             gamemaster.OnUpdatePinCount += UpdatePinCount;
@@ -290,12 +290,12 @@ namespace HelloUSharp
         #endregion
 
         #region Getters
-        public static BowlGameModeComponent GetInstance(UObject worldContextObject)
+        public static UBowlGameModeComponent GetInstance(UObject worldContextObject)
         {
             var _instanceHelper = ThisInstance.Get(worldContextObject);
             if (_instanceHelper == null)
             {
-                _instanceHelper = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameModeComponent>();
+                _instanceHelper = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<UBowlGameModeComponent>();
                 ThisInstance.Set(worldContextObject, _instanceHelper);
             }
             return _instanceHelper; 
@@ -324,7 +324,7 @@ namespace HelloUSharp
         {
             if (balls != null && balls.Count > 0 && balls[0] != null)
             {
-                var _ballComp = balls[0].GetComponentByClass<BowlingBallComponent>();
+                var _ballComp = balls[0].GetComponentByClass<UBowlingBallComponent>();
                 if (_ballComp != null)
                 {
                     myBall = _ballComp;

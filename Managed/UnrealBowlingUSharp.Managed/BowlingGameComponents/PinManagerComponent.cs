@@ -14,7 +14,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    public class PinManagerComponent : UActorComponent
+    public class UPinManagerComponent : UActorComponent
     {
         #region IgnoreProperties
         [UPropertyIgnore]
@@ -31,9 +31,9 @@ namespace HelloUSharp
         private AActor _owner = null;
 
         [UPropertyIgnore]
-        protected BowlGameMasterComponent gamemaster => BowlGameMasterComponent.GetInstance(MyOwner);
+        protected UBowlGameMasterComponent gamemaster => UBowlGameMasterComponent.GetInstance(MyOwner);
         [UPropertyIgnore]
-        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+        protected UBowlGameModeComponent gamemode => UBowlGameModeComponent.GetInstance(MyOwner);
         #endregion
 
         #region UProperties
@@ -41,7 +41,7 @@ namespace HelloUSharp
         #endregion
 
         #region Fields
-        protected static WorldStaticVar<PinManagerComponent> ThisInstance = new WorldStaticVar<PinManagerComponent>();
+        protected static WorldStaticVar<UPinManagerComponent> ThisInstance = new WorldStaticVar<UPinManagerComponent>();
         protected List<FVector> PinLocations = new List<FVector>();
         //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Pin Management")]
         private UClass PinPrefabClass = null;
@@ -56,19 +56,19 @@ namespace HelloUSharp
             return outPinActors;
         }
 
-        public static PinManagerComponent GetInstance(UObject worldContextObject)
+        public static UPinManagerComponent GetInstance(UObject worldContextObject)
         {
             var _instanceHelper = ThisInstance.Get(worldContextObject);
             if (_instanceHelper == null)
             {
-                var _gamemode = BowlGameModeComponent.GetInstance(worldContextObject);
+                var _gamemode = UBowlGameModeComponent.GetInstance(worldContextObject);
                 if (_gamemode != null)
                 {
                     List<AActor> sweepActors;
                     UGameplayStatics.GetAllActorsWithTag(worldContextObject, _gamemode.PinManagerTag, out sweepActors);
                     if (sweepActors[0] != null)
                     {
-                        _instanceHelper = sweepActors[0].GetComponentByClass<PinManagerComponent>();
+                        _instanceHelper = sweepActors[0].GetComponentByClass<UPinManagerComponent>();
                         ThisInstance.Set(worldContextObject, _instanceHelper);
                     }
                 }
@@ -117,12 +117,12 @@ namespace HelloUSharp
         #endregion
 
         #region Handlers
-        void PinHasFallen(BowlingPinComponent _pin)
+        void PinHasFallen(UBowlingPinComponent _pin)
         {
             UpdatePinHasStandingDictionary(_pin, true);
         }
 
-        void PinGottenBackUp(BowlingPinComponent _pin)
+        void PinGottenBackUp(UBowlingPinComponent _pin)
         {
             UpdatePinHasStandingDictionary(_pin, false);
         }
@@ -182,7 +182,7 @@ namespace HelloUSharp
             }
         }
 
-        void UpdatePinHasStandingDictionary(BowlingPinComponent _pin, bool _fallen)
+        void UpdatePinHasStandingDictionary(UBowlingPinComponent _pin, bool _fallen)
         {
             string _key = _pin.MyOwner.GetName();
             if (AllPinsStandingDictionary.ContainsKey(_key))

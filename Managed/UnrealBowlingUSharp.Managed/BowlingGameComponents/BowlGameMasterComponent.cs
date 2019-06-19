@@ -10,7 +10,7 @@ using UnrealEngine.NavigationSystem;
 namespace HelloUSharp
 {
     [UClass, Blueprintable, BlueprintType]
-    public class BowlGameMasterComponent : UActorComponent
+    public class UBowlGameMasterComponent : UActorComponent
     {
         #region IgnoreProperties
         [UPropertyIgnore]
@@ -27,7 +27,7 @@ namespace HelloUSharp
         private AActor _owner = null;
 
         [UPropertyIgnore]
-        protected BowlGameModeComponent gamemode => BowlGameModeComponent.GetInstance(MyOwner);
+        protected UBowlGameModeComponent gamemode => UBowlGameModeComponent.GetInstance(MyOwner);
 
         public bool bBowlTurnIsOver { get; protected set; }
         public bool bCanLaunchBall { get; protected set; }
@@ -38,16 +38,16 @@ namespace HelloUSharp
         #endregion
 
         #region Fields
-        protected static WorldStaticVar<BowlGameMasterComponent> ThisInstance = new WorldStaticVar<BowlGameMasterComponent>();
+        protected static WorldStaticVar<UBowlGameMasterComponent> ThisInstance = new WorldStaticVar<UBowlGameMasterComponent>();
         #endregion
 
         #region Getters
-        public static BowlGameMasterComponent GetInstance(UObject worldContextObject)
+        public static UBowlGameMasterComponent GetInstance(UObject worldContextObject)
         {
             var _instanceHelper = ThisInstance.Get(worldContextObject);
             if (_instanceHelper == null)
             {
-                _instanceHelper = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<BowlGameMasterComponent>();
+                _instanceHelper = UGameplayStatics.GetGameMode(worldContextObject).GetComponentByClass<UBowlGameMasterComponent>();
                 ThisInstance.Set(worldContextObject, _instanceHelper);
             }
             return _instanceHelper;
@@ -56,32 +56,32 @@ namespace HelloUSharp
 
         #region Delegates
         public delegate void GeneralEventHandler();
-        public delegate void FVectorAndBallRefHandler(FVector launchVelocity, BowlingBallComponent bowlingBall);
+        public delegate void FVectorAndBallRefHandler(FVector launchVelocity, UBowlingBallComponent bowlingBall);
         public delegate void OneFloatArgHandler(float famount);
         public delegate void OneIntArgHandler(int iamount);
         public delegate void OneBoolArgHandler(bool _isTrue);
         //public delegate void OneBoolOneBowlActionArgHandler(bool _isTrue, EBowlAction _action);
-        public delegate void OnePinArgHandler(BowlingPinComponent _pin);
+        public delegate void OnePinArgHandler(UBowlingPinComponent _pin);
         public delegate void BowlActionArgHandler(EBowlAction _action);
         #endregion
 
         #region FMulticastDelegates
-        public class GeneralDelegateHandler : FMulticastDelegate<GeneralDelegateHandler.Signature>
+        public class FGeneralDelegateHandler : FMulticastDelegate<FGeneralDelegateHandler.Signature>
         {
             public delegate void Signature();
         }
 
-        public class OneBoolArgDelegateHandler : FMulticastDelegate<OneBoolArgDelegateHandler.Signature>
+        public class FOneBoolArgDelegateHandler : FMulticastDelegate<FOneBoolArgDelegateHandler.Signature>
         {
             public delegate void Signature(bool _isTrue);
         }
 
-        public class OnePinArgDelegateHandler : FMulticastDelegate<OnePinArgDelegateHandler.Signature>
+        public class FOnePinArgDelegateHandler : FMulticastDelegate<FOnePinArgDelegateHandler.Signature>
         {
-            public delegate void Signature(BowlingPinComponent _pin);
+            public delegate void Signature(UBowlingPinComponent _pin);
         }
 
-        public class OneIntArgDelegateHandler : FMulticastDelegate<OneIntArgDelegateHandler.Signature>
+        public class FOneIntArgDelegateHandler : FMulticastDelegate<FOneIntArgDelegateHandler.Signature>
         {
             public delegate void Signature(int _number);
         }
@@ -89,7 +89,7 @@ namespace HelloUSharp
         //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
         //public OneBoolArgDelegateHandler BowlTurnIsFinishedDelegate { get; set; }
         [UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
-        public OneIntArgDelegateHandler UpdatePinCountDelegate { get; set; }
+        public FOneIntArgDelegateHandler UpdatePinCountDelegate { get; set; }
         //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
         //public OnePinArgDelegateHandler OnPinHasFallenDelegate { get; set; }
         //[UProperty(PropFlags.BlueprintCallable | PropFlags.BlueprintAssignable), EditAnywhere, BlueprintReadWrite]
@@ -135,7 +135,7 @@ namespace HelloUSharp
         #endregion
 
         #region EventCalls
-        public void CallOnBallLaunch(FVector launchVelocity, BowlingBallComponent bowlingBall)
+        public void CallOnBallLaunch(FVector launchVelocity, UBowlingBallComponent bowlingBall)
         {
             bCanLaunchBall = false;
             if (OnBallLaunch != null) OnBallLaunch(launchVelocity, bowlingBall);
@@ -167,7 +167,7 @@ namespace HelloUSharp
             if (OnNudgeBallRight != null) OnNudgeBallRight(famount);
         }
 
-        public void CallOnPinHasFallen(BowlingPinComponent _pin)
+        public void CallOnPinHasFallen(UBowlingPinComponent _pin)
         {
             if (OnPinHasFallen != null) OnPinHasFallen(_pin);
             //if (OnPinHasFallenDelegate.IsBound)
@@ -176,7 +176,7 @@ namespace HelloUSharp
             //}
         }
 
-        public void CallOnPinHasGottenBackUp(BowlingPinComponent _pin)
+        public void CallOnPinHasGottenBackUp(UBowlingPinComponent _pin)
         {
             if (OnPinHasGottenBackUp != null) OnPinHasGottenBackUp(_pin);
         }
