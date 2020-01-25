@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <!-- The following properties are automatically updated when the editor runs (don't modify these manually). -->
-    <UE4Version>4.22</UE4Version>
+    <UE4Version>4.24</UE4Version>
     <UE4ProjectName>UnrealBowlingUSharp</UE4ProjectName>
     <UE4Defines></UE4Defines>
   </PropertyGroup>
