@@ -1,5 +1,7 @@
 # Visual Studio 2015 user specific files
 .vs/
+.vscode/
+UnrealBowlingUSharp.code-workspace
 
 # Visual Studio 2015 database file
 *.VC.db
