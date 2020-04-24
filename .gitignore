@@ -3,6 +3,10 @@
 .vscode/
 UnrealBowlingUSharp.code-workspace
 
+# Rider Files and Plugins
+Plugins/Developer
+.idea
+
 # Visual Studio 2015 database file
 *.VC.db
 
