@@ -200,6 +200,11 @@ void UBowlGameModeComponentCPP::SetCurrentBowlTurnValue(int32 _value)
 	}
 	UpdateBowlTurnFramesBPEvent();
 }
+
+void UBowlGameModeComponentCPP::SetHitFirstPin(bool _enable)
+{
+	bHitFirstPin = _enable;
+}
 #pragma endregion
 
 #pragma region Overrides
@@ -243,6 +248,7 @@ void UBowlGameModeComponentCPP::BeginPlay()
 		}
 		StandingPinCount = 10;
 		BowlTurnCount = 1;
+		bHitFirstPin = false;
 		if(ensure(_gamemaster->OnUpdatePinCount.IsAlreadyBound(this, &UBowlGameModeComponentCPP::UpdatePinCount) == false))
 		{
 			_gamemaster->OnUpdatePinCount.AddDynamic(this, &UBowlGameModeComponentCPP::UpdatePinCount);

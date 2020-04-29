@@ -2,6 +2,10 @@
 
 
 #include "Public/BowlingPinComponentCPP.h"
+#include "BowlGameMasterComponentCPP.h"
+#include "BowlGameModeComponentCPP.h"
+#include "GameFramework/GameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UBowlingPinComponentCPP::UBowlingPinComponentCPP()
@@ -12,6 +16,34 @@ UBowlingPinComponentCPP::UBowlingPinComponentCPP()
 
 	// ...
 }
+
+#pragma region ComponentGetters
+UBowlGameMasterComponentCPP* UBowlingPinComponentCPP::GetGameMaster()
+{
+	if (bowlGameMaster == nullptr)
+	{
+		auto _gamemode = UGameplayStatics::GetGameMode(this);
+		if (_gamemode != nullptr)
+		{
+			bowlGameMaster = Cast<UBowlGameMasterComponentCPP>(_gamemode->GetComponentByClass(UBowlGameMasterComponentCPP::StaticClass()));
+		}
+	}
+	return bowlGameMaster;
+}
+
+UBowlGameModeComponentCPP* UBowlingPinComponentCPP::GetBowlGameMode()
+{
+	if (bowlGameMode == nullptr)
+	{
+		auto _gamemode = UGameplayStatics::GetGameMode(this);
+		if (_gamemode != nullptr)
+		{
+			bowlGameMode = Cast<UBowlGameModeComponentCPP>(_gamemode->GetComponentByClass(UBowlGameModeComponentCPP::StaticClass()));
+		}
+	}
+	return bowlGameMode;
+}
+#pragma endregion
 
 #pragma region Overrides
 // Called when the game starts

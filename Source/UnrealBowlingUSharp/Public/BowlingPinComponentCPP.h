@@ -7,6 +7,8 @@
 #include "BowlingPinComponentCPP.generated.h"
 
 
+class UBowlGameModeComponentCPP;
+class UBowlGameMasterComponentCPP;
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNREALBOWLINGUSHARP_API UBowlingPinComponentCPP : public UActorComponent
 {
@@ -16,8 +18,24 @@ public:
 	// Sets default values for this component's properties
 	UBowlingPinComponentCPP();
 
+#pragma region Fields
+private:
+	
+	UBowlGameMasterComponentCPP* bowlGameMaster;
+	UBowlGameModeComponentCPP* bowlGameMode;
+
+	bool bPinHasFallen = false;
+	float standingThreshold = 15;
+	bool bDebugInstantStrike = false;
+	float pinStrikeSoundWaitTime = 0.5;
+	float offsetAsPercentageMultiplier = 1.5;
+#pragma endregion
+
 #pragma region UProperties
-protected:
+protected:	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bowling")
+    UStaticMeshComponent* MyColliderMeshComponent;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Initialization")
 	USoundBase* PinStrikeSoundVolume1;
 
@@ -45,6 +63,11 @@ public:
 #pragma endregion
 
 #pragma region UFunctions
+private:
+    //Component Getters
+    UBowlGameMasterComponentCPP* GetGameMaster();
+	UBowlGameModeComponentCPP* GetBowlGameMode();
+	
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	bool SE_CheckForPinHasFallen();
 #pragma endregion
