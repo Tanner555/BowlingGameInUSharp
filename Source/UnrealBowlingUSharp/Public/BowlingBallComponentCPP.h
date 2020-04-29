@@ -40,6 +40,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
 	USoundBase* BallRollingSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
+    USoundBase* BallNudgeSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
 	bool bLaunchBallThroughBlueprints;
 #pragma endregion
 

@@ -16,6 +16,24 @@ public:
 	// Sets default values for this component's properties
 	UBowlingPinComponentCPP();
 
+#pragma region UProperties
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Initialization")
+	USoundBase* PinStrikeSoundVolume1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Initialization")
+    USoundBase* PinStrikeSoundVolume2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Initialization")
+    USoundBase* PinStrikeSoundVolume3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Initialization")
+    USoundBase* PinStrikeSoundVolume4;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Initialization")
+    USoundBase* PinStrikeSoundVolume5;
+#pragma endregion 
+
 #pragma region Overrides
 protected:
 	// Called when the game starts
