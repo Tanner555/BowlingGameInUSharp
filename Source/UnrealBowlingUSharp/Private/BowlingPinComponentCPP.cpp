@@ -4,6 +4,7 @@
 #include "Public/BowlingPinComponentCPP.h"
 #include "BowlGameMasterComponentCPP.h"
 #include "BowlGameModeComponentCPP.h"
+#include "PinManagerComponentCPP.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -43,6 +44,28 @@ UBowlGameModeComponentCPP* UBowlingPinComponentCPP::GetBowlGameMode()
 	}
 	return bowlGameMode;
 }
+
+UPinManagerComponentCPP* UBowlingPinComponentCPP::GetPinManager()
+{
+	if(myPinManager == nullptr)
+	{
+		auto _bowlGameMode = GetBowlGameMode();
+		if(_bowlGameMode != nullptr)
+		{
+			TArray<AActor*> sweepActors;
+			UGameplayStatics::GetAllActorsWithTag(this, _bowlGameMode->PinManagerTag, sweepActors);
+			if (sweepActors.Num() > 0 && sweepActors[0] != nullptr)
+			{
+				auto _comp = sweepActors[0]->GetComponentByClass(UPinManagerComponentCPP::StaticClass());
+				if(_comp != nullptr)
+				{
+					myPinManager = Cast<UPinManagerComponentCPP>(_comp);
+				}
+			}
+		} 
+	}
+	return myPinManager;
+}
 #pragma endregion
 
 #pragma region Overrides
@@ -69,5 +92,31 @@ void UBowlingPinComponentCPP::TickComponent(float DeltaTime, ELevelTick TickType
 bool UBowlingPinComponentCPP::SE_CheckForPinHasFallen()
 {
 	return false;
+}
+#pragma endregion
+
+#pragma region Handlers
+/// <summary>
+/// Also Called When Won Game 
+/// </summary>
+void UBowlingPinComponentCPP::OnTurnIsFinished()
+{
+	//StopAllCoroutines();
+}
+
+void UBowlingPinComponentCPP::OnSendBowlActionResults(EBowlActionCPP _action)
+{
+	
+}
+
+void UBowlingPinComponentCPP::NewBowlTurnHasStarted(EBowlActionCPP _action)
+{
+	
+}
+
+//Debug
+void UBowlingPinComponentCPP::OnSimulateStrike()
+{
+	
 }
 #pragma endregion

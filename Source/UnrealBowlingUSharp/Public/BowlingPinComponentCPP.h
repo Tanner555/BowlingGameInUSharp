@@ -7,6 +7,8 @@
 #include "BowlingPinComponentCPP.generated.h"
 
 
+class UPinManagerComponentCPP;
+enum class EBowlActionCPP : unsigned char;
 class UBowlGameModeComponentCPP;
 class UBowlGameMasterComponentCPP;
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -23,6 +25,7 @@ private:
 	
 	UBowlGameMasterComponentCPP* bowlGameMaster;
 	UBowlGameModeComponentCPP* bowlGameMode;
+	UPinManagerComponentCPP* myPinManager;
 
 	bool bPinHasFallen = false;
 	float standingThreshold = 15;
@@ -67,9 +70,18 @@ private:
     //Component Getters
     UBowlGameMasterComponentCPP* GetGameMaster();
 	UBowlGameModeComponentCPP* GetBowlGameMode();
+	UPinManagerComponentCPP* GetPinManager();
 	
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	bool SE_CheckForPinHasFallen();
+#pragma endregion
+
+#pragma region Handlers
+protected:
+	void OnTurnIsFinished();
+	void OnSendBowlActionResults(EBowlActionCPP _action);
+	void NewBowlTurnHasStarted(EBowlActionCPP _action);
+	void OnSimulateStrike();
 #pragma endregion
 
 };
