@@ -75,7 +75,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "BowlPinComp")
     void MyBeginPlayInitializer(UStaticMeshComponent* _collidermesh, UAudioComponent* _uaudiocomponent);
 	
-	void MyBeginPlayPostInitialization();
+	void MyBeginPlayPostInitialization();	
 #pragma endregion 
 
 #pragma region UFunctions
@@ -104,4 +104,8 @@ protected:
 	void OnSimulateStrike();
 #pragma endregion
 
+#pragma region OtherMethods
+	void PlayPinStrikeSounds(AActor* _other);
+	void AttachToParentWithOldPosition();
+#pragma endregion 
 };

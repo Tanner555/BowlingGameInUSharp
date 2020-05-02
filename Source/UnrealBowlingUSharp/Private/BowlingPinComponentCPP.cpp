@@ -5,6 +5,7 @@
 #include "BowlGameMasterComponentCPP.h"
 #include "BowlGameModeComponentCPP.h"
 #include "PinManagerComponentCPP.h"
+#include "Components/AudioComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -155,7 +156,7 @@ void UBowlingPinComponentCPP::MyBeginPlayPostInitialization()
 	{
 		if (MyColliderMeshComponent != nullptr)
 		{
-			//AttachToParentWithOldPosition();
+			AttachToParentWithOldPosition();
 			MyColliderMeshComponent->SetSimulatePhysics(false);
 			MyColliderMeshComponent->SetSimulatePhysics(true);
 		}
@@ -214,7 +215,7 @@ void UBowlingPinComponentCPP::ReceiveHitWrapper(UPrimitiveComponent* MyComp, AAc
 			}
 			else
 			{
-				//PlayPinStrikeSounds(Other);
+				PlayPinStrikeSounds(Other);
 			}
 		}
 	}
@@ -249,5 +250,71 @@ void UBowlingPinComponentCPP::NewBowlTurnHasStarted(EBowlActionCPP _action)
 void UBowlingPinComponentCPP::OnSimulateStrike()
 {
 	
+}
+#pragma endregion
+
+#pragma region OtherMethods
+void UBowlingPinComponentCPP::PlayPinStrikeSounds(AActor* _other)
+{
+	auto _gamemode = GetBowlGameMode();
+	if(_gamemode == nullptr || _other == nullptr) return;
+	
+	int _settledPins = _gamemode->lastSettledCount;
+	float _center = 50;
+	float _otherYLoc = _other->GetActorLocation().Y;
+	float _offset = _otherYLoc >= 0 ?
+        FMath::Abs(_otherYLoc - _center) : FMath::Abs(_otherYLoc + _center);
+	float _highoffset = 350;
+	float _offsetAsPercentageDecimal = (_offset / _highoffset);
+	float _highVelX = 2500;
+	float _lowVelX = 1000;
+	float _velX = FMath::Clamp(_other->GetVelocity().X, _lowVelX, _highVelX);
+	float _velXAsPercentageDecimal = ((_velX - _lowVelX) / (_highVelX - _lowVelX));
+	//The Less Pins, The Higher The Percentage
+	float _pinSettledPenaltyAsPercentage = 1 - (_settledPins / 10);
+	float _VelXMinusOffsetYDecimal = _velXAsPercentageDecimal - (_offsetAsPercentageDecimal * offsetAsPercentageMultiplier) - _pinSettledPenaltyAsPercentage;
+	if (_offsetAsPercentageDecimal > 0.80f)
+	{
+		_VelXMinusOffsetYDecimal = FMath::Min(-0.5f, _VelXMinusOffsetYDecimal - 0.5f);
+	}
+
+	//MyOwner.PrintString($"Pin Strike. Vel: {_velX} VelAsPerc: {_velXAsPercentageDecimal} Off: {_offset} OffAsPerc: {_offsetAsPercentageDecimal} VelMinusOffset: {_VelXMinusOffsetYDecimal}", FLinearColor.Green, printToLog: true);
+	
+	if(_VelXMinusOffsetYDecimal <= -0.5)
+	{
+		MyAudioSourceComponent->Sound = FMath::RandRange(0, 1) == 0 ?
+                PinStrikeSoundVolume1 : PinStrikeSoundVolume2;
+	}
+	else if(_VelXMinusOffsetYDecimal <= 0.2)
+	{
+		MyAudioSourceComponent->Sound = FMath::RandRange(0, 1) == 0 ?
+                PinStrikeSoundVolume3 : PinStrikeSoundVolume4;
+	}
+	else
+	{
+		MyAudioSourceComponent->Sound = PinStrikeSoundVolume5;
+	}
+
+	MyAudioSourceComponent->Play();
+}
+
+void UBowlingPinComponentCPP::AttachToParentWithOldPosition()
+{
+	const auto _pinManager = GetPinManager();
+	if (_pinManager == nullptr) return;
+
+	const auto _pinManagerBP = _pinManager->GetOwner();
+	if(_pinManagerBP == nullptr) return;
+	
+	FHitResult* _hit = nullptr;
+	const FVector _oldLoc = GetOwner()->GetActorLocation();
+	const FRotator _oldRot = GetOwner()->GetActorRotation();
+
+	GetOwner()->AttachToActor(_pinManagerBP,
+		FAttachmentTransformRules(EAttachmentRule::KeepRelative,
+			EAttachmentRule::KeepRelative, EAttachmentRule::KeepWorld, true),
+		_pinManagerBP->GetAttachParentSocketName());
+	GetOwner()->SetActorLocation(_oldLoc, false, _hit, ETeleportType::None);
+	GetOwner()->SetActorRotation(_oldRot, ETeleportType::None);
 }
 #pragma endregion
