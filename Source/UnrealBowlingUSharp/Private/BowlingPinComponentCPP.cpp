@@ -223,7 +223,36 @@ void UBowlingPinComponentCPP::ReceiveHitWrapper(UPrimitiveComponent* MyComp, AAc
 
 bool UBowlingPinComponentCPP::SE_CheckForPinHasFallen()
 {
-	return false;
+	auto _gamemaster = GetGameMaster();
+	if(_gamemaster == nullptr) return false;
+	
+	//GetOwner().PrintString("SE_CheckForPinHasFallen", FLinearColor.Green, printToLog: true);
+	FVector _rotationInEuler = GetOwner()->GetActorRotation().Euler();
+	float _tiltInX = FMath::Abs(_rotationInEuler.X);
+	float _tiltInY = FMath::Abs(_rotationInEuler.Y);
+	bool _previouslyFallen = bPinHasFallen;
+	bPinHasFallen = _tiltInX > standingThreshold || _tiltInY > standingThreshold;
+
+	if (bDebugInstantStrike)
+	{
+		bPinHasFallen = true;
+	}
+
+	if (bPinHasFallen && _previouslyFallen != bPinHasFallen)
+	{
+		_gamemaster->CallOnPinHasFallen(this);
+	}
+	else if(bPinHasFallen == false && 
+        _previouslyFallen != bPinHasFallen &&
+        bDebugInstantStrike == false)
+	{
+		//If Pin Has Gotten Back Up Because
+		//Pin Has Fallen, But Now PinHasFallen Equals False
+		//MyOwner.PrintString("Pin has gotten back up", FLinearColor.Green, printToLog: true);
+		_gamemaster->CallOnPinHasGottenBackUp(this);
+	}
+
+	return bPinHasFallen;
 }
 #pragma endregion
 
@@ -238,18 +267,52 @@ void UBowlingPinComponentCPP::OnTurnIsFinished()
 
 void UBowlingPinComponentCPP::OnSendBowlActionResults(EBowlActionCPP _action)
 {
+	auto _pinManager = GetPinManager();
+	if(ensure(_pinManager != nullptr) == false) return;
 	
+	//Only If Collider Mesh Comp Has Been Assigned AND
+	//Parent Actor is the PinManager Actor Blueprint
+	if (MyColliderMeshComponent != nullptr &&
+        _pinManager != nullptr &&
+        bPinHasFallen == false)
+	{
+		if (_action == EBowlActionCPP::Tidy)
+		{
+			AttachToParentWithOldPosition();
+			MyColliderMeshComponent->SetSimulatePhysics(false);
+		}
+		else
+		{
+			MyColliderMeshComponent->SetSimulatePhysics(true);
+		}
+	}
 }
 
 void UBowlingPinComponentCPP::NewBowlTurnHasStarted(EBowlActionCPP _action)
 {
+	auto _gamemode = GetBowlGameMode();
+	if(ensure(_gamemode != nullptr) == false) return;
 	
+	if(_gamemode->bHitFirstPin == true)
+	{
+		_gamemode->SetHitFirstPin(false);
+	}
+
+	if (bPinHasFallen)
+	{
+		//Destroy Pin If It Hasn't Been Sweeped Into the Floor
+		GetOwner()->Destroy();
+	}
+	else if (MyColliderMeshComponent != nullptr)
+	{
+		MyColliderMeshComponent->SetSimulatePhysics(true);
+	}
 }
 
 //Debug
 void UBowlingPinComponentCPP::OnSimulateStrike()
 {
-	
+	bDebugInstantStrike = true;
 }
 #pragma endregion
 
