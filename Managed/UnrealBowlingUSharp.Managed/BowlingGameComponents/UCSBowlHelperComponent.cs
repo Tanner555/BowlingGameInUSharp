@@ -20,6 +20,7 @@ namespace USharpBowlProject
     public class UCSBowlHelperComponent : UActorComponent
     {
         #region Fields
+        //my bowl fields
 
         #endregion
 
