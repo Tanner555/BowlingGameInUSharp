@@ -76,6 +76,9 @@ protected:
 	//Should be called from Blueprints
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void MyBeginPlayInitializer(UStaticMeshComponent* _mymeshcomponent, UAudioComponent* _myaudiosourcecomponent);
+	//Other
+	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
+	void StopRollingSound();
 #pragma endregion
 
 		

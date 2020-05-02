@@ -162,3 +162,13 @@ void UBowlingBallComponentCPP::NudgeBallRight(float famount)
 	);
 }
 #pragma endregion
+
+#pragma region UFunctions
+void UBowlingBallComponentCPP::StopRollingSound()
+{
+	if (MyAudioSourceComponent->IsPlaying())
+	{
+		MyAudioSourceComponent->Stop();
+	}
+}
+#pragma endregion
