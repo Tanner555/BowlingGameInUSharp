@@ -76,9 +76,9 @@ void UBowlingBallComponentCPP::BeginPlay()
 	{
 		_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UBowlingBallComponentCPP::NewTurnIsReady);
 	}
-	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UBowlingBallComponentCPP::LaunchBall) == false))
+	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UBowlingBallComponentCPP::LaunchBallBPImplementation) == false))
 	{
-		_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponentCPP::LaunchBall);
+		_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponentCPP::LaunchBallBPImplementation);
 	}
 	if (ensure(_gamemaster->OnNudgeBallLeft.IsAlreadyBound(this, &UBowlingBallComponentCPP::NudgeBallLeft) == false))
 	{
@@ -119,7 +119,7 @@ void UBowlingBallComponentCPP::BowlTurnIsFinished()
 
 }
 
-void UBowlingBallComponentCPP::LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall)
+void UBowlingBallComponentCPP::LaunchBallCPP(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall)
 {
 	if (MyMeshComponent == nullptr)
 	{
@@ -139,7 +139,8 @@ void UBowlingBallComponentCPP::LaunchBall(FVector _launchVelocity, UBowlingBallC
 	else
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("LaunchBall: Launch Velocity X: %f. Launch Velocity Y: %f"), _launchVelocity.X, _launchVelocity.Y);
-		MyMeshComponent->AddImpulse(LaunchVelocity, MyMeshComponent->GetAttachSocketName(), true);
+		
+		MyMeshComponent->AddImpulse(_launchVelocity, MyMeshComponent->GetAttachSocketName(), true);
 		MyAudioSourceComponent->Sound = BallRollingSound;
 		MyAudioSourceComponent->Play();
 	}
