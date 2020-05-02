@@ -7,6 +7,7 @@
 #include "BowlingPinComponentCPP.generated.h"
 
 
+class UAudioComponent;
 class UPinManagerComponentCPP;
 enum class EBowlActionCPP : unsigned char;
 class UBowlGameModeComponentCPP;
@@ -36,8 +37,10 @@ private:
 
 #pragma region UProperties
 protected:	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bowling")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Initialization")
     UStaticMeshComponent* MyColliderMeshComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Initialization")
+	UAudioComponent* MyAudioSourceComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Initialization")
 	USoundBase* PinStrikeSoundVolume1;
@@ -63,24 +66,41 @@ protected:
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 #pragma endregion
 
+#pragma region Initialization
+protected:
+	UFUNCTION(BlueprintCallable, Category = "BowlPinComp")
+    void MyBeginPlayInitializer(UStaticMeshComponent* _collidermesh, UAudioComponent* _uaudiocomponent);
+	
+	void MyBeginPlayPostInitialization();
+#pragma endregion 
+
 #pragma region UFunctions
+protected:	
+	UFUNCTION(BlueprintCallable, Category = "BowlPinComp")
+	void ReceiveHitWrapper(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
 private:
     //Component Getters
     UBowlGameMasterComponentCPP* GetGameMaster();
 	UBowlGameModeComponentCPP* GetBowlGameMode();
 	UPinManagerComponentCPP* GetPinManager();
 	
-	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
+	UFUNCTION(BlueprintCallable, Category = "BowlPinComp")
 	bool SE_CheckForPinHasFallen();
 #pragma endregion
 
 #pragma region Handlers
 protected:
+	UFUNCTION(BlueprintCallable, Category = "BowlHandlers")
 	void OnTurnIsFinished();
+	UFUNCTION(BlueprintCallable, Category = "BowlHandlers")
 	void OnSendBowlActionResults(EBowlActionCPP _action);
+	UFUNCTION(BlueprintCallable, Category = "BowlHandlers")
 	void NewBowlTurnHasStarted(EBowlActionCPP _action);
+	UFUNCTION(BlueprintCallable, Category = "BowlHandlers")
 	void OnSimulateStrike();
 #pragma endregion
 
