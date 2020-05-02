@@ -78,9 +78,7 @@ void UBowlingBallComponentCPP::BeginPlay()
 	}
 	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UBowlingBallComponentCPP::LaunchBall) == false))
 	{
-		if (bLaunchBallThroughBlueprints == false) {
-			_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponentCPP::LaunchBall);
-		}
+		_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponentCPP::LaunchBall);
 	}
 	if (ensure(_gamemaster->OnNudgeBallLeft.IsAlreadyBound(this, &UBowlingBallComponentCPP::NudgeBallLeft) == false))
 	{
@@ -123,8 +121,6 @@ void UBowlingBallComponentCPP::BowlTurnIsFinished()
 
 void UBowlingBallComponentCPP::LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall)
 {
-	if (bLaunchBallThroughBlueprints) return;
-
 	if (MyMeshComponent == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Please Assign A mesh component to the uproperty"));

@@ -41,8 +41,6 @@ public:
 	USoundBase* BallRollingSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
     USoundBase* BallNudgeSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
-	bool bLaunchBallThroughBlueprints;
 #pragma endregion
 
 #pragma region Overrides
@@ -68,7 +66,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void BowlTurnIsFinished();
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
-	void LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall);
+	virtual void LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall);
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void NudgeBallLeft(float famount);
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
