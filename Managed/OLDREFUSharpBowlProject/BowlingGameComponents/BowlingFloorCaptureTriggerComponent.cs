@@ -11,7 +11,7 @@ using UnrealEngine.SlateCore;
 using UnrealEngine.NavigationSystem;
 using System.Collections;
 
-namespace HelloUSharp
+namespace OLDREFUSharpBowlProject
 {
     [UClass, Blueprintable, BlueprintType]
     public class UBowlingFloorCaptureTriggerComponent : UActorComponent

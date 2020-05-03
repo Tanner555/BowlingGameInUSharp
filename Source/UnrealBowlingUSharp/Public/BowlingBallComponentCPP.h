@@ -36,11 +36,9 @@ private:
 #pragma region UProperties
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
-	FVector LaunchVelocity;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
 	USoundBase* BallRollingSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlingBall)
-	bool bLaunchBallThroughBlueprints;
+    USoundBase* BallNudgeSound;
 #pragma endregion
 
 #pragma region Overrides
@@ -66,7 +64,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void BowlTurnIsFinished();
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
-	void LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall);
+	void LaunchBallCPP(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall);
+	UFUNCTION(BlueprintImplementableEvent, Category = "BowlingBall")
+	void LaunchBallBPImplementation(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall);
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void NudgeBallLeft(float famount);
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
@@ -76,6 +76,10 @@ protected:
 	//Should be called from Blueprints
 	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
 	void MyBeginPlayInitializer(UStaticMeshComponent* _mymeshcomponent, UAudioComponent* _myaudiosourcecomponent);
+	//Other
+public:
+	UFUNCTION(BlueprintCallable, Category = "BowlingBall")
+	void StopRollingSound();
 #pragma endregion
 
 		

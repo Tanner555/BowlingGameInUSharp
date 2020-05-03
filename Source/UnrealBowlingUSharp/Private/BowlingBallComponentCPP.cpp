@@ -6,7 +6,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "BowlGameMasterComponentCPP.h"
 #include "BowlGameModeComponentCPP.h"
-#include "Sound/SoundBase.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/AudioComponent.h"
 
@@ -76,11 +75,9 @@ void UBowlingBallComponentCPP::BeginPlay()
 	{
 		_gamemaster->BowlNewTurnIsReady.AddDynamic(this, &UBowlingBallComponentCPP::NewTurnIsReady);
 	}
-	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UBowlingBallComponentCPP::LaunchBall) == false))
+	if (ensure(_gamemaster->OnBallLaunch.IsAlreadyBound(this, &UBowlingBallComponentCPP::LaunchBallBPImplementation) == false))
 	{
-		if (bLaunchBallThroughBlueprints == false) {
-			_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponentCPP::LaunchBall);
-		}
+		_gamemaster->OnBallLaunch.AddDynamic(this, &UBowlingBallComponentCPP::LaunchBallBPImplementation);
 	}
 	if (ensure(_gamemaster->OnNudgeBallLeft.IsAlreadyBound(this, &UBowlingBallComponentCPP::NudgeBallLeft) == false))
 	{
@@ -121,10 +118,8 @@ void UBowlingBallComponentCPP::BowlTurnIsFinished()
 
 }
 
-void UBowlingBallComponentCPP::LaunchBall(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall)
+void UBowlingBallComponentCPP::LaunchBallCPP(FVector _launchVelocity, UBowlingBallComponentCPP* bowlingBall)
 {
-	if (bLaunchBallThroughBlueprints) return;
-
 	if (MyMeshComponent == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Please Assign A mesh component to the uproperty"));
@@ -143,7 +138,8 @@ void UBowlingBallComponentCPP::LaunchBall(FVector _launchVelocity, UBowlingBallC
 	else
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("LaunchBall: Launch Velocity X: %f. Launch Velocity Y: %f"), _launchVelocity.X, _launchVelocity.Y);
-		MyMeshComponent->AddImpulse(LaunchVelocity, MyMeshComponent->GetAttachSocketName(), true);
+		
+		MyMeshComponent->AddImpulse(_launchVelocity, MyMeshComponent->GetAttachSocketName(), true);
 		MyAudioSourceComponent->Sound = BallRollingSound;
 		MyAudioSourceComponent->Play();
 	}
@@ -163,5 +159,15 @@ void UBowlingBallComponentCPP::NudgeBallRight(float famount)
 		GetOwner()->GetActorLocation() + FVector(0, famount, 0),
 		false
 	);
+}
+#pragma endregion
+
+#pragma region UFunctions
+void UBowlingBallComponentCPP::StopRollingSound()
+{
+	if (MyAudioSourceComponent->IsPlaying())
+	{
+		MyAudioSourceComponent->Stop();
+	}
 }
 #pragma endregion

@@ -7,7 +7,7 @@ using UnrealEngine.GameplayTasks;
 using UnrealEngine.SlateCore;
 using UnrealEngine.NavigationSystem;
 
-namespace HelloUSharp
+namespace OLDREFUSharpBowlProject
 {
     /// <summary>
     /// Useless Right Now Due To Errors When Inheriting

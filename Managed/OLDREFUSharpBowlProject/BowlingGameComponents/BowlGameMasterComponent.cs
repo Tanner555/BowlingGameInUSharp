@@ -6,8 +6,9 @@ using UnrealEngine;
 using UnrealEngine.GameplayTasks;
 using UnrealEngine.SlateCore;
 using UnrealEngine.NavigationSystem;
+using USharpBowlProject;
 
-namespace HelloUSharp
+namespace OLDREFUSharpBowlProject
 {
     [UClass, Blueprintable, BlueprintType]
     public class UBowlGameMasterComponent : UActorComponent

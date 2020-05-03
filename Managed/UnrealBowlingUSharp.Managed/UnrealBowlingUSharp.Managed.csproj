@@ -34,16 +34,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BowlingGameComponents\BowlGameMasterComponent.cs" />
-    <Compile Include="BowlingGameComponents\BowlGameModeComponent.cs" />
-    <Compile Include="BowlingGameComponents\BowlingBallComponent.cs" />
-    <Compile Include="BowlingGameComponents\BowlingFloorCaptureTriggerComponent.cs" />
-    <Compile Include="BowlingGameComponents\BowlingPinComponent.cs" />
-    <Compile Include="BowlingGameComponents\MyBowlPlayerComponent.cs" />
-    <Compile Include="BowlingGameComponents\PinManagerComponent.cs" />
-    <Compile Include="MyUtilities\MyActorComponentSingleton.cs" />
+    <Compile Include="BowlingGameComponents\UCSBowlHelperComponent.cs" />
     <Compile Include="StaticClasses\BowlActionMaster.cs" />
-    <Compile Include="Test.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

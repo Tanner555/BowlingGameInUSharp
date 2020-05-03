@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnrealEngine.Runtime;
 
-namespace HelloUSharp
+namespace OLDREFUSharpBowlProject
 {
     [UClass, Blueprintable, BlueprintType]
     public class UHelloUFromUSharp : UObject

@@ -200,6 +200,11 @@ void UBowlGameModeComponentCPP::SetCurrentBowlTurnValue(int32 _value)
 	}
 	UpdateBowlTurnFramesBPEvent();
 }
+
+void UBowlGameModeComponentCPP::SetHitFirstPin(bool _enable)
+{
+	bHitFirstPin = _enable;
+}
 #pragma endregion
 
 #pragma region Overrides
@@ -243,6 +248,7 @@ void UBowlGameModeComponentCPP::BeginPlay()
 		}
 		StandingPinCount = 10;
 		BowlTurnCount = 1;
+		bHitFirstPin = false;
 		if(ensure(_gamemaster->OnUpdatePinCount.IsAlreadyBound(this, &UBowlGameModeComponentCPP::UpdatePinCount) == false))
 		{
 			_gamemaster->OnUpdatePinCount.AddDynamic(this, &UBowlGameModeComponentCPP::UpdatePinCount);
@@ -522,11 +528,14 @@ EBowlActionCPP UBowlGameModeComponentCPP::Bowl()
 
 EBowlActionCPP UBowlGameModeComponentCPP::BowlHelper(int32 _pinFall)
 {
+	auto _gamemaster = GetGameMaster();
+	if(ensure(_gamemaster != nullptr) == false) return EBowlActionCPP::Undefined;
+	
 	//Old Bowl Method
 	SetCurrentBowlTurnValue(_pinFall);
 	TArray<int32> _rolls = GetBowlTurnListFromCount();
 	EBowlActionCPP _action = NextAction(_rolls);
-	auto _gamemaster = GetGameMaster();
+	
 	if(_rolls.Num() <= 0 || ensure(_gamemaster != nullptr) == false)
 	{
 		return EBowlActionCPP::Undefined;

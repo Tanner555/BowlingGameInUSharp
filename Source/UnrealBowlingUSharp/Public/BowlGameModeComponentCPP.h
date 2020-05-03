@@ -102,6 +102,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BowlGameMode)
 	ULevelSequence* ClearSweepLevelSequence;
 
+	UPROPERTY(BlueprintReadOnly, Category=BowlingPinStats)
+	bool bHitFirstPin;
+
 #pragma endregion
 
 #pragma region Overrides
@@ -141,6 +144,8 @@ public:
 	void SetResultsFromFrameTurns();
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	void SetCurrentBowlTurnValue(int32 _value);
+	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
+	void SetHitFirstPin(bool _enable);
 	//PublicUFunctionCalls
 	UFUNCTION(BlueprintCallable, Category = "BowlGameMode")
 	void NudgeBallLeft();
