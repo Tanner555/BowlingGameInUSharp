@@ -222,11 +222,9 @@ void UBowlingPinComponentCPP::ReceiveHitWrapper(UPrimitiveComponent* MyComp, AAc
 }
 
 bool UBowlingPinComponentCPP::SE_CheckForPinHasFallen()
-{
+{	
 	auto _gamemaster = GetGameMaster();
 	if(_gamemaster == nullptr) return false;
-	
-	//GetOwner().PrintString("SE_CheckForPinHasFallen", FLinearColor.Green, printToLog: true);
 	FVector _rotationInEuler = GetOwner()->GetActorRotation().Euler();
 	float _tiltInX = FMath::Abs(_rotationInEuler.X);
 	float _tiltInY = FMath::Abs(_rotationInEuler.Y);
@@ -240,6 +238,7 @@ bool UBowlingPinComponentCPP::SE_CheckForPinHasFallen()
 
 	if (bPinHasFallen && _previouslyFallen != bPinHasFallen)
 	{
+		//If Pin Has Fallen, Call Event
 		_gamemaster->CallOnPinHasFallen(this);
 	}
 	else if(bPinHasFallen == false && 
@@ -248,7 +247,6 @@ bool UBowlingPinComponentCPP::SE_CheckForPinHasFallen()
 	{
 		//If Pin Has Gotten Back Up Because
 		//Pin Has Fallen, But Now PinHasFallen Equals False
-		//MyOwner.PrintString("Pin has gotten back up", FLinearColor.Green, printToLog: true);
 		_gamemaster->CallOnPinHasGottenBackUp(this);
 	}
 

@@ -100,15 +100,11 @@ int32 UBowlGameModeComponentCPP::GetBowlTurnCount()
 #pragma endregion
 
 #pragma region Setters
-/// A Setter For StandingPinCount, which also Calls A Few Update Events.
+/// A Setter For StandingPinCount, which also Calls UpdatePinCountBPEvent.
+/// Does Not Call UpdatePinCount C++ Event.
 void UBowlGameModeComponentCPP::SetStandingPinCount(int32 pinCount)
 {
 	StandingPinCount = pinCount;
-	auto _gamemaster = GetGameMaster();
-	if(ensure(_gamemaster != nullptr))
-	{
-		_gamemaster->CallUpdatePinCount(pinCount);
-	}
 	UpdatePinCountBPEvent(pinCount);
 }
 
@@ -246,7 +242,7 @@ void UBowlGameModeComponentCPP::BeginPlay()
 		{
 			myBowler = _playerComp;
 		}
-		StandingPinCount = 10;
+		SetStandingPinCount(10);
 		BowlTurnCount = 1;
 		bHitFirstPin = false;
 		if(ensure(_gamemaster->OnUpdatePinCount.IsAlreadyBound(this, &UBowlGameModeComponentCPP::UpdatePinCount) == false))
@@ -323,14 +319,15 @@ void UBowlGameModeComponentCPP::OnTurnIsFinished()
 
 void UBowlGameModeComponentCPP::UpdatePinCount(int32 _pinCount)
 {
-	StandingPinCount = _pinCount;
+	SetStandingPinCount(_pinCount);
+	//UE_LOG(LogTemp, Warning, TEXT("Update Pin Count %s"), *FString::FromInt(StandingPinCount));
 }
 
 void UBowlGameModeComponentCPP::ResetPinCount(EBowlActionCPP _action)
 {
 	if (_action != EBowlActionCPP::Tidy)
 	{
-		StandingPinCount = 10;
+		SetStandingPinCount(10);
 		lastSettledCount = 10;
 	}
 }
