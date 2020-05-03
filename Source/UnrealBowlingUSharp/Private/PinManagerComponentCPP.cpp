@@ -5,6 +5,7 @@
 #include "BowlGameMasterComponentCPP.h"
 #include "BowlGameModeComponentCPP.h"
 #include "BowlingPinComponentCPP.h"
+#include "Engine/World.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -115,66 +116,91 @@ void UPinManagerComponentCPP::EndPlay(const EEndPlayReason::Type EndPlayReason)
 #pragma region Handlers
 void UPinManagerComponentCPP::PinHasFallen(UBowlingPinComponentCPP* _pin)
 {
-	//UpdatePinHasStandingDictionary(_pin, true);
+	UpdatePinHasStandingDictionary(_pin, true);
 }
 
 void UPinManagerComponentCPP::PinGottenBackUp(UBowlingPinComponentCPP* _pin)
 {
-	//UpdatePinHasStandingDictionary(_pin, false);
+	UpdatePinHasStandingDictionary(_pin, false);
 }
 
 void UPinManagerComponentCPP::BowlNewTurnIsReady(EBowlActionCPP _action)
 {
-	// if(_action != EBowlAction.Tidy)
-	// {
-	// 	List<AActor> _outPins = RespawnPins();
-	// 	InitializePinStandingDictionary(_outPins);
-	// }
+	if(_action != EBowlActionCPP::Tidy)
+	{
+		TArray<AActor*> _outPins = RespawnPins();
+		InitializePinStandingDictionary(_outPins);
+	}
 }
 #pragma endregion
 
 #pragma region Spawn-Attach-Pins
 TArray<AActor*> UPinManagerComponentCPP::RespawnPins()
 {
-	// List<AActor> _outPins = new List<AActor>();
-	// if (PinPrefabClass == null)
-	// {
-	// 	MyOwner.PrintString("No PinPrefab On Pin Manager BP", FLinearColor.Red, printToLog: true);
-	// 	return null;
-	// }
-	//
-	// foreach (var _pinLocation in PinLocations)
-	// {
-	// 	_outPins.Add(SpawnPin(_pinLocation));
-	// }
-	//
-	// return _outPins;
-	return TArray<AActor*>();
+	TArray<AActor*> _outPins;
+	if (PinPrefabClass == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No PinPrefab On Pin Manager BP"));
+		return TArray<AActor*>();
+	}
+	
+	for (auto _pinLocation : PinLocations)
+	{
+		_outPins.Add(SpawnPin(_pinLocation));
+	}
+	
+	return _outPins;
 }
 
 AActor* UPinManagerComponentCPP::SpawnPin(FVector _pinLocation)
 {
-	// FRotator _pinRot = FRotator.ZeroRotator;
-	// return MyOwner.World.SpawnActor(PinPrefabClass, ref _pinLocation, ref _pinRot);
-	return nullptr;
+	if(ensure(PinPrefabClass != nullptr) == false) return nullptr;
+	
+	FRotator _pinRot = FRotator::ZeroRotator;
+	return GetOwner()->GetWorld()->SpawnActor(PinPrefabClass, &_pinLocation, &_pinRot);
 }
 
 void UPinManagerComponentCPP::AttachPinToManager(AActor* _pin)
 {
-	// _pin.AttachToActor(MyOwner, new FName("None"),
- //    EAttachmentRule.KeepWorld, EAttachmentRule.KeepWorld,
- //    EAttachmentRule.KeepWorld, true);
+	if(ensure(_pin != nullptr) == false) return;
+	
+	_pin->AttachToActor(GetOwner(),
+    FAttachmentTransformRules(EAttachmentRule::KeepWorld,
+        EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, true));
 }
 #pragma endregion
 
 #pragma region PinFallenDictionaryHandling
 void UPinManagerComponentCPP::InitializePinStandingDictionary(TArray<AActor*> pinActors)
 {
-	
+	//Dict Already Init, Just Need To Empty
+	AllPinsStandingDictionary.Empty();
+	for (AActor* _pin : pinActors)
+	{
+		if(_pin != nullptr)
+		{
+			AllPinsStandingDictionary.Add(_pin->GetName(), true);
+		}
+	}
 }
 
 void UPinManagerComponentCPP::UpdatePinHasStandingDictionary(UBowlingPinComponentCPP* _pin, bool _fallen)
 {
+	auto _gamemaster = GetGameMaster();
+	if(_gamemaster == nullptr) return;
 	
+	FString _key = _pin->GetOwner()->GetName();
+	if (AllPinsStandingDictionary.Contains(_key))
+	{
+		AllPinsStandingDictionary[_key] = !_fallen;
+		int _pinStandingCount = 0;
+		TArray<bool> _outValueArray = TArray<bool>();
+		AllPinsStandingDictionary.GenerateValueArray(_outValueArray);
+		for (bool _pinStanding : _outValueArray)
+		{
+			if (_pinStanding) _pinStandingCount++;
+		}
+		_gamemaster->CallUpdatePinCount(_pinStandingCount);
+	}
 }
 #pragma endregion
