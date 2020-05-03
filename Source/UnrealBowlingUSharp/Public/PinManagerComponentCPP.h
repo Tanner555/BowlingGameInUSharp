@@ -9,16 +9,32 @@
 
 enum class EBowlActionCPP : unsigned char;
 class UBowlingPinComponentCPP;
+class UBowlGameMasterComponentCPP;
+class UBowlGameModeComponentCPP;
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNREALBOWLINGUSHARP_API UPinManagerComponentCPP : public UActorComponent
 {
 	GENERATED_BODY()
 
-	// protected List<FVector> PinLocations = new List<FVector>();
-	// //[UProperty, EditAnywhere, BlueprintReadWrite, Category("Pin Management")]
-	// private UClass PinPrefabClass = null;
-	// private Dictionary<string, bool> AllPinsStandingDictionary = new Dictionary<string, bool>();
+#pragma region UPropsAndFields
+private:
+	//Comps
+    UBowlGameMasterComponentCPP* bowlGameMaster;
+	UBowlGameModeComponentCPP* bowlGameMode;
+	//Other
+	TArray<FVector> PinLocations;
+	TMap<FString, bool> AllPinsStandingDictionary;
+	UClass* PinPrefabClass;
+#pragma endregion 
 
+#pragma region CompAndOtherGetters
+protected:
+	UBowlGameMasterComponentCPP* GetGameMaster();
+	UBowlGameModeComponentCPP* GetBowlGameMode();
+	UFUNCTION(BlueprintCallable, Category="PinManager")
+	TArray<AActor*> GetAllPins();
+#pragma endregion 
+	
 #pragma region InitAndOverrides
 public:	
 	// Sets default values for this component's properties
@@ -54,5 +70,11 @@ public:
 	AActor* SpawnPin(FVector _pinLocation);
 	UFUNCTION(BlueprintCallable, Category="PinManager")
 	void AttachPinToManager(AActor* _pin);
+#pragma endregion
+
+#pragma region PinFallenDictionaryHandling
+protected:
+	void InitializePinStandingDictionary(TArray<AActor*> pinActors);
+	void UpdatePinHasStandingDictionary(UBowlingPinComponentCPP* _pin, bool _fallen);
 #pragma endregion 
 };
