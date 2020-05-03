@@ -528,11 +528,14 @@ EBowlActionCPP UBowlGameModeComponentCPP::Bowl()
 
 EBowlActionCPP UBowlGameModeComponentCPP::BowlHelper(int32 _pinFall)
 {
+	auto _gamemaster = GetGameMaster();
+	if(ensure(_gamemaster != nullptr) == false) return EBowlActionCPP::Undefined;
+	
 	//Old Bowl Method
 	SetCurrentBowlTurnValue(_pinFall);
 	TArray<int32> _rolls = GetBowlTurnListFromCount();
 	EBowlActionCPP _action = NextAction(_rolls);
-	auto _gamemaster = GetGameMaster();
+	
 	if(_rolls.Num() <= 0 || ensure(_gamemaster != nullptr) == false)
 	{
 		return EBowlActionCPP::Undefined;
