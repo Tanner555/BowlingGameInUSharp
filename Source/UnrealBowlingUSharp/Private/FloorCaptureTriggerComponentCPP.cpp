@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "BowlGameMasterComponentCPP.h"
 #include "BowlGameModeComponentCPP.h"
+#include "BowlingBallComponentCPP.h"
 
 
 #pragma region Component Getters
@@ -85,7 +86,12 @@ void UFloorCaptureTriggerComponentCPP::OnBeginOverlapWrapper(UPrimitiveComponent
 		if(OtherActor->ActorHasTag(_gamemode->BallTag) &&
 		_gamemaster->bBowlTurnIsOver == false)
 		{
-			WaitForPinsToFall();
+			auto _ballComp = Cast<UBowlingBallComponentCPP>(OtherActor->GetComponentByClass(UBowlingBallComponentCPP::StaticClass()));
+			if(_ballComp != nullptr)
+			{
+				_ballComp->StopRollingSound();
+				WaitForPinsToFall();
+			}
 		}
 		else if(OtherActor->ActorHasTag(_gamemode->PinTag))
 		{
