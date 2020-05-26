@@ -8,7 +8,6 @@ You can also find the old C# scripts inside the Managed/OLDREFUSharpBowlProject 
 certain c# features in the future.
 
 If you download this project, make sure to update the UProject file to remove whatever plugins you do not have.
-For instance, I have RiderSourceCodeAccess plugin installed from the Marketplace by default. 
 
 I'll likely not update the itch.io build of USharp Bowling with the new C++ version. It kind of defeats the purpose
 of showing off the potential of c# scripting. Keep in mind the itch.io version uses a previous version of 

@@ -80,7 +80,7 @@ void UMyBowlPlayerComponentCPP::BeginPlay()
 	}
 
 	MyStartLocation = GetOwner()->GetActorLocation();
-	MyStartRotation = GetOwner()->GetActorRotation();
+	MyStartRotation = GetOwner()->GetActorRotation();	
 }
 
 
