@@ -44,11 +44,11 @@
 		},
 		{
 			"Name": "RiderSourceCodeAccess",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "RiderLink",
-			"Enabled": true
+			"Enabled": false
 		}
 	]
 }
